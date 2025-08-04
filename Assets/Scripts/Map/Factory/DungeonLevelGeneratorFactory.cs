@@ -6,11 +6,11 @@ using UnityEngine;
 public static class DungeonLevelGeneratorFactory 
 {
 
-    private static Dictionary<DungeonLevelGeneratorVersion, Lazy<IDungeonLevelGenerator>> genVersionToInst = new Dictionary<DungeonLevelGeneratorVersion, Lazy<IDungeonLevelGenerator>>()
-    { {DungeonLevelGeneratorVersion.DungeonRoomGenV1, new Lazy<IDungeonLevelGenerator>(() => new DungeonRoomGenV1())  } };
+    private static Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>> genVersionToInst = new Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>>()
+    { {DungeonLevelGenerator.DungeonRoomGenV1, new Lazy<IDungeonLevelGenerator>(() => new DungeonRoomGen())  } };
 
 
-    public static IDungeonLevelGenerator GetDungeonGenerator(DungeonLevelGeneratorVersion version)
+    public static IDungeonLevelGenerator GetDungeonGenerator(DungeonLevelGenerator version)
     {
         if (!genVersionToInst.TryGetValue(version, out var dungeonGenerator))
         {

@@ -1,7 +1,5 @@
-using System;
-using UnityEngine;
 
-public class DebugTextureOutputV1 : IMapGenOutput
+public class DebugTextureOutput : IMapGenOutput
 {
     public void OutputMap()
     {

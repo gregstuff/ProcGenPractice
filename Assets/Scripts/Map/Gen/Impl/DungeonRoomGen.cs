@@ -3,7 +3,7 @@ using System.Linq;
 using System;
 using UnityEngine;
 
-public class DungeonRoomGenV1 : IDungeonLevelGenerator
+public class DungeonRoomGen : IDungeonLevelGenerator
 {
 
     public Level GenerateDungeonLevel(GeneratedLevelLayoutSO levelConfig)

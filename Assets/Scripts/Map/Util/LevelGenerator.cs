@@ -4,7 +4,8 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
 
-    [SerializeField] private DungeonLevelGeneratorVersion selectedCalc;
+    [SerializeField] private DungeonLevelGenerator selectedCalc;
+    [SerializeField] private DungeonLevelOutput selectedOutput;
     [SerializeField] private GeneratedLevelLayoutSO generatedLevelLayout;
 
     [ContextMenu("Generate Level Layout")]
@@ -12,6 +13,7 @@ public class LevelGenerator : MonoBehaviour
     {
         var dungeonGenerator = DungeonLevelGeneratorFactory.GetDungeonGenerator(selectedCalc);
         var level = dungeonGenerator.GenerateDungeonLevel(generatedLevelLayout);
+        //display the level with selected output
     }
 
 }
