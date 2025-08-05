@@ -1,24 +1,31 @@
 
-public class DebugTextureOutput : IMapGenOutput
+using System;
+using UnityEngine;
+
+public class DebugTextureOutput : IDungeonOutput
 {
-    public void OutputMap()
+
+    private Renderer _renderer;
+
+    public DebugTextureOutput(Renderer renderer)
     {
-
-
-
+        _renderer = renderer;
     }
 
-    /*
-    void DrawLayout(Hallway selectedEntryway = null, RectInt roomCandidate = new RectInt(), bool isDebug = false)
+    public void OutputMap(Level level)
     {
-        var renderer = levelLayoutDisplay.GetComponent<Renderer>();
+        DrawLayout(level);
+    }
 
-        var layoutTexture = (Texture2D)renderer.sharedMaterial.mainTexture;
-        layoutTexture.Reinitialize(levelConfig.Width, levelConfig.Height);
-        levelLayoutDisplay.transform.localScale = new Vector3(levelConfig.Width, levelConfig.Height, 1);
+
+    void DrawLayout(Level level)
+    {
+        var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
+        layoutTexture.Reinitialize(level.Width, level.Height);
+        _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
         layoutTexture.FillWithColor(Color.black);
 
-        Array.ForEach(_level.Rooms, (room) =>
+        level.Rooms.ForEach(room =>
         {
             if (room.LayoutTexture == null)
             {
@@ -30,10 +37,12 @@ public class DebugTextureOutput : IMapGenOutput
             }
 
         });
-        Array.ForEach(_level.Hallways, hallway => layoutTexture.DrawLine(hallway.StartPositionAbsolute, hallway.EndPositionAbsolute, Color.white));
 
-        layoutTexture.ConvertToBlackAndWhite();
+        //Array.ForEach(_level.Hallways, hallway => layoutTexture.DrawLine(hallway.StartPositionAbsolute, hallway.EndPositionAbsolute, Color.white));
 
+        //layoutTexture.ConvertToBlackAndWhite();
+
+        /*
         if (isDebug)
         {
             openDoorways.ForEach(h => layoutTexture.SetPixel(h.StartPositionAbsolute.x, h.StartPositionAbsolute.y, h.StartDirection.GetColor()));
@@ -43,9 +52,9 @@ public class DebugTextureOutput : IMapGenOutput
                     selectedEntryway.StartPositionAbsolute.y,
                     Color.white);
         }
-
+        */
 
         layoutTexture.SaveAsset();
     }
-    */
+
 }

@@ -1,4 +1,4 @@
 
 public enum DungeonLevelGenerator {
-    DungeonRoomGenV1
+    DungeonRoomGen
 }

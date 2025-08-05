@@ -1,7 +1,7 @@
 
-public class DebugConsoleOutput : IMapGenOutput
+public class DebugConsoleOutput : IDungeonOutput
 {
-    public void OutputMap()
+    public void OutputMap(Level level)
     {
 
     }

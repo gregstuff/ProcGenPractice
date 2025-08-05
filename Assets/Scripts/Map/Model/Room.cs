@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class Room
@@ -86,11 +87,21 @@ public class Room
 
     public void UseDoor(Door door)
     {
-        //this room does not know about this door....
+        //this room is not associated with this door
         if (!_possibleDoors.Contains(door)) return;
 
-        //possible door to door
-        //remove adjacent possible doors
+        _doors.Add(door);
+
+        //remove adjacent possible doors and the door we just added
+        foreach (var possibleDoor in _possibleDoors)
+        {
+            var (absX, absY) = (Mathf.Abs((possibleDoor.RoomPosition - door.RoomPosition).x),
+                Mathf.Abs((possibleDoor.RoomPosition - door.RoomPosition).y));
+            if (absX+absY<=1)
+            {
+                _possibleDoors.Remove(possibleDoor);
+            }
+        }
     }
 
     public void RemovePossibleDoor(Door door)

@@ -456,6 +456,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedCalc: 0
+  selectedOutput: 0
+  generatedLevelLayout: {fileID: 11400000, guid: 3e9592c4a4797a848ac6ded6be567ea4,
+    type: 2}
 --- !u!4 &1211177924
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[SerializeField]
-public class RoomTemplate : MonoBehaviour
+[System.Serializable]
+public class RoomTemplate
 {
     [SerializeField] private string name;
     [SerializeField] private int numberOfRooms;
@@ -10,6 +10,9 @@ public class RoomTemplate : MonoBehaviour
     [SerializeField] private int roomHeightMin = 3;
     [SerializeField] private int roomHeightMax = 6;
     [SerializeField] private Texture2D layoutTexture;
+
+    // Public properties to access private fields
+    public string Name => name;
     public int NumberOfRooms => numberOfRooms;
     public int RoomWidthMin => roomWidthMin;
     public int RoomWidthMax => roomWidthMax;
@@ -19,8 +22,7 @@ public class RoomTemplate : MonoBehaviour
 
     public RectInt GenerateRoomCandidateRect()
     {
-        var randomService = RandomSingleton.Instance;
-
+        var randomService = RandomSingleton.Instance; // Ensure RandomSingleton is accessible
         if (layoutTexture == null)
         {
             return new RectInt
@@ -34,7 +36,7 @@ public class RoomTemplate : MonoBehaviour
             return new RectInt
             {
                 width = layoutTexture.width,
-                height = layoutTexture.height,
+                height = layoutTexture.height
             };
         }
     }

@@ -158,9 +158,9 @@ public class DungeonRoomGen : IDungeonLevelGenerator
 
         var randService = RandomSingleton.Instance;
         Dictionary<RoomTemplate, int> roomTemplatesToCount = levelLayout.GetAvailableRooms();
-        Level level = new Level();
-        level.Rooms.Add(GetStartRoom(levelLayout));
-
+        Level level = new Level(levelLayout.Width, levelLayout.Height);
+        level.AddRoom(GetStartRoom(levelLayout));
+        /*
         while (level.AvailableDoors.Count > 0
             && level.Rooms.Count < levelLayout.MaxRoomCount
             && roomTemplatesToCount.Count > 0)
@@ -187,6 +187,7 @@ public class DungeonRoomGen : IDungeonLevelGenerator
 
             level.AddRoom(newRoom);
         }
+        */
 
         return level;
 

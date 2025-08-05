@@ -1,6 +1,6 @@
 
 public enum DungeonLevelOutput
 {
-    DebugTextureOutputV1,
-    Debug
+    DebugTextureOutput,
+    DebugConsoleOutput
 }
