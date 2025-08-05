@@ -125,6 +125,11 @@ public static class Texture2DExtension
         texture.Apply();
     }
 
+    public static void DrawPixel(this Texture2D texture, Vector2Int pos, Color color)
+    {
+        texture.SetPixel(pos.x, pos.y, color);
+    }
+
     public static void DrawLine(this Texture2D texture, Vector2Int p0, Vector2Int p1, Color color)
     {
         int dx = Mathf.Abs(p1.x - p0.x);

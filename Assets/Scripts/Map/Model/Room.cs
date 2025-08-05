@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Numerics;
+using System.Linq;
 using UnityEngine;
 
 public class Room
@@ -87,21 +87,26 @@ public class Room
 
     public void UseDoor(Door door)
     {
+        //calc manhatten distance
+        (int absX, int absY) GetAbsDiff(Door d1, Door d2)
+        {
+            return (
+                Mathf.Abs((d1.RoomPosition - d2.RoomPosition).x),
+                Mathf.Abs((d1.RoomPosition - d2.RoomPosition).y)
+            );
+        }
+
         //this room is not associated with this door
         if (!_possibleDoors.Contains(door)) return;
 
         _doors.Add(door);
 
-        //remove adjacent possible doors and the door we just added
-        foreach (var possibleDoor in _possibleDoors)
+        _possibleDoors = _possibleDoors.Where(possibleDoor =>
         {
-            var (absX, absY) = (Mathf.Abs((possibleDoor.RoomPosition - door.RoomPosition).x),
-                Mathf.Abs((possibleDoor.RoomPosition - door.RoomPosition).y));
-            if (absX+absY<=1)
-            {
-                _possibleDoors.Remove(possibleDoor);
-            }
-        }
+            var (diffX, diffY) = GetAbsDiff(possibleDoor, door);
+            return diffX + diffY > 1;
+        }).ToList();
+
     }
 
     public void RemovePossibleDoor(Door door)

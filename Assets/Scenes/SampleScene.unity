@@ -459,6 +459,7 @@ MonoBehaviour:
   selectedOutput: 0
   generatedLevelLayout: {fileID: 11400000, guid: 3e9592c4a4797a848ac6ded6be567ea4,
     type: 2}
+  outputConfig: {fileID: 11400000, guid: ca3057397f19eb44ba7994b6be6b78c7, type: 2}
 --- !u!4 &1211177924
 Transform:
   m_ObjectHideFlags: 0

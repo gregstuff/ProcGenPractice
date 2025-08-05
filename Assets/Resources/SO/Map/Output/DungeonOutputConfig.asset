@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1faf2247a7032b0439ab68be9b4c9427, type: 3}
   m_Name: DungeonOutputConfig
   m_EditorClassIdentifier: 
-  outputTexture: {fileID: 0}
-  levelLayoutDisplay: {fileID: 0}
+  _levelLayoutDisplay: {fileID: 2616429101891682428, guid: 9111ef441edaa7f4db9e7bb8df0eaeae,
+    type: 3}

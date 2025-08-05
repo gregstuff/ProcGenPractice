@@ -36,6 +36,9 @@ public class DebugTextureOutput : IDungeonOutput
                 layoutTexture.DrawTexture(room.LayoutTexture, room.Area);
             }
 
+            room.Doors.ForEach(door => layoutTexture.DrawPixel(door.AbsolutePosition, Color.green));
+            room.PossibleDoors.ForEach(door => layoutTexture.DrawPixel(door.AbsolutePosition, Color.red));
+
         });
 
         //Array.ForEach(_level.Hallways, hallway => layoutTexture.DrawLine(hallway.StartPositionAbsolute, hallway.EndPositionAbsolute, Color.white));

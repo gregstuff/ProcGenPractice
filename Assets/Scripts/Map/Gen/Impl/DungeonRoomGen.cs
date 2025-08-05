@@ -52,7 +52,6 @@ public class DungeonRoomGen : IDungeonLevelGenerator
         int distance)
     {
         var roomPosition = existingDoor.AbsolutePosition;
-
         int roomWidth = candidateRoom.Area.width;
         int roomHeight = candidateRoom.Area.height;
 
@@ -160,7 +159,7 @@ public class DungeonRoomGen : IDungeonLevelGenerator
         Dictionary<RoomTemplate, int> roomTemplatesToCount = levelLayout.GetAvailableRooms();
         Level level = new Level(levelLayout.Width, levelLayout.Height);
         level.AddRoom(GetStartRoom(levelLayout));
-        /*
+
         while (level.AvailableDoors.Count > 0
             && level.Rooms.Count < levelLayout.MaxRoomCount
             && roomTemplatesToCount.Count > 0)
@@ -187,7 +186,6 @@ public class DungeonRoomGen : IDungeonLevelGenerator
 
             level.AddRoom(newRoom);
         }
-        */
 
         return level;
 

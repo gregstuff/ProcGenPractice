@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door
 {
     private WallSide _side;
     private Vector2Int _roomPosition;

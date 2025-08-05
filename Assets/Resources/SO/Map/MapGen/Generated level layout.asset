@@ -17,13 +17,20 @@ MonoBehaviour:
   doorDistanceFromEdge: 1
   minHallwayLength: 2
   maxHallwayLength: 5
-  maxRoomCount: 1
+  maxRoomCount: 2
   minRoomDistance: 1
   roomTemplates:
   - name: Small
     numberOfRooms: 1
     roomWidthMin: 3
-    roomWidthMax: 4
+    roomWidthMax: 5
     roomHeightMin: 3
-    roomHeightMax: 4
+    roomHeightMax: 5
+    layoutTexture: {fileID: 0}
+  - name: Medium
+    numberOfRooms: 1
+    roomWidthMin: 5
+    roomWidthMax: 7
+    roomHeightMin: 6
+    roomHeightMax: 9
     layoutTexture: {fileID: 0}
