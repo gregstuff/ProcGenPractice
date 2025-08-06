@@ -12,7 +12,13 @@ public static class DungeonLevelOutputFactory
             DungeonLevelOutput.DebugConsoleOutput, config => new DebugConsoleOutput() 
         },
         {
-            DungeonLevelOutput.DebugTextureOutput, config => new DebugTextureOutput(config.LevelLayoutDisplay)
+            DungeonLevelOutput.DebugTextureOutput, config => new DebugTextureOutput(config)
+        },
+        {
+            DungeonLevelOutput.BlackWhiteTextureOutput, config => new BlackWhiteTextureOutput(config)
+        },
+        {
+            DungeonLevelOutput.TileMapOutput3d, config => new TileMapOutput3d()
         },
     };
 

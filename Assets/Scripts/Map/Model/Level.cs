@@ -1,6 +1,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 public class Level 
 {
 
@@ -36,6 +38,32 @@ public class Level
             }
         }
         return hallways.ToList();
+    }
+
+    public bool[,] ToBlockedMap()
+    {
+        bool[,] blockedMap = new bool[Height, Width];
+
+        Hallways.ForEach(hallway => GridUtility.SetLineForGrid(blockedMap, true, hallway.PointOne, hallway.PointTwo));
+
+        Rooms.ForEach(room =>
+        {
+            if (room.LayoutTexture == null) GridUtility.SetRectForGrid(blockedMap, true, room.Area);
+            else GridUtility.SetTextureForGrid(blockedMap, true, room.LayoutTexture, room.Area);
+
+            room.Doors.ForEach(existingDoor =>
+            {
+                var roomPos = room.GetAbsolutePositionForDoor(existingDoor);
+                blockedMap[roomPos.y, roomPos.x] = true;
+
+            });
+
+        });
+
+
+
+        return blockedMap;
+
     }
 
 }

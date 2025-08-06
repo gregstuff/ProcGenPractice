@@ -5,9 +5,9 @@ public class DebugTextureOutput : IDungeonOutput
 
     private Renderer _renderer;
 
-    public DebugTextureOutput(Renderer renderer)
+    public DebugTextureOutput(DungeonOutputConfigSO config)
     {
-        _renderer = renderer;
+        _renderer = config.LevelLayoutDisplay;
     }
 
     public void OutputMap(Level level)
