@@ -1,5 +1,3 @@
-
-using System;
 using UnityEngine;
 
 public class DebugTextureOutput : IDungeonOutput
@@ -25,6 +23,8 @@ public class DebugTextureOutput : IDungeonOutput
         _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
         layoutTexture.FillWithColor(Color.black);
 
+        level.Hallways.ForEach(hallway => layoutTexture.DrawLine(hallway.PointOne, hallway.PointTwo, Color.white));
+
         level.Rooms.ForEach(room =>
         {
             if (room.LayoutTexture == null)
@@ -36,26 +36,9 @@ public class DebugTextureOutput : IDungeonOutput
                 layoutTexture.DrawTexture(room.LayoutTexture, room.Area);
             }
 
-            room.Doors.ForEach(door => layoutTexture.DrawPixel(door.AbsolutePosition, Color.green));
-            room.PossibleDoors.ForEach(door => layoutTexture.DrawPixel(door.AbsolutePosition, Color.red));
-
+            room.Doors.ForEach(existingDoor => layoutTexture.DrawPixel(room.GetAbsolutePositionForDoor(existingDoor), Color.green));
+            room.PossibleDoors.ForEach(potentialDoor => layoutTexture.DrawPixel(room.GetAbsolutePositionForDoor(potentialDoor), Color.red));
         });
-
-        //Array.ForEach(_level.Hallways, hallway => layoutTexture.DrawLine(hallway.StartPositionAbsolute, hallway.EndPositionAbsolute, Color.white));
-
-        //layoutTexture.ConvertToBlackAndWhite();
-
-        /*
-        if (isDebug)
-        {
-            openDoorways.ForEach(h => layoutTexture.SetPixel(h.StartPositionAbsolute.x, h.StartPositionAbsolute.y, h.StartDirection.GetColor()));
-
-            if (selectedEntryway != null)
-                layoutTexture.SetPixel(selectedEntryway.StartPositionAbsolute.x,
-                    selectedEntryway.StartPositionAbsolute.y,
-                    Color.white);
-        }
-        */
 
         layoutTexture.SaveAsset();
     }

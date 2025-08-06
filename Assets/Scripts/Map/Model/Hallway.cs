@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class Hallway
 {
-    private Vector2Int PointOne { get; }
-    private Vector2Int PointTwo {  get; }
+    private Vector2Int _pointOne;
+    private Vector2Int _pointTwo;
+    public Vector2Int PointOne => _pointOne;
+    public Vector2Int PointTwo => _pointTwo;
 
     private List<Door> _doors;
 
     public Hallway(Vector2Int pointOne, Vector2Int pointTwo, Door[] doors = null)
     {
-        PointOne = pointOne;
-        PointTwo = pointTwo;
+        _pointOne = pointOne;
+        _pointTwo = pointTwo;
 
         _doors = doors == null ? new List<Door>() : new List<Door>(doors);
     }
@@ -48,9 +50,10 @@ public class Hallway
         _doors.Add(door);
     }
 
-    public static Hallway ConstructNewHallway(Door doorOne, Door doorTwo)
+    public static Hallway ConstructNewHallway(Door doorOne, Room roomOne, Door doorTwo, Room roomTwo)
     {
-        Hallway newHallway = new Hallway(doorOne.AbsolutePosition, doorTwo.AbsolutePosition, new[] { doorOne, doorTwo } );
+        Hallway newHallway = new Hallway(roomOne.GetAbsolutePositionForDoor(doorOne),
+            roomTwo.GetAbsolutePositionForDoor(doorTwo), new[] { doorOne, doorTwo } );
 
         doorOne.Hallway = newHallway;
         doorTwo.Hallway = newHallway;

@@ -10,7 +10,7 @@ public class Level
     public int Width => _width;
     public int Height => _height;
     public List<Room> Rooms { get { return new List<Room>(_rooms); } }
-
+    public List<Hallway> Hallways => GetHallways();
     public List<Door> AvailableDoors { get { return _rooms.SelectMany(room => room.PossibleDoors).ToList(); } }
 
     public Level(int width, int height)
@@ -23,6 +23,19 @@ public class Level
     public void AddRoom(Room newRoom)
     {
         _rooms.Add(newRoom);
+    }
+
+    private List<Hallway> GetHallways()
+    {
+        HashSet<Hallway> hallways = new HashSet<Hallway>();
+        foreach (Room room in _rooms)
+        {
+            foreach (Door door in room.Doors)
+            {
+                hallways.Add(door.Hallway);
+            }
+        }
+        return hallways.ToList();
     }
 
 }

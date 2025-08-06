@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -42,7 +43,7 @@ public class Room
                 Color pixelColor = LayoutTexture.GetPixel(x, y);
                 WallSide side = GetWallSide(pixelColor);
                 if (side != WallSide.UNDEFINED)
-                    _possibleDoors.Add(new Door(side, new Vector2Int { x = x, y = y }, _area.position));
+                    _possibleDoors.Add(new Door(side, new Vector2Int { x = x, y = y }));
             }
         }
     }
@@ -69,20 +70,34 @@ public class Room
 
         for (int x = minX; x < maxX; ++x)
         {
-            _possibleDoors.Add(new Door(WallSide.BACK, new Vector2Int(x, bottom), _area.position));
-            _possibleDoors.Add(new Door(WallSide.FRONT, new Vector2Int(x, top), _area.position));
+            _possibleDoors.Add(new Door(WallSide.BACK, new Vector2Int(x, bottom)));
+            _possibleDoors.Add(new Door(WallSide.FRONT, new Vector2Int(x, top)));
         }
 
         for (int y = minY; y < maxY; ++y)
         {
-            _possibleDoors.Add(new Door(WallSide.LEFT, new Vector2Int(left, y), _area.position));
-            _possibleDoors.Add(new Door(WallSide.RIGHT, new Vector2Int(right, y), _area.position));
+            _possibleDoors.Add(new Door(WallSide.LEFT, new Vector2Int(left, y)));
+            _possibleDoors.Add(new Door(WallSide.RIGHT, new Vector2Int(right, y)));
         }
     }
 
     public void SetPosition(Vector2Int pos)
     {
         _area.position = pos;
+    }
+
+    public Vector2Int GetAbsolutePositionForDoor(Door door)
+    {
+        if (!_possibleDoors.Contains(door) && !_doors.Contains(door))
+        {
+            throw new Exception($"Room {Area} has no definition for door {door.RoomPosition}");
+        }
+
+        return new Vector2Int()
+        {
+            x = _area.position.x + door.RoomPosition.x,
+            y = _area.position.y + door.RoomPosition.y,
+        };
     }
 
     public void UseDoor(Door door)

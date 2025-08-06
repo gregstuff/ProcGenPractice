@@ -46,12 +46,13 @@ public class DungeonRoomGen : IDungeonLevelGenerator
     }
 
     void AdjustCandidateRoomPosition(
+        Room existingRoom,
         Door existingDoor,
         Room candidateRoom,
         Door candidateDoor,
         int distance)
     {
-        var roomPosition = existingDoor.AbsolutePosition;
+        var roomPosition = existingRoom.GetAbsolutePositionForDoor(existingDoor);
         int roomWidth = candidateRoom.Area.width;
         int roomHeight = candidateRoom.Area.height;
 
@@ -100,7 +101,7 @@ public class DungeonRoomGen : IDungeonLevelGenerator
 
         var resolvedHallwayLength = randService.NextInt(levelTemplate.MinHallwayLength, levelTemplate.MaxHallwayLength);
 
-        AdjustCandidateRoomPosition(potentialDoor, candidateRoom, candidateDoor, resolvedHallwayLength);
+        AdjustCandidateRoomPosition(existingRoom, potentialDoor, candidateRoom, candidateDoor, resolvedHallwayLength);
 
         if (!IsRoomCandidateValid(candidateRoom.Area, levelTemplate, level)) return null;
 
@@ -112,7 +113,9 @@ public class DungeonRoomGen : IDungeonLevelGenerator
 
         Hallway newHallway = Hallway.ConstructNewHallway(
             potentialDoor,
-            candidateDoor);
+            existingRoom,
+            candidateDoor,
+            candidateRoom);
 
         existingRoom.UseDoor(potentialDoor);
         candidateRoom.UseDoor(candidateDoor);
