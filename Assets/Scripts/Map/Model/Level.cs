@@ -44,17 +44,27 @@ public class Level
     {
         bool[,] blockedMap = new bool[Height, Width];
 
-        Hallways.ForEach(hallway => GridUtility.SetLineForGrid(blockedMap, true, hallway.PointOne, hallway.PointTwo));
+
+        //initially set entire map to blocked
+        for (int y = 0; y < blockedMap.GetLength(0); ++y)
+        {
+            for (int x = 0; x < blockedMap.GetLength(1); ++x)
+            {
+                blockedMap[y, x] = true;
+            }
+        }
+
+        Hallways.ForEach(hallway => GridUtility.SetLineForGrid(blockedMap, false, hallway.PointOne, hallway.PointTwo));
 
         Rooms.ForEach(room =>
         {
-            if (room.LayoutTexture == null) GridUtility.SetRectForGrid(blockedMap, true, room.Area);
-            else GridUtility.SetTextureForGrid(blockedMap, true, room.LayoutTexture, room.Area);
+            if (room.LayoutTexture == null) GridUtility.SetRectForGrid(blockedMap, false, room.Area);
+            else GridUtility.SetTextureForGrid(blockedMap, false, room.LayoutTexture, room.Area);
 
             room.Doors.ForEach(existingDoor =>
             {
                 var roomPos = room.GetAbsolutePositionForDoor(existingDoor);
-                blockedMap[roomPos.y, roomPos.x] = true;
+                blockedMap[roomPos.y, roomPos.x] = false;
 
             });
 

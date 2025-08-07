@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelLayoutDisplay: {fileID: 2616429101891682428, guid: 9111ef441edaa7f4db9e7bb8df0eaeae,
     type: 3}
+  _tileset: {fileID: 11400000, guid: 773ec2ed6a1af4549bfd2a3399668f02, type: 2}

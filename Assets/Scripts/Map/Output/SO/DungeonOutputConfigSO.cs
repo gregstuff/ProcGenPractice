@@ -4,8 +4,10 @@ using UnityEngine;
 public class DungeonOutputConfigSO : ScriptableObject
 {
     [SerializeField] private Renderer _levelLayoutDisplay;
-    [SerializeField] private GameObject[] _tiles3d;
+    [SerializeField] private TilesetConfigSO _tileset;
     private Renderer _instance;
+
+    public TilesetConfigSO Tileset => _tileset;
 
     public Renderer LevelLayoutDisplay 
     { 
@@ -16,5 +18,4 @@ public class DungeonOutputConfigSO : ScriptableObject
         } 
     }
 
-    public GameObject[] Tiles3d => _tiles3d;
 }

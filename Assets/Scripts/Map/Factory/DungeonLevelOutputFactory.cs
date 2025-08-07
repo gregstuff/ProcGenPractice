@@ -18,7 +18,7 @@ public static class DungeonLevelOutputFactory
             DungeonLevelOutput.BlackWhiteTextureOutput, config => new BlackWhiteTextureOutput(config)
         },
         {
-            DungeonLevelOutput.TileMapOutput3d, config => new TileMapOutput3d()
+            DungeonLevelOutput.TileMapOutput3d, config => new TileMapOutput3d(config)
         },
     };
 
