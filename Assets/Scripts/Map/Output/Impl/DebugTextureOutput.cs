@@ -1,46 +1,57 @@
+using DungeonGeneration.Map.Enum;
+using DungeonGeneration.Map.Model;
+using DungeonGeneration.Map.Output.SO;
 using UnityEngine;
 
-public class DebugTextureOutput : IDungeonOutput
+namespace DungeonGeneration.Map.Output.Impl
 {
-
-    private Renderer _renderer;
-
-    public DebugTextureOutput(DungeonOutputConfigSO config)
+    public class DebugTextureOutput : IDungeonOutput
     {
-        _renderer = config.LevelLayoutDisplay;
-    }
 
-    public void OutputMap(Level level)
-    {
-        DrawLayout(level);
-    }
+        private Renderer _renderer;
 
-
-    void DrawLayout(Level level)
-    {
-        var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
-        layoutTexture.Reinitialize(level.Width, level.Height);
-        _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
-        layoutTexture.FillWithColor(Color.black);
-
-        level.Hallways.ForEach(hallway => layoutTexture.DrawLine(hallway.PointOne, hallway.PointTwo, Color.white));
-
-        level.Rooms.ForEach(room =>
+        public DebugTextureOutput(DungeonOutputConfigSO config)
         {
-            if (room.LayoutTexture == null)
+            _renderer = config.LevelLayoutDisplay;
+        }
+
+        public void OutputMap(ILevel level)
+        {
+            var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
+            layoutTexture.Reinitialize(level.Width, level.Height);
+            _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
+            layoutTexture.FillWithColor(Color.black);
+
+            for (int y = 0; y < level.Height; ++y)
             {
-                layoutTexture.DrawRectangle(room.Area, Color.white);
-            }
-            else
-            {
-                layoutTexture.DrawTexture(room.LayoutTexture, room.Area);
+                for (int x = 0; x < level.Width; ++x)
+                {
+                    TileType tile = level.GetTileTypeAt(x, y);
+                    Color relevantColor = GetColorForTileType(tile);
+                    layoutTexture.DrawPixel(new Vector2Int { x = x, y = y }, relevantColor);
+                }
             }
 
-            room.Doors.ForEach(existingDoor => layoutTexture.DrawPixel(room.GetAbsolutePositionForDoor(existingDoor), Color.green));
-            room.PossibleDoors.ForEach(potentialDoor => layoutTexture.DrawPixel(room.GetAbsolutePositionForDoor(potentialDoor), Color.red));
-        });
+            layoutTexture.SaveAsset();
+        }
 
-        layoutTexture.SaveAsset();
+        private Color GetColorForTileType(TileType tileType)
+        {
+            switch (tileType)
+            {
+                case TileType.None:
+                    return Color.black;
+                case TileType.Room:
+                    return Color.white;
+                case TileType.Hallway:
+                    return Color.grey;
+                case TileType.Door:
+                    return Color.red;
+                default:
+                    return Color.black;
+            }
+        }
+
     }
 
 }

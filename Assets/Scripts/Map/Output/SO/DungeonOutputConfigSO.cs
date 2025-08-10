@@ -1,21 +1,27 @@
+using DungeonGeneration.Map.SO;
+using DungeonGeneration.Service.Util;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DungeonOutputConfig", menuName = "Dungeon/OutputConfig")]
-public class DungeonOutputConfigSO : ScriptableObject
+namespace DungeonGeneration.Map.Output.SO
 {
-    [SerializeField] private Renderer _levelLayoutDisplay;
-    [SerializeField] private TilesetConfigSO _tileset;
-    private Renderer _instance;
 
-    public TilesetConfigSO Tileset => _tileset;
+    [CreateAssetMenu(fileName = "DungeonOutputConfig", menuName = "Dungeon/OutputConfig")]
+    public class DungeonOutputConfigSO : ScriptableObject
+    {
+        [SerializeField] private Renderer _levelLayoutDisplay;
+        [SerializeField] private TilesetConfigSO _tileset;
+        private Renderer _instance;
 
-    public Renderer LevelLayoutDisplay 
-    { 
-        get 
+        public TilesetConfigSO Tileset => _tileset;
+
+        public Renderer LevelLayoutDisplay
         {
-            if (_instance == null) _instance = ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutDisplay);
-            return _instance; 
-        } 
-    }
+            get
+            {
+                if (_instance == null) _instance = ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutDisplay);
+                return _instance;
+            }
+        }
 
+    }
 }

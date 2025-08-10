@@ -1,9 +1,12 @@
+using DungeonGeneration.Map.Model;
 
-public class TileMapOutput2d : IDungeonOutput
+namespace DungeonGeneration.Map.Output.Impl
 {
-    public void OutputMap(Level level)
+    public class TileMapOutput2d : IDungeonOutput
     {
-        throw new System.NotImplementedException();
+        public void OutputMap(ILevel level)
+        {
+            throw new System.NotImplementedException();
+        }
     }
-
 }

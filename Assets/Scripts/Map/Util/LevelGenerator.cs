@@ -1,20 +1,27 @@
+using DungeonGeneration.Map.Enum;
+using DungeonGeneration.Map.Factory;
+using DungeonGeneration.Map.Output.SO;
+using DungeonGeneration.Map.SO;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour
+namespace DungeonGeneration.Map.Util
 {
-
-    [SerializeField] private DungeonLevelGenerator selectedCalc;
-    [SerializeField] private DungeonLevelOutput selectedOutput;
-    [SerializeField] private GeneratedLevelLayoutSO generatedLevelLayout;
-    [SerializeField] private DungeonOutputConfigSO outputConfig;
-
-    [ContextMenu("Generate Level Layout")]
-    public void GenerateLevel()
+    public class LevelGenerator : MonoBehaviour
     {
-        var dungeonGenerator = DungeonLevelGeneratorFactory.GetDungeonGenerator(selectedCalc);
-        var output = DungeonLevelOutputFactory.GetDungeonOutput(selectedOutput, outputConfig);
-        var level = dungeonGenerator.GenerateDungeonLevel(generatedLevelLayout);
-        output.OutputMap(level);
-    }
 
+        [SerializeField] private DungeonLevelGenerator selectedCalc;
+        [SerializeField] private DungeonLevelOutput selectedOutput;
+        [SerializeField] private GeneratedLevelLayoutSO generatedLevelLayout;
+        [SerializeField] private DungeonOutputConfigSO outputConfig;
+
+        [ContextMenu("Generate Level Layout")]
+        public void GenerateLevel()
+        {
+            var dungeonGenerator = DungeonLevelGeneratorFactory.GetDungeonGenerator(selectedCalc);
+            var output = DungeonLevelOutputFactory.GetDungeonOutput(selectedOutput, outputConfig);
+            var level = dungeonGenerator.GenerateDungeonLevel(generatedLevelLayout);
+            output.OutputMap(level);
+        }
+
+    }
 }

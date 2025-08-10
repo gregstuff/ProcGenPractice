@@ -1,8 +1,10 @@
 
-public interface IDungeonOutput
+using DungeonGeneration.Map.Model;
+
+namespace DungeonGeneration.Map.Output
 {
-
-    public void OutputMap(Level level);
-
-
+    public interface IDungeonOutput
+    {
+        public void OutputMap(ILevel level);
+    }
 }

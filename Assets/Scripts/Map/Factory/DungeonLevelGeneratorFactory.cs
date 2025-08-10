@@ -1,27 +1,31 @@
 
+using DungeonGeneration.Map.Enum;
+using DungeonGeneration.Map.Gen;
+using DungeonGeneration.Map.Gen.Impl;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public static class DungeonLevelGeneratorFactory 
+namespace DungeonGeneration.Map.Factory
 {
-
-    private static Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>> generatorToInst = 
-        new Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>>()
-        { 
-            {
-                DungeonLevelGenerator.DungeonRoomGen, new Lazy<IDungeonLevelGenerator>(() => new DungeonRoomGen())  
-            }
-        };
-
-
-    public static IDungeonLevelGenerator GetDungeonGenerator(DungeonLevelGenerator version)
+    public static class DungeonLevelGeneratorFactory
     {
-        if (!generatorToInst.TryGetValue(version, out var dungeonGenerator))
-        {
-            throw new Exception($"No dungeon generator found for {version}");
-        }
-        return dungeonGenerator.Value;
-    }
 
+        private static Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>> generatorMap =
+            new Dictionary<DungeonLevelGenerator, Lazy<IDungeonLevelGenerator>>()
+            {
+            {
+                DungeonLevelGenerator.DungeonRoomGen, new Lazy<IDungeonLevelGenerator>(() => new DungeonRoomGen())
+            }
+            };
+
+        public static IDungeonLevelGenerator GetDungeonGenerator(DungeonLevelGenerator version)
+        {
+            if (!generatorMap.TryGetValue(version, out var dungeonGenerator))
+            {
+                throw new KeyNotFoundException($"No dungeon generator found for {version}");
+            }
+            return dungeonGenerator.Value;
+        }
+
+    }
 }

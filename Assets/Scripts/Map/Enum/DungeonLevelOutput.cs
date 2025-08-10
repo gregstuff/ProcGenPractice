@@ -1,9 +1,11 @@
-
-public enum DungeonLevelOutput
+namespace DungeonGeneration.Map.Enum
 {
-    DebugTextureOutput,
-    BlackWhiteTextureOutput,
-    TileMapOutput2d,
-    TileMapOutput3d,  
-    DebugConsoleOutput
+    public enum DungeonLevelOutput
+    {
+        DebugTextureOutput,
+        BlackWhiteTextureOutput,
+        TileMapOutput2d,
+        TileMapOutput3d,
+        DebugConsoleOutput
+    }
 }

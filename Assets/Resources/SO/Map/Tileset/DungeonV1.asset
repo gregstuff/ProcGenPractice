@@ -30,4 +30,4 @@ MonoBehaviour:
   - {fileID: 4965540544595772209, guid: 0d06e60f21fdcb54683cd3b170845b81, type: 3}
   - {fileID: 0}
   overrideMaterial: {fileID: 0}
-  tileScale: {x: 4, y: 2, z: 4}
+  tileScale: {x: 2, y: 1, z: 2}

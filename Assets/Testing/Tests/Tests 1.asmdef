@@ -1,0 +1,23 @@
+{
+    "name": "Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:your_main_assembly_guid",
+        "Unity.TestFramework",
+        "GUID:983a64461a395e342b398b2e8bcaed8f",
+        "GUID:0acc523941302664db1f4e527237feb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

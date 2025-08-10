@@ -1,4 +1,8 @@
 
-public enum DungeonLevelGenerator {
-    DungeonRoomGen
+namespace DungeonGeneration.Map.Enum
+{
+    public enum DungeonLevelGenerator
+    {
+        DungeonRoomGen
+    }
 }

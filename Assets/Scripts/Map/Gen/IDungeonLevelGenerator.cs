@@ -1,5 +1,10 @@
+using DungeonGeneration.Map.Model;
+using DungeonGeneration.Map.SO;
 
-public interface IDungeonLevelGenerator
+namespace DungeonGeneration.Map.Gen
 {
-    public Level GenerateDungeonLevel(GeneratedLevelLayoutSO levelLayout);
+    public interface IDungeonLevelGenerator
+    {
+        public ILevel GenerateDungeonLevel(GeneratedLevelLayoutSO levelLayout);
+    }
 }

@@ -1,9 +1,13 @@
+using DungeonGeneration.Map.Model;
 
-public class DebugConsoleOutput : IDungeonOutput
+namespace DungeonGeneration.Map.Output.Impl
 {
-    public void OutputMap(Level level)
+    public class DebugConsoleOutput : IDungeonOutput
     {
 
+        public void OutputMap(ILevel level)
+        {
+            throw new System.NotImplementedException();
+        }
     }
-
 }
