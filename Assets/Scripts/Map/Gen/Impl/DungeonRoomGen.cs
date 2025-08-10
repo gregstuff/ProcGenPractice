@@ -109,7 +109,6 @@ namespace DungeonGeneration.Map.Gen.Impl
 
             if (candidateDoor == null)
             {
-                Debug.Log("selected exit was null!");
                 return null;
             }
 

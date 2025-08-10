@@ -16,7 +16,7 @@ namespace DungeonGeneration.Tests
         {
             _level = new RoomLevel(10, 10);
             _gridUtility = new MockGridUtility();
-            GridUtility_SetInstance(_gridUtility); // Mock GridUtility
+            GridUtility_SetInstance(_gridUtility); 
         }
 
         [TearDown]
@@ -95,7 +95,6 @@ namespace DungeonGeneration.Tests
 
         public void SetTextureForGrid<T>(T[,] grid, T value, Texture2D texture, RectInt rect)
         {
-            // Simplified mock: treat as rect
             SetRectForGrid(grid, value, rect);
         }
     }
