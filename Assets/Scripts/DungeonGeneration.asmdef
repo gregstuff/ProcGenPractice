@@ -1,3 +1,16 @@
 {
-	"name": "DungeonGeneration"
+    "name": "DungeonGeneration",
+    "rootNamespace": "",
+    "references": [
+        "Zenject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

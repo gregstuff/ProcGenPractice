@@ -1,5 +1,3 @@
-
-// Class to match patterns and generate placements
 using DungeonGeneration.Map.Enum;
 using DungeonGeneration.Map.Model;
 using DungeonGeneration.Map.SO;
@@ -9,8 +7,7 @@ using UnityEngine;
 
 public class DecorationPatternMatcher
 {
-
-    // Struct for a matched decoration placement
+    /*
     [Serializable]
     public struct DecorationPlacement
     {
@@ -157,5 +154,5 @@ public class DecorationPatternMatcher
             Prefab = rule.GetRandomPrefab()
         };
     }
-
+    */
 }

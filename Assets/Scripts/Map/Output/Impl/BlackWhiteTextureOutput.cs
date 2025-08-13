@@ -26,7 +26,7 @@ namespace DungeonGeneration.Map.Output.Impl
             throw new System.NotImplementedException();
         }
 
-        void DrawLayout(RoomLevel level)
+        void DrawLayout(RoomLevel level) 
         {
             var blockedGrid = level.GetBlockedMap();
             var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;

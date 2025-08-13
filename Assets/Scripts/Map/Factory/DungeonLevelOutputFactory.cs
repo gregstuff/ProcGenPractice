@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System;
-using DungeonGeneration.Map.Enum;
 using DungeonGeneration.Map.Output.SO;
 using DungeonGeneration.Map.Output;
 using DungeonGeneration.Map.Output.Impl;
+using DungeonGeneration.Map.Factory.Enum;
 
 namespace DungeonGeneration.Map.Factory
 {
@@ -35,7 +35,5 @@ namespace DungeonGeneration.Map.Factory
             }
             return factory(config);
         }
-
-
     }
 }

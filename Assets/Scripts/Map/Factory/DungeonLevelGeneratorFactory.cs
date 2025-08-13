@@ -1,5 +1,4 @@
-
-using DungeonGeneration.Map.Enum;
+using DungeonGeneration.Map.Factory.Enum;
 using DungeonGeneration.Map.Gen;
 using DungeonGeneration.Map.Gen.Impl;
 using System;
