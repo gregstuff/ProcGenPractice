@@ -1,30 +1,40 @@
 using DungeonGeneration.Map.Enum;
+using UnityEngine;
 
 [System.Serializable]
-public class Rule
+public class GridRule
 {
-    public string id = "Rule_" + System.Guid.NewGuid().ToString().Substring(0, 4);
-    public int width = 3;
-    public int height = 3;
-    public TileType[,] pattern;
-    public bool foldout = true;
-    public int maxApplications = -1; // -1 for infinite
+    public string _id = "Rule_" + System.Guid.NewGuid().ToString().Substring(0, 4);
+    private int _width = 3;
+    private int _height = 3;
+    private TileType[,] _pattern;
+    private bool _foldout = true;
+    private int _maxApplications = -1;
 
-    public Rule()
+    public GridRule()
     {
-        pattern = new TileType[height, width];
+        _pattern = new TileType[_height, _width];
     }
 
     public void ResizeGrid(int newHeight, int newWidth)
     {
-        newHeight = Mathf.Max(3, newHeight);
-        newWidth = Mathf.Max(3, newWidth);
-        var newPattern = new TileType[newHeight, newWidth];
-        for (int y = 0; y < Mathf.Min(height, newHeight); y++)
-            for (int x = 0; x < Mathf.Min(width, newWidth); x++)
-                newPattern[y, x] = pattern[y, x];
-        pattern = newPattern;
-        height = newHeight;
-        width = newWidth;
+
+        _height = Mathf.Clamp(newHeight,
+            ProcGenRulesWindowConstants.MINIMUM_GRID_LENGTH,
+            ProcGenRulesWindowConstants.MAXIMUM_GRID_LENGTH);
+
+        _width = Mathf.Clamp(newWidth,
+            ProcGenRulesWindowConstants.MINIMUM_GRID_LENGTH,
+            ProcGenRulesWindowConstants.MAXIMUM_GRID_LENGTH);
+
+        _pattern = new TileType[newHeight, newWidth];
+    }
+
+    public void Deconstruct(out int gridWidth, out int gridHeight, out TileType[,] gridPattern, out string gridID)
+    {
+        gridWidth = _width;
+        gridHeight = _height;
+        gridPattern = _pattern;
+        gridID = _id;
     }
 }
