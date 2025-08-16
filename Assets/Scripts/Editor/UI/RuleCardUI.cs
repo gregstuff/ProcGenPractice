@@ -1,13 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 
-public class RuleCard
+public class RuleCardUI
 {
 
     private static GUIStyle CARD_STYLE 
         = new GUIStyle("box") { margin = new RectOffset(5, 5, 5, 5) };
 
-    public static GridRule Construct(
+    public static void Construct(
         GridRule gridRule,
         TilePalette tilePalette,
         System.Action onDeleteClicked,
@@ -35,8 +35,6 @@ public class RuleCard
         
 
         GUILayout.EndVertical();
-
-        return gridRule;
     }
 
     private static void HandleResizing(System.Action<Vector2> onResizeStarted)

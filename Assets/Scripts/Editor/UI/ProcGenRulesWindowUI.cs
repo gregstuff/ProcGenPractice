@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-public class ProcGenRulesWindow : EditorWindow
+public class ProcGenRulesWindowUI : EditorWindow
 {
     private List<GridRule> rules = new List<GridRule>();
     private Vector2 scrollPosition;
 
     private TilePalette _tilePalette;
-    private RuleResizeHandler _resizeHandler;
+    private RuleResizeHandlerUI _resizeHandler;
 
     private void OnEnable()
     {
-        _resizeHandler = new RuleResizeHandler();
+        _resizeHandler = new RuleResizeHandlerUI();
         _tilePalette = new TilePalette();
     }
 
@@ -20,12 +20,12 @@ public class ProcGenRulesWindow : EditorWindow
     [MenuItem("Window/Proc Gen Rules")]
     public static void ShowWindow()
     {
-        GetWindow<ProcGenRulesWindow>("Proc Gen Rules Editor");
+        GetWindow<ProcGenRulesWindowUI>("Proc Gen Rules Editor");
     }
 
     private void OnGUI()
     {
-        var headerButtons = HeaderButtons.Construct(HandleAddButtonClicked);
+        StickyUIPanel.Construct(_tilePalette, HandleAddButtonClicked, position);
 
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
@@ -33,7 +33,7 @@ public class ProcGenRulesWindow : EditorWindow
         {
             var gridRule = rules[index];
             var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
-            RuleCard.Construct(
+            RuleCardUI.Construct(
                  gridRule,
                  _tilePalette,
                  ()=>HandleDeleteButtonClicked(index),

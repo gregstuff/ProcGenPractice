@@ -1,14 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 
-public class RuleResizeHandler
+public class RuleResizeHandlerUI
 {
     private int clickedRuleIndex = -1;
     private Vector2 dragStartPos;
     private int startWidth;
     private int startHeight;
 
-    public RuleResizeHandler()
+    public RuleResizeHandlerUI()
     {
 
     }
