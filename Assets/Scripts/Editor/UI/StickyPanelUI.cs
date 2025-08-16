@@ -11,7 +11,7 @@ public class StickyUIPanel
 
     public static void Construct(TilePalette tilePalette, System.Action onAddButtonClicked, Rect windowRect)
     {
-        float paletteHeight = System.Enum.GetValues(typeof(TileType)).Length * PALETTE_ITEM_HEIGHT + 20f;
+        float paletteHeight = System.Enum.GetValues(typeof(TileType)).Length * PALETTE_ITEM_HEIGHT * 1.5f;
 
         Rect currentOffset = new Rect(windowRect.width - PALETTE_WIDTH - 10f, 10f, PALETTE_WIDTH, paletteHeight);
 

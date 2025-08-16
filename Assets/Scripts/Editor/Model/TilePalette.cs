@@ -7,7 +7,19 @@ public class TilePalette
 
     public Color GetColorForTile(TileType tileType)
     {
-        return Color.green;
+        switch (tileType)
+        {
+            case TileType.None:
+                return Color.black;
+            case TileType.Room:
+                return Color.black;
+            case TileType.Hallway:
+                return Color.blue;
+            case TileType.Door: 
+                return Color.yellow;
+            default: 
+                return Color.black;
+        }
     }
 
 
