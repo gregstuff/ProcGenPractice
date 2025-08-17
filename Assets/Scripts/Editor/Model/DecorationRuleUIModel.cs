@@ -61,4 +61,23 @@ public class DecorationRuleUIModel
         blockLocationGrid = _blockingLocationGrid;
     }
 
+    public static DecorationRuleUIModel FromModel(DecorationRule rule)
+    {
+        return new DecorationRuleUIModel()
+        {
+            _height = rule.MatchingPattern.GetLength(0),
+            _width = rule.MatchingPattern.GetLength(1),
+            _matchingPattern = rule.MatchingPattern,
+            SpawnCell = rule.SpawnCell,
+            SpawnScale = rule.SpawnScale,
+            SpawnRotation = rule.SpawnRotation,
+            SpawnPositionOffset = rule.SpawnPositionOffset,
+            MaxApplications = rule.MaxApplications,
+            PostSpawnBlockedCells = rule.PostSpawnBlockedCells,
+            Prefab = rule.Prefab,
+        };
+    }
+
+
+
 }

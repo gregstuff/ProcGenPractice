@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +107,38 @@ public class ProcGenRulesWindowUI : EditorWindow
 
     private void HandleLoadButtonClicked()
     {
+        string path = EditorUtility.OpenFilePanel(
+            "Load Rule Set",
+            "Assets/Resources/SO/Map/DecorationRulesets/",
+            "asset");
 
+        if (string.IsNullOrEmpty(path))
+        {
+            Debug.LogWarning("No file selected.");
+            return;
+        }
+
+        string resourcesPath = path;
+        if (path.StartsWith(Application.dataPath))
+        {
+            resourcesPath = path.Replace(Application.dataPath + "/Resources/", "").Replace(".asset", "");
+        }
+        else
+        {
+            Debug.LogError($"Selected file is not in a Resources folder: {path}");
+            return;
+        }
+
+        DecorationRulesetSO loadedRuleset = Resources.Load<DecorationRulesetSO>(resourcesPath);
+        if (loadedRuleset == null)
+        {
+            Debug.LogError($"Failed to load ScriptableObject at Resources path: {resourcesPath}. Ensure the file exists in Assets/Resources/ and is a valid DecorationRulesetSO.");
+            return;
+        }
+
+        var uiRules = 
+            from rule in loadedRuleset.DecorationRules
+            select DecorationRuleUIModel.FromModel(rule);
     }
 
     private void HandleDeleteButtonClicked(int index)

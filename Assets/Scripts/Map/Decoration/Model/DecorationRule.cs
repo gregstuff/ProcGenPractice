@@ -6,15 +6,15 @@ using UnityEngine;
 [Serializable]
 public class DecorationRule
 {
-    public string Name { get; set; }
-    public TileType[,] MatchingPattern { get; set; }
-    public Vector2 SpawnCell { get; set; }
-    public Vector2[] PostSpawnBlockedCells { get; set; }
-    public GameObject Prefab { get; set; }
-    public Vector3 SpawnScale { get; set; }
-    public Vector3 SpawnRotation { get; set; }
-    public Vector3 SpawnPositionOffset { get; set; }
-    public int MaxApplications { get; set; }
+    public string Name;
+    public TileType[,] MatchingPattern;
+    public Vector2 SpawnCell;
+    public Vector2[] PostSpawnBlockedCells;
+    public GameObject Prefab;
+    public Vector3 SpawnScale;
+    public Vector3 SpawnRotation;
+    public Vector3 SpawnPositionOffset;
+    public int MaxApplications;
 
     public void Deconstruct(
         out string name,

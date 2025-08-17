@@ -4,7 +4,7 @@ using System.Linq;
 
 public class DecorationRulesetSO : ScriptableObject
 {
-    public DecorationRule[] DecorationRules { get; private set; }
+    public DecorationRule[] DecorationRules;
 
     public static void Construct(
         string path,
@@ -32,4 +32,5 @@ public class DecorationRulesetSO : ScriptableObject
         AssetDatabase.CreateAsset(SOInstance, path);
         AssetDatabase.SaveAssets();
     }
+
 }

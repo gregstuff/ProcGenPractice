@@ -10,5 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78cc18f82e75cab4fa8d7138fcc57c8f, type: 3}
-  m_Name: DungeonOne
+  m_Name: d2
   m_EditorClassIdentifier: 
+  DecorationRules: []
