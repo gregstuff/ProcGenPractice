@@ -1,5 +1,6 @@
 using DungeonGeneration.Map.Enum;
 using System;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -63,11 +64,13 @@ public class DecorationRuleUIModel
 
     public static DecorationRuleUIModel FromModel(DecorationRule rule)
     {
-        return new DecorationRuleUIModel()
+        var matchingPattern = rule.MatchingPattern2D;
+
+        var uiModel =  new DecorationRuleUIModel()
         {
-            _height = rule.MatchingPattern.GetLength(0),
-            _width = rule.MatchingPattern.GetLength(1),
-            _matchingPattern = rule.MatchingPattern,
+            _height = matchingPattern.GetLength(0),
+            _width = matchingPattern.GetLength(1),
+            _matchingPattern = matchingPattern,
             SpawnCell = rule.SpawnCell,
             SpawnScale = rule.SpawnScale,
             SpawnRotation = rule.SpawnRotation,
@@ -76,8 +79,26 @@ public class DecorationRuleUIModel
             PostSpawnBlockedCells = rule.PostSpawnBlockedCells,
             Prefab = rule.Prefab,
         };
+
+        uiModel.InitBackingGrids();
+
+        return uiModel;
     }
 
+    private void InitBackingGrids()
+    {
+        _spawningLocationGrid = new bool[_height, _width];
+        _blockingLocationGrid = new bool[_height, _width];
 
+        for (int y = 0; y < _height; ++y)
+        {
+            for (int x = 0; x < _width; ++x)
+            {
+                var pos = new Vector2(y, x);
+                if (pos == SpawnCell) _spawningLocationGrid[y,x] = true;
+                if (PostSpawnBlockedCells.Contains(pos)) _blockingLocationGrid[y, x] = true;
+            }
+        }
+    }
 
 }

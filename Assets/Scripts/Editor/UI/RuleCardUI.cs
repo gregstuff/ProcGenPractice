@@ -240,7 +240,7 @@ public class RuleCardUI
                 "Spawned Prefab",
                 gridRule.Prefab,
                 typeof(GameObject),
-                true);
+                false);
         GUILayout.EndHorizontal();
     }
 

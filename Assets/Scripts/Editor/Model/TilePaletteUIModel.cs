@@ -47,6 +47,10 @@ public class TilePaletteUIModel
 
     private void Init()
     {
+        _keyToTileType = new Dictionary<KeyCode, TileType>();
+        _tileTypeToColor = new Dictionary<TileType, Color>();
+        _tileTypeToKeyCode = new Dictionary<TileType, KeyCode>();
+
         var tileTypes = (TileType[]) System.Enum.GetValues(typeof(TileType));
 
         if (tileTypes.Length > 10) throw new Exception("Too many tile types!!! Please refactor the keycode / color handling");
