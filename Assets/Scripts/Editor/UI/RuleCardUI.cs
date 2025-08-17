@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using DungeonGeneration.Map.Enum;
+using System;
 
 public class RuleCardUI
 {
@@ -21,15 +22,16 @@ public class RuleCardUI
         fixedWidth = ProcGenRulesWindowConstants.CELL_LENGTH,
         fixedHeight = ProcGenRulesWindowConstants.CELL_LENGTH
     };
+    private static GUIStyle boldStyle = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
     private static TileType? selectedTileType = null;
 
     public static void Construct(
         DecorationRuleUIModel gridRule,
         TilePaletteUIModel tilePalette,
-        System.Action onDeleteClicked,
-        System.Action<Vector2> onResizeStarted,
+        Action onDeleteClicked,
+        Action<Vector2> onResizeStarted,
         bool isCollapsed,
-        System.Action<bool> onToggleCollapse)
+        Action<bool> onToggleCollapse)
     {
         var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
         GUILayout.BeginVertical(CARD_STYLE,
@@ -48,21 +50,31 @@ public class RuleCardUI
 
         if (!newCollapsed)
         {
-            EditorGUILayout.TextField("ID", gridID);
-            HandleGrid(gridRule, tilePalette);
-            HandleResizing(onResizeStarted);
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Delete"))
-            {
-                onDeleteClicked?.Invoke();
-            }
-            GUILayout.EndHorizontal();
+            gridRule.Name = EditorGUILayout.TextField("ID", gridID);
+
+            HandleMatchingGridLabel();
+            HandleMatchingGrid(gridRule, tilePalette);
+            HandleMatchingGridResizing(onResizeStarted);
+            HandleSpawnedPrefabField(gridRule);
+            HandleSpawnScaleField(gridRule);
+            HandleSpawnRotationField(gridRule);
+            HandleSpawnOffsetField(gridRule);
+            HandleDeleteButton(onDeleteClicked);
         }
 
         GUILayout.EndVertical();
     }
 
-    private static void HandleResizing(System.Action<Vector2> onResizeStarted)
+    private static void HandleMatchingGridLabel()
+    {
+        GUILayout.BeginHorizontal();
+
+        EditorGUILayout.LabelField("Matching Pattern", boldStyle);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleMatchingGridResizing(System.Action<Vector2> onResizeStarted)
     {
         Rect handleRect = GUILayoutUtility.GetLastRect();
         if (handleRect.Contains(Event.current.mousePosition))
@@ -77,7 +89,7 @@ public class RuleCardUI
         }
     }
 
-    private static void HandleGrid(
+    private static void HandleMatchingGrid(
         DecorationRuleUIModel gridRule,
         TilePaletteUIModel tilePalette)
     {
@@ -144,4 +156,66 @@ public class RuleCardUI
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
     }
+
+    private static void HandleSpawnedPrefabField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+
+        gridRule.Prefab =
+            (GameObject)EditorGUILayout.ObjectField(
+                "Spawned Prefab",
+                gridRule.Prefab,
+                typeof(GameObject),
+                true);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleSpawnScaleField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+
+        gridRule.SpawnScale =
+            EditorGUILayout.Vector3Field(
+                "Spawn Scale",
+                gridRule.SpawnScale);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleSpawnRotationField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+
+        gridRule.SpawnRotation =
+            EditorGUILayout.Vector3Field(
+                "Spawn Rotation",
+                gridRule.SpawnRotation);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleSpawnOffsetField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+
+        gridRule.SpawnPositionOffset =
+            EditorGUILayout.Vector3Field(
+                "Spawn Offset",
+                gridRule.SpawnPositionOffset);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleDeleteButton(Action onDeleteClicked)
+    {
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Delete Rule"))
+        {
+            onDeleteClicked?.Invoke();
+        }
+        GUILayout.EndHorizontal();
+    }
+
 }

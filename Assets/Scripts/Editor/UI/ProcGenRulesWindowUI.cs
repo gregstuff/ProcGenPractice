@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ProcGenRulesWindowUI : EditorWindow
 {
@@ -78,6 +79,7 @@ public class ProcGenRulesWindowUI : EditorWindow
         if (InvalidSave(out var validaitonMessage))
         {
             Debug.Log(validaitonMessage);
+            return;
         }
 
         DecorationRulesetSO.Construct(path, rules.ToArray());
@@ -85,7 +87,22 @@ public class ProcGenRulesWindowUI : EditorWindow
 
     private bool InvalidSave(out string message)
     {
-        message = "hello";
+        message = null;
+
+        if (rules.Count == 0)
+        {
+            message = "No rules!";
+            return true;
+        }
+
+        var nilPrefabAssigned = rules.Where(rule => rule.Prefab == null);
+
+        if (nilPrefabAssigned.Count() > 0)
+        {
+            message = $"No prefab assigned for rule {string.Join(',', nilPrefabAssigned.Select(rule => rule.Name))}";
+            return true;
+        }
+
         return false;
     } 
 
