@@ -21,7 +21,7 @@ public class RuleResizeHandlerUI
         startHeight = height;
     }
 
-    public void HandleResizeEvents(GridRule gridRule, System.Action repaintCallback)
+    public void HandleResizeEvents(DecorationRuleUIModel gridRule, System.Action repaintCallback)
     {
         if (clickedRuleIndex == -1 || GUIUtility.hotControl == 0)
             return;

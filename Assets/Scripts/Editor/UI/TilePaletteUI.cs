@@ -11,7 +11,7 @@ public class TilePaletteUI
     private const float PALETTE_ITEM_HEIGHT = 25f;
     private const float EXTRA_BOTTOM_SPACE = 10f;
 
-    public static void Construct(TilePalette tilePalette, Rect offsetRect)
+    public static void Construct(TilePaletteUIModel tilePalette, Rect offsetRect)
     {
         // Add extra height to the Rect to ensure no clipping
         Rect adjustedRect = new Rect(offsetRect.x, offsetRect.y, offsetRect.width, offsetRect.height + EXTRA_BOTTOM_SPACE);

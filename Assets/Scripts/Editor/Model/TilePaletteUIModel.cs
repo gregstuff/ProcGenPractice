@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TilePalette
+public class TilePaletteUIModel
 {
 
     private static readonly KeyCode[] _tilePaletteKeyCodes =
@@ -40,7 +40,7 @@ public class TilePalette
     private static Dictionary<TileType, Color> _tileTypeToColor = new Dictionary<TileType, Color>();
     private static Dictionary<TileType, KeyCode> _tileTypeToKeyCode = new Dictionary<TileType, KeyCode>();
 
-    public TilePalette()
+    public TilePaletteUIModel()
     {
         Init();
     }

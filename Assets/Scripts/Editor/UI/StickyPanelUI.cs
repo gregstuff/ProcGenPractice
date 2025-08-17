@@ -1,6 +1,6 @@
-using UnityEditor;
 using UnityEngine;
 using DungeonGeneration.Map.Enum;
+using System;
 
 public class StickyUIPanel
 {
@@ -9,7 +9,12 @@ public class StickyUIPanel
     private const float HEADER_BUTTONS_HEIGHT = 50f; 
     private const float MARGIN = 10f;
 
-    public static void Construct(TilePalette tilePalette, System.Action onAddButtonClicked, Rect windowRect)
+    public static void Construct(
+        TilePaletteUIModel tilePalette,
+        Action onAddButtonClicked,
+        Action onSaveButtonClicked,
+        Action onLoadButtonClicked,
+        Rect windowRect)
     {
         float paletteHeight = System.Enum.GetValues(typeof(TileType)).Length * PALETTE_ITEM_HEIGHT * 1.5f;
 
@@ -25,6 +30,10 @@ public class StickyUIPanel
             height = currentOffset.height
         };
 
-        HeaderButtonsUI.Construct(onAddButtonClicked, currentOffset);
+        HeaderButtonsUI.Construct(
+            onAddButtonClicked,
+            onSaveButtonClicked,
+            onLoadButtonClicked,
+            currentOffset);
     }
 }

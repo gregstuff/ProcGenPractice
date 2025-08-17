@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 public class ProcGenRulesWindowUI : EditorWindow
 {
-    private List<GridRule> rules = new List<GridRule>();
-    private List<bool> isRuleCollapsed = new List<bool>(); // Tracks collapsed state for each rule
+    private List<DecorationRuleUIModel> rules = new List<DecorationRuleUIModel>();
+    private List<bool> isRuleCollapsed = new List<bool>();
     private Vector2 scrollPosition;
-    private TilePalette _tilePalette;
+    private TilePaletteUIModel _tilePalette;
     private RuleResizeHandlerUI _resizeHandler;
 
     private void OnEnable()
     {
         _resizeHandler = new RuleResizeHandlerUI();
-        _tilePalette = new TilePalette();
-        // Initialize all rules as collapsed (true)
-        isRuleCollapsed.Clear(); // Ensure clean state
+        _tilePalette = new TilePaletteUIModel();
+
+        isRuleCollapsed.Clear(); 
         for (int i = 0; i < rules.Count; i++)
         {
             isRuleCollapsed.Add(true);
@@ -30,7 +30,13 @@ public class ProcGenRulesWindowUI : EditorWindow
 
     private void OnGUI()
     {
-        StickyUIPanel.Construct(_tilePalette, HandleAddButtonClicked, position);
+        StickyUIPanel.Construct(
+            _tilePalette,
+            HandleAddButtonClicked,
+            HandleSaveButtonClicked,
+            HandleLoadButtonClicked,
+            position);
+
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
         for (int index = 0; index < rules.Count; index++)
         {
@@ -55,13 +61,42 @@ public class ProcGenRulesWindowUI : EditorWindow
 
     private void HandleAddButtonClicked()
     {
-        rules.Add(new GridRule());
-        isRuleCollapsed.Add(false); // New rules are expanded by default
+        rules.Add(new DecorationRuleUIModel());
+        isRuleCollapsed.Add(false);
+    }
+
+    private void HandleSaveButtonClicked()
+    {
+        string path = 
+            EditorUtility.SaveFilePanelInProject(
+                "Save Rule Set", 
+                "NewRuleSet", 
+                "asset", 
+                "Choose save location",
+                "Assets/Resources/SO/Map/DecorationRulesets/");
+
+        if (InvalidSave(out var validaitonMessage))
+        {
+            Debug.Log(validaitonMessage);
+        }
+
+        DecorationRulesetSO.Construct(path, rules.ToArray());
+    }
+
+    private bool InvalidSave(out string message)
+    {
+        message = "hello";
+        return false;
+    } 
+
+    private void HandleLoadButtonClicked()
+    {
+
     }
 
     private void HandleDeleteButtonClicked(int index)
     {
         rules.RemoveAt(index);
-        isRuleCollapsed.RemoveAt(index); // Remove corresponding collapsed state
+        isRuleCollapsed.RemoveAt(index); 
     }
 }

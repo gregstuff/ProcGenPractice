@@ -24,8 +24,8 @@ public class RuleCardUI
     private static TileType? selectedTileType = null;
 
     public static void Construct(
-        GridRule gridRule,
-        TilePalette tilePalette,
+        DecorationRuleUIModel gridRule,
+        TilePaletteUIModel tilePalette,
         System.Action onDeleteClicked,
         System.Action<Vector2> onResizeStarted,
         bool isCollapsed,
@@ -77,7 +77,9 @@ public class RuleCardUI
         }
     }
 
-    private static void HandleGrid(GridRule gridRule, TilePalette tilePalette)
+    private static void HandleGrid(
+        DecorationRuleUIModel gridRule,
+        TilePaletteUIModel tilePalette)
     {
         var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
 
