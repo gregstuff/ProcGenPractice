@@ -24,6 +24,8 @@ public class RuleCardUI
     };
     private static GUIStyle boldStyle = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
     private static TileType? selectedTileType = null;
+    private enum GridTab { Matching, Spawning, Blocking }
+    private static GridTab currentTab = GridTab.Matching;
 
     public static void Construct(
         DecorationRuleUIModel gridRule,
@@ -33,48 +35,69 @@ public class RuleCardUI
         bool isCollapsed,
         Action<bool> onToggleCollapse)
     {
-        var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
+        var (_, gridWidth, gridHeight, gridPattern, spawnGrid, blockGrid) = gridRule;
         GUILayout.BeginVertical(CARD_STYLE,
             GUILayout.Width(gridWidth * ProcGenRulesWindowConstants.CELL_LENGTH
             + ProcGenRulesWindowConstants.CELL_PADDING));
-
         GUILayout.BeginHorizontal(GUILayout.Width(gridWidth * ProcGenRulesWindowConstants.CELL_LENGTH
             + ProcGenRulesWindowConstants.CELL_PADDING));
-        bool newCollapsed = !EditorGUILayout.Foldout(!isCollapsed, $"Rule ID: {gridID}", true);
+        bool newCollapsed = !EditorGUILayout.Foldout(!isCollapsed, $"Rule ID: {gridRule.Name}", true);
         GUILayout.EndHorizontal();
-
         if (newCollapsed != isCollapsed)
         {
             onToggleCollapse?.Invoke(newCollapsed);
         }
-
         if (!newCollapsed)
         {
-            gridRule.Name = EditorGUILayout.TextField("ID", gridID);
-
-            HandleMatchingGridLabel();
-            HandleMatchingGrid(gridRule, tilePalette);
-            HandleMatchingGridResizing(onResizeStarted);
+            gridRule.Name = EditorGUILayout.TextField("ID", gridRule.Name);
+            currentTab = (GridTab)GUILayout.Toolbar((int)currentTab, new[] { "Matching Grid", "Spawning Grid", "Blocking Grid" });
+            if (currentTab == GridTab.Matching)
+            {
+                HandleMatchingGridLabel();
+                HandleMatchingGrid(gridRule, tilePalette);
+                HandleMatchingGridResizing(gridRule, onResizeStarted);
+            }
+            else if (currentTab == GridTab.Spawning)
+            {
+                HandleSpawningGridLabel();
+                HandleSpawningGrid(gridRule);
+            }
+            else
+            {
+                HandleBlockingGridLabel();
+                HandleBlockingGrid(gridRule);
+            }
             HandleSpawnedPrefabField(gridRule);
             HandleSpawnScaleField(gridRule);
             HandleSpawnRotationField(gridRule);
             HandleSpawnOffsetField(gridRule);
             HandleDeleteButton(onDeleteClicked);
         }
-
         GUILayout.EndVertical();
     }
 
     private static void HandleMatchingGridLabel()
     {
         GUILayout.BeginHorizontal();
-
         EditorGUILayout.LabelField("Matching Pattern", boldStyle);
-
         GUILayout.EndHorizontal();
     }
 
-    private static void HandleMatchingGridResizing(System.Action<Vector2> onResizeStarted)
+    private static void HandleSpawningGridLabel()
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Spawning Grid", boldStyle);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleBlockingGridLabel()
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Blocking Grid", boldStyle);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleMatchingGridResizing(DecorationRuleUIModel gridRule, System.Action<Vector2> onResizeStarted)
     {
         Rect handleRect = GUILayoutUtility.GetLastRect();
         if (handleRect.Contains(Event.current.mousePosition))
@@ -93,9 +116,7 @@ public class RuleCardUI
         DecorationRuleUIModel gridRule,
         TilePaletteUIModel tilePalette)
     {
-        var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
-
-        // Handle key presses for tile selection
+        var (_, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
         if (Event.current.type == EventType.KeyDown)
         {
             if (Event.current.keyCode == KeyCode.Escape)
@@ -113,7 +134,6 @@ public class RuleCardUI
                 }
             }
         }
-
         for (int y = 0; y < gridHeight; y++)
         {
             GUILayout.BeginHorizontal();
@@ -124,11 +144,9 @@ public class RuleCardUI
                 GUILayout.Box("", GUILayout.Width(ProcGenRulesWindowConstants.CELL_LENGTH),
                     GUILayout.Height(ProcGenRulesWindowConstants.CELL_LENGTH));
                 GUI.backgroundColor = Color.white;
-
                 Rect cellRect = GUILayoutUtility.GetLastRect();
                 if (cellRect.Contains(Event.current.mousePosition))
                 {
-                    // Set cursor if a tile type is selected
                     if (selectedTileType.HasValue)
                     {
                         CURSOR_STYLE.normal.background = Texture2D.whiteTexture;
@@ -136,8 +154,6 @@ public class RuleCardUI
                         GUI.Box(cellRect, "", CURSOR_STYLE);
                         GUI.backgroundColor = Color.white;
                     }
-
-                    // Paint on click or hold
                     if (selectedTileType.HasValue && Event.current.isMouse &&
                         (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) &&
                         Event.current.button == 0)
@@ -150,72 +166,121 @@ public class RuleCardUI
             }
             GUILayout.EndHorizontal();
         }
-
         GUILayout.BeginHorizontal();
         GUILayout.Box("↘", RESIZE_HANDLE_STYLE);
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
     }
 
+    private static void HandleSpawningGrid(
+        DecorationRuleUIModel gridRule)
+    {
+        var (_, gridWidth, gridHeight, _, spawnGrid, _) = gridRule;
+        for (int y = 0; y < gridHeight; y++)
+        {
+            GUILayout.BeginHorizontal();
+            for (int x = 0; x < gridWidth; x++)
+            {
+                GUI.backgroundColor = spawnGrid[y, x] ? Color.red : Color.black;
+                GUILayout.Box("", GUILayout.Width(ProcGenRulesWindowConstants.CELL_LENGTH),
+                    GUILayout.Height(ProcGenRulesWindowConstants.CELL_LENGTH));
+                GUI.backgroundColor = Color.white;
+                Rect cellRect = GUILayoutUtility.GetLastRect();
+                if (cellRect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                {
+                    for (int i = 0; i < gridHeight; i++)
+                        for (int j = 0; j < gridWidth; j++)
+                            spawnGrid[i, j] = false;
+                    spawnGrid[y, x] = true;
+                    gridRule.SpawnCell = new Vector2(x, y);
+                    Event.current.Use();
+                    EditorWindow.GetWindow<ProcGenRulesWindowUI>().Repaint();
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+    }
+
+    private static void HandleBlockingGrid(
+        DecorationRuleUIModel gridRule)
+    {
+        var (_, gridWidth, gridHeight, _, _, blockGrid) = gridRule;
+        for (int y = 0; y < gridHeight; y++)
+        {
+            GUILayout.BeginHorizontal();
+            for (int x = 0; x < gridWidth; x++)
+            {
+                GUI.backgroundColor = blockGrid[y, x] ? Color.red : Color.black;
+                GUILayout.Box("", GUILayout.Width(ProcGenRulesWindowConstants.CELL_LENGTH),
+                    GUILayout.Height(ProcGenRulesWindowConstants.CELL_LENGTH));
+                GUI.backgroundColor = Color.white;
+                Rect cellRect = GUILayoutUtility.GetLastRect();
+                if (cellRect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                {
+                    blockGrid[y, x] = !blockGrid[y, x];
+                    var blockedCells = new System.Collections.Generic.List<Vector2>();
+                    for (int i = 0; i < gridHeight; i++)
+                        for (int j = 0; j < gridWidth; j++)
+                            if (blockGrid[i, j])
+                                blockedCells.Add(new Vector2(j, i));
+                    gridRule.PostSpawnBlockedCells = blockedCells.ToArray();
+                    Event.current.Use();
+                    EditorWindow.GetWindow<ProcGenRulesWindowUI>().Repaint();
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+    }
+
     private static void HandleSpawnedPrefabField(DecorationRuleUIModel gridRule)
     {
         GUILayout.BeginHorizontal();
-
         gridRule.Prefab =
             (GameObject)EditorGUILayout.ObjectField(
                 "Spawned Prefab",
                 gridRule.Prefab,
                 typeof(GameObject),
                 true);
-
         GUILayout.EndHorizontal();
     }
 
     private static void HandleSpawnScaleField(DecorationRuleUIModel gridRule)
     {
         GUILayout.BeginHorizontal();
-
         gridRule.SpawnScale =
             EditorGUILayout.Vector3Field(
                 "Spawn Scale",
                 gridRule.SpawnScale);
-
         GUILayout.EndHorizontal();
     }
 
     private static void HandleSpawnRotationField(DecorationRuleUIModel gridRule)
     {
         GUILayout.BeginHorizontal();
-
         gridRule.SpawnRotation =
             EditorGUILayout.Vector3Field(
                 "Spawn Rotation",
                 gridRule.SpawnRotation);
-
         GUILayout.EndHorizontal();
     }
 
     private static void HandleSpawnOffsetField(DecorationRuleUIModel gridRule)
     {
         GUILayout.BeginHorizontal();
-
         gridRule.SpawnPositionOffset =
             EditorGUILayout.Vector3Field(
                 "Spawn Offset",
                 gridRule.SpawnPositionOffset);
-
         GUILayout.EndHorizontal();
     }
 
     private static void HandleDeleteButton(Action onDeleteClicked)
     {
         GUILayout.BeginHorizontal();
-
         if (GUILayout.Button("Delete Rule"))
         {
             onDeleteClicked?.Invoke();
         }
         GUILayout.EndHorizontal();
     }
-
 }

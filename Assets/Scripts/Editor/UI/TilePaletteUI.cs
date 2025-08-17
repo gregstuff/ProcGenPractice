@@ -1,8 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using DungeonGeneration.Map.Enum;
-using System.Collections.Generic;
-using System;
 
 public class TilePaletteUI
 {

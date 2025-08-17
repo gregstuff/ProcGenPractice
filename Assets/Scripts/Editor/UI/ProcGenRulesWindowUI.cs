@@ -42,15 +42,14 @@ public class ProcGenRulesWindowUI : EditorWindow
         for (int index = 0; index < rules.Count; index++)
         {
             var gridRule = rules[index];
-            var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
+            var (name, gridWidth, gridHeight, gridPattern, spawnLocationGrid, blockLocationGrid) = gridRule;
             RuleCardUI.Construct(
                 gridRule,
                 _tilePalette,
                 () => HandleDeleteButtonClicked(index),
                 (mousePos) =>
                 {
-                    var (w, h, pattern, id) = gridRule;
-                    _resizeHandler.StartResize(index, mousePos, w, h);
+                    _resizeHandler.StartResize(index, mousePos, gridWidth, gridHeight);
                 },
                 isRuleCollapsed[index],
                 (isCollapsed) => isRuleCollapsed[index] = isCollapsed

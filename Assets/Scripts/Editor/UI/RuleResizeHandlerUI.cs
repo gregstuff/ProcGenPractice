@@ -26,7 +26,7 @@ public class RuleResizeHandlerUI
         if (clickedRuleIndex == -1 || GUIUtility.hotControl == 0)
             return;
 
-        var (gridWidth, gridHeight, gridPattern, gridID) = gridRule;
+        var (_, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
 
         if (Event.current.type == EventType.MouseDrag)
         {
