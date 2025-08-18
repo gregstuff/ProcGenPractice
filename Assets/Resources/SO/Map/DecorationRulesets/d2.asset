@@ -13,19 +13,21 @@ MonoBehaviour:
   m_Name: d2
   m_EditorClassIdentifier: 
   DecorationRules:
-  - Name: Rule_acca
-    MatchingPattern1D: 00000000000000000000000000000000000000000100000001000000000000000000000001000000010000000000000000000000000000000000000000000000
-    SpawnCell: {x: 2, y: 1}
+  - Name: Rule_1d5f
+    MatchingPattern1D: 000000000000000000000000000000000100000001000000000000000100000001000000
+    SpawnCell: {x: 1, y: 1}
     PostSpawnBlockedCells:
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
     - {x: 1, y: 1}
     - {x: 2, y: 1}
     - {x: 1, y: 2}
     - {x: 2, y: 2}
-    Prefab: {fileID: 1173659105459955121, guid: 040363ee6950f184a8913b907560a567,
+    Prefab: {fileID: 5588278610504359498, guid: 67adfcd36f67c97408772c4e556d9e5b,
       type: 3}
     SpawnScale: {x: 0, y: 0, z: 0}
     SpawnRotation: {x: 0, y: 0, z: 0}
     SpawnPositionOffset: {x: 0, y: 0, z: 0}
     MaxApplications: 0
-    PatternHeight: 4
-    PatternWidth: 4
+    PatternHeight: 3
+    PatternWidth: 3

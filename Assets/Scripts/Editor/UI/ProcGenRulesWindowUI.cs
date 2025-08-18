@@ -2,7 +2,6 @@
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
-using static PlasticGui.Help.GuiHelp;
 
 public class ProcGenRulesWindowUI : EditorWindow
 {
@@ -50,9 +49,9 @@ public class ProcGenRulesWindowUI : EditorWindow
                 gridRule,
                 _tilePalette,
                 () => HandleDeleteButtonClicked(index),
-                (mousePos) =>
+                (mousePos, gridRule) =>
                 {
-                    _resizeHandler.StartResize(index, mousePos, gridWidth, gridHeight);
+                    _resizeHandler.StartResize(index, mousePos, gridWidth, gridHeight, gridRule);
                 },
                 isRuleCollapsed[index],
                 (isCollapsed) => isRuleCollapsed[index] = isCollapsed

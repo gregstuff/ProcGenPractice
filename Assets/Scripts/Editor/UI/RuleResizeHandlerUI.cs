@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class RuleResizeHandlerUI
@@ -7,18 +6,20 @@ public class RuleResizeHandlerUI
     private Vector2 dragStartPos;
     private int startWidth;
     private int startHeight;
+    private DecorationRuleUIModel curr;
 
     public RuleResizeHandlerUI()
     {
 
     }
 
-    public void StartResize(int index, Vector2 mousePosition, int width, int height)
+    public void StartResize(int index, Vector2 mousePosition, int width, int height, DecorationRuleUIModel model)
     {
         clickedRuleIndex = index;
         dragStartPos = mousePosition;
         startWidth = width;
         startHeight = height;
+        curr = model;
     }
 
     public void HandleResizeEvents(DecorationRuleUIModel gridRule, System.Action repaintCallback)
@@ -26,7 +27,9 @@ public class RuleResizeHandlerUI
         if (clickedRuleIndex == -1 || GUIUtility.hotControl == 0)
             return;
 
-        var (_, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
+        var (name, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
+
+        if (!name.Equals(curr.Name)) return;
 
         if (Event.current.type == EventType.MouseDrag)
         {
