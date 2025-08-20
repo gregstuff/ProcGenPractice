@@ -1,12 +1,15 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DungeonGeneration.Utilities
 {
     public class GridUtility
     {
-        public static void SetLineForGrid<T>(T[,] grid, T val, Vector2Int p0, Vector2Int p1)
+        public static List<Vector2Int> SetLineForGrid<T>(T[,] grid, T val, Vector2Int p0, Vector2Int p1)
         {
+            var points = new List<Vector2Int>();
+
             int dx = Mathf.Abs(p1.x - p0.x);
             int dy = Mathf.Abs(p1.y - p0.y);
             int sx = (p0.x < p1.x) ? 1 : -1;
@@ -22,6 +25,7 @@ namespace DungeonGeneration.Utilities
                 if (e2 > -dy && e2 < dx)
                 {
                     grid[p0.x + sx, p0.y] = val;
+                    points.Add(new Vector2Int(p0.x + sx, p0.y));
                 }
 
                 if (e2 > -dy)
@@ -35,21 +39,26 @@ namespace DungeonGeneration.Utilities
                     p0.y += sy;
                 }
             }
+            return points;
         }
 
-        public static void SetRectForGrid<T>(T[,] grid, T val, RectInt rect)
+        public static List<Vector2Int> SetRectForGrid<T>(T[,] grid, T val, RectInt rect)
         {
+            var points = new List<Vector2Int>();
             for (int y = rect.yMin; y < rect.yMax; y++)
             {
                 for (int x = rect.xMin; x < rect.xMax; x++)
                 {
                     grid[y, x] = val;
+                    points.Add(new Vector2Int(x, y));
                 }
             }
+            return points;
         }
 
-        public static void SetTextureForGrid<T>(T[,] grid, T val, Texture2D sourceTexture, RectInt destinationRect)
+        public static List<Vector2Int> SetTextureForGrid<T>(T[,] grid, T val, Texture2D sourceTexture, RectInt destinationRect)
         {
+            var points = new List<Vector2Int>();
             int gridWidth = grid.GetLength(0);
             int gridHeight = grid.GetLength(1);
 
@@ -64,9 +73,14 @@ namespace DungeonGeneration.Utilities
                 {
                     Color sourceColor = sourceTexture.GetPixel(x - destinationRect.x, y - destinationRect.y);
 
-                    if (sourceColor == Color.white) grid[y, x] = val;
+                    if (sourceColor == Color.white)
+                    {
+                        grid[y, x] = val; 
+                        points.Add(new Vector2Int(x,y));
+                    }
                 }
             }
+            return points;
         }
     }
 }

@@ -14,7 +14,6 @@ public class ProcGenRulesWindowUI : EditorWindow
     [MenuItem("Window/Proc Gen Rules")]
     public static void ShowWindow()
     {
-        Debug.Log("Show window!");
         var window = GetWindow<ProcGenRulesWindowUI>("Proc Gen Rules Editor");
         window.Init();
     }

@@ -1,14 +1,14 @@
-
-using DungeonGeneration.Map.Enum;
 using DungeonGeneration.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace DungeonGeneration.Map.Model.Rooms
 {
-    public class RoomLevel : ILevel
+    public class RoomLevel : ICapabilityProvider
     {
-
+        private readonly Dictionary<Type, object> _capabilities = new();
         private List<Room> _rooms;
         private int _width;
         private int _height;
@@ -19,13 +19,23 @@ namespace DungeonGeneration.Map.Model.Rooms
         public List<Door> AvailableDoors { get { return _rooms.SelectMany(room => room.PossibleDoors).ToList(); } }
 
         private bool[,] _blockedMap;
-        private TileType[,] _tileTypeMap;
+        private TileTypeSO[,] _tileTypeMap;
 
-        public RoomLevel(int width, int height)
+        private TileTypeSO _roomType;
+        private TileTypeSO _hallwayType;
+        private TileTypeSO _doorType;
+
+        public RoomLevel(DungeonRoomProps props)
         {
+            var (width, height, roomType, hallwayType, doorType) = props;
+
+
             _rooms = new List<Room>();
             _width = width;
             _height = height;
+            _roomType = roomType;
+            _hallwayType = hallwayType;
+            _doorType = doorType;
         }
 
         public void AddRoom(Room newRoom)
@@ -49,59 +59,59 @@ namespace DungeonGeneration.Map.Model.Rooms
         private void InitMapData()
         {
             _blockedMap = new bool[Height, Width];
-            _tileTypeMap = new TileType[Height, Width];
+            _tileTypeMap = new TileTypeSO[Height, Width];
 
             for (int y = 0; y < Height; ++y)
             {
                 for (int x = 0; x < Width; ++x)
                 {
                     _blockedMap[y, x] = true;
-                    _tileTypeMap[y, x] = TileType.None;
+                    _tileTypeMap[y, x] = null;
                 }
             }
 
             Hallways.ForEach(hallway =>
             {
-                GridUtility.SetLineForGrid(_blockedMap, false, hallway.PointOne, hallway.PointTwo);
-                GridUtility.SetLineForGrid(_tileTypeMap, TileType.Hallway, hallway.PointOne, hallway.PointTwo);
+                var points = GridUtility.SetLineForGrid(_blockedMap, false, hallway.PointOne, hallway.PointTwo);
+                AddTileTypeForPoints(points, _hallwayType);
             });
 
             Rooms.ForEach(room =>
             {
                 if (room.LayoutTexture == null)
                 {
-                    GridUtility.SetRectForGrid(_blockedMap, false, room.Area);
-                    GridUtility.SetRectForGrid(_tileTypeMap, TileType.Room, room.Area);
+                    var points = GridUtility.SetRectForGrid(_blockedMap, false, room.Area);
+                    AddTileTypeForPoints(points, _roomType);
                 }
                 else
                 {
-                    GridUtility.SetTextureForGrid(_blockedMap, false, room.LayoutTexture, room.Area);
-                    GridUtility.SetTextureForGrid(_tileTypeMap, TileType.Room, room.LayoutTexture, room.Area);
+                    var points = GridUtility.SetTextureForGrid(_blockedMap, false, room.LayoutTexture, room.Area);
+                    AddTileTypeForPoints(points, _roomType);
                 }
 
                 room.Doors.ForEach(existingDoor =>
                 {
                     var roomPos = room.GetAbsolutePositionForDoor(existingDoor);
                     _blockedMap[roomPos.y, roomPos.x] = false;
-                    _tileTypeMap[roomPos.y, roomPos.x] = TileType.Door;
+                    _tileTypeMap[roomPos.y, roomPos.x] = _doorType;
                 });
 
             });
 
+            _capabilities.Add(typeof(IBlockMask), _blockedMap);
+            _capabilities.Add(typeof(ITileLayer), _tileTypeMap);
         }
 
-        public bool[,] GetBlockedMap()
+        public bool TryGet<T>(out T capability) where T : ICapability
         {
-            if (_blockedMap == null) InitMapData();
-            return _blockedMap;
+            _capabilities.TryGetValue(typeof(T), out var levelCapability);
+            capability = (T) levelCapability;
+            return capability != null;
         }
 
-        public TileType GetTileTypeAt(int x, int y)
+        private void AddTileTypeForPoints(List<Vector2Int> points, TileTypeSO type)
         {
-            if (_tileTypeMap == null) InitMapData();
-            if (y >= Height || y < 0 || x >= Width || x < 0) return TileType.None;
-            return _tileTypeMap[y, x];
+            points.ForEach(point => _tileTypeMap[point.y, point.x] = type);
         }
-
     }
 }

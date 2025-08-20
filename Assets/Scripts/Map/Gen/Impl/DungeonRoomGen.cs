@@ -3,7 +3,6 @@ using System.Linq;
 using System;
 using UnityEngine;
 using DungeonGeneration.Map.Enum;
-using DungeonGeneration.Map.Model;
 using DungeonGeneration.Map.SO;
 using DungeonGeneration.Map.Model.Rooms;
 using DungeonGeneration.Service.Util;
@@ -12,8 +11,7 @@ namespace DungeonGeneration.Map.Gen.Impl
 {
     public class DungeonRoomGen : IDungeonLevelGenerator
     {
-
-        public ILevel GenerateDungeonLevel(GeneratedLevelLayoutSO levelConfig)
+        public ICapabilityProvider GenerateDungeonLevel(GeneratedLevelLayoutSO levelConfig)
         {
             ValidateLevelLayout(levelConfig);
             return GenerateLevel(levelConfig);
@@ -167,10 +165,9 @@ namespace DungeonGeneration.Map.Gen.Impl
 
         private RoomLevel GenerateLevel(GeneratedLevelLayoutSO levelLayout)
         {
-
             var randService = RandomSingleton.Instance;
             Dictionary<RoomTemplate, int> roomTemplatesToCount = levelLayout.GetAvailableRooms();
-            RoomLevel level = new RoomLevel(levelLayout.Width, levelLayout.Height);
+            RoomLevel level = new RoomLevel(_roomProps);
             level.AddRoom(GetStartRoom(levelLayout));
 
             while (level.AvailableDoors.Count > 0
