@@ -10,6 +10,7 @@ public class ProcGenRulesWindowUI : EditorWindow
     private Vector2 scrollPosition;
     private TilePaletteUIModel _tilePalette;
     private RuleResizeHandlerUI _resizeHandler;
+    private TileMatchingRuleSetSO _selectedTileMatchingRuleSet;
 
     [MenuItem("Window/Proc Gen Rules")]
     public static void ShowWindow()
@@ -21,7 +22,7 @@ public class ProcGenRulesWindowUI : EditorWindow
     private void Init()
     {
         _resizeHandler = new RuleResizeHandlerUI();
-        _tilePalette = new TilePaletteUIModel();
+        _tilePalette = new TilePaletteUIModel(_selectedTileMatchingRuleSet);
 
         isRuleCollapsed.Clear();
         for (int i = 0; i < rules.Count; i++)
@@ -82,7 +83,7 @@ public class ProcGenRulesWindowUI : EditorWindow
             return;
         }
 
-        DecorationRulesetSO.Construct(path, rules.ToArray());
+        DecorationRulesetSO.Construct(path, rules.ToArray(), _selectedTileMatchingRuleSet);
     }
 
     private bool InvalidSave(out string message)

@@ -1,10 +1,10 @@
-using DungeonGeneration.Map.Model;
+using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class TileMapOutput2d : IDungeonOutput
+    public class TileMapOutput2d : ScriptableObject, IOutputGenerator
     {
-        public void OutputMap(ILevel level)
+        public void OutputMap(ICapabilityProvider level)
         {
             throw new System.NotImplementedException();
         }

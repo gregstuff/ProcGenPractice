@@ -1,5 +1,3 @@
-
-using DungeonGeneration.Map.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +5,8 @@ using UnityEngine;
 
 public class TilePaletteUIModel
 {
+
+    public TileMatchingRuleSetSO TileMatchingRuleSet;
 
     private static readonly KeyCode[] _tilePaletteKeyCodes =
     {
@@ -36,28 +36,29 @@ public class TilePaletteUIModel
         new Color(255,99,71) //pinkish
     };
 
-    private static Dictionary<KeyCode, TileType> _keyToTileType = new Dictionary<KeyCode, TileType>();
-    private static Dictionary<TileType, Color> _tileTypeToColor = new Dictionary<TileType, Color>();
-    private static Dictionary<TileType, KeyCode> _tileTypeToKeyCode = new Dictionary<TileType, KeyCode>();
+    private static Dictionary<KeyCode, TileMatchingRuleSO> _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
+    private static Dictionary<TileMatchingRuleSO, Color> _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
+    private static Dictionary<TileMatchingRuleSO, KeyCode> _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
 
-    public TilePaletteUIModel()
+    public TilePaletteUIModel(TileMatchingRuleSetSO tileMatchingRuleSet)
     {
+        TileMatchingRuleSet = tileMatchingRuleSet;
         Init();
     }
 
     private void Init()
     {
-        _keyToTileType = new Dictionary<KeyCode, TileType>();
-        _tileTypeToColor = new Dictionary<TileType, Color>();
-        _tileTypeToKeyCode = new Dictionary<TileType, KeyCode>();
+        _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
+        _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
+        _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
 
-        var tileTypes = (TileType[]) System.Enum.GetValues(typeof(TileType));
+        var tileMatchingRules = TileMatchingRuleSet.TileMatchingRules;
 
-        if (tileTypes.Length > 10) throw new Exception("Too many tile types!!! Please refactor the keycode / color handling");
+        if (tileMatchingRules.Length > 10) throw new Exception("Too many tile types!!! Please refactor the keycode / color handling");
 
-        foreach (var tileType in tileTypes)
+        foreach (var tileType in tileMatchingRules)
         {
-            int index = Array.IndexOf(tileTypes, tileType);
+            int index = Array.IndexOf(tileMatchingRules, tileType);
             _keyToTileType.Add(_tilePaletteKeyCodes[index], tileType);
             _tileTypeToColor.Add(tileType, _tileColors[index]);
         }
@@ -66,17 +67,17 @@ public class TilePaletteUIModel
 
     }
 
-    public TileType? GetTileTypeForKeyCode(KeyCode candidate)
+    public TileMatchingRuleSO? GetTileTypeForKeyCode(KeyCode candidate)
     {
         return _keyToTileType.TryGetValue(candidate, out var tileType) ? tileType : null;
     }
 
-    public Color? GetColorForTileType(TileType tileType)
+    public Color? GetColorForTileType(TileMatchingRuleSO tileType)
     {
         return _tileTypeToColor.TryGetValue(tileType, out var color) ? color : null;
     }
 
-    public KeyCode? GetKeyCodeForTileType(TileType tileType)
+    public KeyCode? GetKeyCodeForTileType(TileMatchingRuleSO tileType)
     {
         return _tileTypeToKeyCode.TryGetValue(tileType, out var keyCode) ? keyCode : null;
     }

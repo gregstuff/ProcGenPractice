@@ -1,4 +1,3 @@
-using DungeonGeneration.Map.Enum;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +8,7 @@ public class DecorationRuleUIModel
     public string Name { get; set; } = "Rule_" + System.Guid.NewGuid().ToString().Substring(0, 4);
     private int _width = 3;
     private int _height = 3;
-    private TileType[,] _matchingPattern;
+    private TileMatchingRuleSO[,] _matchingPattern;
     private bool[,] _spawningLocationGrid;
     private bool[,] _blockingLocationGrid;
 
@@ -20,11 +19,11 @@ public class DecorationRuleUIModel
     public Vector3 SpawnRotation { get; set; }
     public Vector3 SpawnPositionOffset { get; set; }
     public int MaxApplications { get; set; } 
-    public TileType[,] MatchingPattern => _matchingPattern;
+    public TileMatchingRuleSO[,] MatchingPattern => _matchingPattern;
 
     public DecorationRuleUIModel()
     {
-        _matchingPattern = new TileType[_height, _width];
+        _matchingPattern = new TileMatchingRuleSO[_height, _width];
         _spawningLocationGrid = new bool[_height, _width];
         _blockingLocationGrid = new bool[_height, _width];
     }
@@ -40,7 +39,7 @@ public class DecorationRuleUIModel
             ProcGenRulesWindowConstants.MINIMUM_GRID_LENGTH,
             ProcGenRulesWindowConstants.MAXIMUM_GRID_LENGTH);
 
-        _matchingPattern = new TileType[newHeight, newWidth];
+        _matchingPattern = new TileMatchingRuleSO[newHeight, newWidth];
         _spawningLocationGrid = new bool[newHeight, newWidth];
         _blockingLocationGrid = new bool[newHeight, newWidth];
     }
@@ -49,7 +48,7 @@ public class DecorationRuleUIModel
         out string name,
         out int gridWidth,
         out int gridHeight,
-        out TileType[,] gridPattern,
+        out TileMatchingRuleSO[,] gridPattern,
         out bool[,] spawnLocationGrid,
         out bool[,] blockLocationGrid
         )

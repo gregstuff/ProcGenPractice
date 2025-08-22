@@ -1,33 +1,38 @@
-using DungeonGeneration.Map.Enum;
-using DungeonGeneration.Map.Model;
 using DungeonGeneration.Map.Output.SO;
+using System;
 using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class DebugTextureOutput : IDungeonOutput
+    public class DebugTextureOutput : ScriptableObject, IOutputGenerator
     {
+        [SerializeField] DungeonOutputConfigSO _config;
 
-        private Renderer _renderer;
-
-        public DebugTextureOutput(DungeonOutputConfigSO config)
+        public void OutputMap(ICapabilityProvider level)
         {
-            _renderer = config.LevelLayoutDisplay;
-        }
 
-        public void OutputMap(ILevel level)
-        {
-            var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
-            layoutTexture.Reinitialize(level.Width, level.Height);
-            _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
+            if (!level.TryGet<IDimensions>(out var dimensions)
+                ||!level.TryGet<ITileLayer>(out var tileLayer))
+            {
+                throw new ArgumentException($"Level generation is missing required data for ${typeof(DebugTextureOutput)}");
+            }
+
+            var width = dimensions.MapDimensions.x;
+            var height = dimensions.MapDimensions.y;
+            var renderer = _config.LevelLayoutDisplay;
+            var tileTypes = tileLayer.Tiles;
+            
+            var layoutTexture = (Texture2D)renderer.sharedMaterial.mainTexture;
+            layoutTexture.Reinitialize(width, height);
+            renderer.transform.localScale = new Vector3(width, height, 1);
             layoutTexture.FillWithColor(Color.black);
 
-            for (int y = 0; y < level.Height; ++y)
+            for (int y = 0; y < height; ++y)
             {
-                for (int x = 0; x < level.Width; ++x)
+                for (int x = 0; x < width; ++x)
                 {
-                    TileType tile = level.GetTileTypeAt(x, y);
-                    Color relevantColor = GetColorForTileType(tile);
+                    TileTypeSO tileType = tileTypes[y,x];
+                    Color relevantColor = GetColorForTileTypeTag(tileType);
                     layoutTexture.DrawPixel(new Vector2Int { x = x, y = y }, relevantColor);
                 }
             }
@@ -35,21 +40,13 @@ namespace DungeonGeneration.Map.Output.Impl
             layoutTexture.SaveAsset();
         }
 
-        private Color GetColorForTileType(TileType tileType)
+        private Color GetColorForTileTypeTag(TileTypeSO tileType)
         {
-            switch (tileType)
-            {
-                case TileType.None:
-                    return Color.black;
-                case TileType.Room:
-                    return Color.white;
-                case TileType.Hallway:
-                    return Color.grey;
-                case TileType.Door:
-                    return Color.red;
-                default:
-                    return Color.black;
-            }
+            if(tileType.HasTag(TileTag.None)) return Color.black;
+            else if(tileType.HasTag(TileTag.Room)) return Color.white;
+            else if(tileType.HasTag(TileTag.Hallway)) return Color.grey;
+            else if(tileType.HasTag(TileTag.Door)) return Color.red;
+            else return Color.black;
         }
 
     }

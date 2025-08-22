@@ -23,7 +23,7 @@ public class RuleCardUI
         fixedHeight = ProcGenRulesWindowConstants.CELL_LENGTH
     };
     private static GUIStyle boldStyle = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
-    private static TileType? selectedTileType = null;
+    private static TileMatchingRuleSO? selectingMatchingTile = null;
     private enum GridTab { Matching, Spawning, Blocking }
     private static GridTab currentTab = GridTab.Matching;
     private static bool _isBlockPaintActive = false;
@@ -125,15 +125,15 @@ public class RuleCardUI
         {
             if (Event.current.keyCode == KeyCode.Escape)
             {
-                selectedTileType = null;
+                selectingMatchingTile = null;
                 Event.current.Use();
             }
             else
             {
-                TileType? tileType = tilePalette.GetTileTypeForKeyCode(Event.current.keyCode);
-                if (tileType.HasValue)
+                TileMatchingRuleSO tileType = tilePalette.GetTileTypeForKeyCode(Event.current.keyCode);
+                if (tileType != null)
                 {
-                    selectedTileType = tileType.Value;
+                    selectingMatchingTile = tileType;
                     Event.current.Use();
                 }
             }
@@ -151,18 +151,18 @@ public class RuleCardUI
                 Rect cellRect = GUILayoutUtility.GetLastRect();
                 if (cellRect.Contains(Event.current.mousePosition))
                 {
-                    if (selectedTileType.HasValue)
+                    if (selectingMatchingTile != null)
                     {
                         CURSOR_STYLE.normal.background = Texture2D.whiteTexture;
-                        GUI.backgroundColor = tilePalette.GetColorForTileType(selectedTileType.Value) ?? Color.white;
+                        GUI.backgroundColor = tilePalette.GetColorForTileType(selectingMatchingTile) ?? Color.white;
                         GUI.Box(cellRect, "", CURSOR_STYLE);
                         GUI.backgroundColor = Color.white;
                     }
-                    if (selectedTileType.HasValue && Event.current.isMouse &&
+                    if (selectingMatchingTile != null && Event.current.isMouse &&
                         (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) &&
                         Event.current.button == 0)
                     {
-                        gridPattern[y, x] = selectedTileType.Value;
+                        gridPattern[y, x] = selectingMatchingTile;
                         Event.current.Use();
                         EditorWindow.GetWindow<ProcGenRulesWindowUI>().Repaint();
                     }

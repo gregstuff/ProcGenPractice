@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838e79a7b34633946ad9b484b4d9b6d0, type: 3}
   m_Name: Room
   m_EditorClassIdentifier: 
-  displayName: 
+  displayName: Dungeon Room Tile
   tags: []
   material: {fileID: 0}
   physics: {fileID: 0}

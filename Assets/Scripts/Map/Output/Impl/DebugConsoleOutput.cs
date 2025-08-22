@@ -1,11 +1,11 @@
-using DungeonGeneration.Map.Model;
+using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class DebugConsoleOutput : IDungeonOutput
+    public class DebugConsoleOutput : ScriptableObject, IOutputGenerator
     {
 
-        public void OutputMap(ILevel level)
+        public void OutputMap(ICapabilityProvider level)
         {
             throw new System.NotImplementedException();
         }

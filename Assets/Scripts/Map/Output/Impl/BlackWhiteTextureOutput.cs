@@ -1,44 +1,42 @@
-using DungeonGeneration.Map.Model;
-using DungeonGeneration.Map.Model.Rooms;
-using DungeonGeneration.Map.Output.SO;
 using UnityEngine;
+using System;
+using DungeonGeneration.Service.Util;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
 
-    public class BlackWhiteTextureOutput : IDungeonOutput
+    public class BlackWhiteTextureOutput : ScriptableObject, IOutputGenerator
     {
+        [SerializeField] private Renderer _levelLayoutRenderer;
 
-        private Renderer _renderer;
-
-        public BlackWhiteTextureOutput(DungeonOutputConfigSO config)
+        public void OutputMap(ICapabilityProvider level)
         {
-            _renderer = config.LevelLayoutDisplay;
+            if(!level.TryGet<IBlockMask>(out var blockedMap)
+                ||!level.TryGet<IDimensions>(out var dimensions))
+            {
+                throw new Exception($"Selected level generation missing required inputs for ${typeof(BlackWhiteTextureOutput)}");
+            }
+
+            DrawLayout(blockedMap.Mask, dimensions.MapDimensions);
         }
 
-        public void OutputMap(RoomLevel level)
+        void DrawLayout(bool[,] blockedMap, Vector2Int mapDimensions) 
         {
-            DrawLayout(level);
-        }
 
-        public void OutputMap(ILevel level)
-        {
-            throw new System.NotImplementedException();
-        }
+            var height = mapDimensions.y;
+            var width = mapDimensions.x;
+            var renderer = ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutRenderer);
 
-        void DrawLayout(RoomLevel level) 
-        {
-            var blockedGrid = level.GetBlockedMap();
-            var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
-            layoutTexture.Reinitialize(level.Width, level.Height);
-            _renderer.transform.localScale = new Vector3(level.Width, level.Height, 1);
+            var layoutTexture = (Texture2D)renderer.sharedMaterial.mainTexture;
+            layoutTexture.Reinitialize(width, height);
+            renderer.transform.localScale = new Vector3(width, height, 1);
             layoutTexture.FillWithColor(Color.black);
 
-            for (int y = 0; y < level.Height; ++y)
+            for (int y = 0; y < width; ++y)
             {
-                for (int x = 0; x < level.Height; ++x)
+                for (int x = 0; x < height; ++x)
                 {
-                    layoutTexture.SetPixel(x, y, blockedGrid[y, x] ? Color.black : Color.white);
+                    layoutTexture.SetPixel(x, y, blockedMap[y, x] ? Color.black : Color.white);
                 }
             }
 

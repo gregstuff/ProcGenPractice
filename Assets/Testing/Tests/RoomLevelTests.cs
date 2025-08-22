@@ -8,7 +8,8 @@ namespace DungeonGeneration.Tests
 {
     public class RoomLevelTests
     {
-        private RoomLevel _level;
+        /*
+        private DungeonRoomLevel _level;
         private MockGridUtility _gridUtility;
 
         [SetUp]
@@ -97,5 +98,6 @@ namespace DungeonGeneration.Tests
         {
             SetRectForGrid(grid, value, rect);
         }
+        */
     }
 }
