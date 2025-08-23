@@ -1,25 +1,27 @@
 using DungeonGeneration.Map.Output.SO;
+using DungeonGeneration.Service.Util;
 using System;
 using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class DebugTextureOutput : ScriptableObject, IOutputGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Output/Debug Texture")]
+    public class DebugTextureOutput : OutputGenerator
     {
-        [SerializeField] DungeonOutputConfigSO _config;
+        [SerializeField] private Renderer _levelLayoutRenderer;
 
-        public void OutputMap(ICapabilityProvider level)
+        public override void OutputMap(ICapabilityProvider level)
         {
 
-            if (!level.TryGet<IDimensions>(out var dimensions)
-                ||!level.TryGet<ITileLayer>(out var tileLayer))
+            if (!level.TryGet<Dimensions>(out var dimensions)
+                ||!level.TryGet<TileLayer>(out var tileLayer))
             {
                 throw new ArgumentException($"Level generation is missing required data for ${typeof(DebugTextureOutput)}");
             }
 
             var width = dimensions.MapDimensions.x;
             var height = dimensions.MapDimensions.y;
-            var renderer = _config.LevelLayoutDisplay;
+            var renderer = ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutRenderer);
             var tileTypes = tileLayer.Tiles;
             
             var layoutTexture = (Texture2D)renderer.sharedMaterial.mainTexture;
@@ -42,9 +44,9 @@ namespace DungeonGeneration.Map.Output.Impl
 
         private Color GetColorForTileTypeTag(TileTypeSO tileType)
         {
-            if(tileType.HasTag(TileTag.None)) return Color.black;
+            if(tileType == null || tileType.HasTag(TileTag.None)) return Color.black;
             else if(tileType.HasTag(TileTag.Room)) return Color.white;
-            else if(tileType.HasTag(TileTag.Hallway)) return Color.grey;
+            else if(tileType.HasTag(TileTag.Hallway)) return Color.blue;
             else if(tileType.HasTag(TileTag.Door)) return Color.red;
             else return Color.black;
         }

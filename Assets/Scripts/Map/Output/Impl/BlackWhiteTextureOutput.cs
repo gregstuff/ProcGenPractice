@@ -4,15 +4,15 @@ using DungeonGeneration.Service.Util;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-
-    public class BlackWhiteTextureOutput : ScriptableObject, IOutputGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Output/Black White Texture")]
+    public class BlackWhiteTextureOutput : OutputGenerator
     {
         [SerializeField] private Renderer _levelLayoutRenderer;
 
-        public void OutputMap(ICapabilityProvider level)
+        public override void OutputMap(ICapabilityProvider level)
         {
-            if(!level.TryGet<IBlockMask>(out var blockedMap)
-                ||!level.TryGet<IDimensions>(out var dimensions))
+            if(!level.TryGet<BlockMask>(out var blockedMap)
+                ||!level.TryGet<Dimensions>(out var dimensions))
             {
                 throw new Exception($"Selected level generation missing required inputs for ${typeof(BlackWhiteTextureOutput)}");
             }

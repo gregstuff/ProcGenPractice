@@ -8,18 +8,18 @@ using DungeonGeneration.Service.Util;
 
 namespace DungeonGeneration.Map.Gen.Impl
 {
-    [CreateAssetMenu(menuName = "ProcGen/Level Generators/Config/Dungeon Room Level")]
-    public class DungeonRoomGenSO : ScriptableObject, ILevelGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Level Generators/Dungeon Room Level")]
+    public class DungeonRoomGenSO : LevelGeneratorSO
     {
-        [SerializeField] DungeonRoomLevelLayoutConfig cfg;
+        [SerializeField] DungeonRoomLevelLayoutConfigSO cfg;
 
-        public ICapabilityProvider GenerateLevel()
+        public override ICapabilityProvider GenerateLevel()
         {
             ValidateLevelLayout(cfg);
             return GenerateLevel(cfg);
         }
 
-        private void ValidateLevelLayout(DungeonRoomLevelLayoutConfig levelConfig)
+        private void ValidateLevelLayout(DungeonRoomLevelLayoutConfigSO levelConfig)
         {
             if (levelConfig.RoomTemplates.Count() == 0)
                 throw new ArgumentException("No room templates configured!");
@@ -31,7 +31,7 @@ namespace DungeonGeneration.Map.Gen.Impl
                 throw new ArgumentException("MinRoomDistance cannot be negative!");
         }
 
-        private Room GetStartRoom(DungeonRoomLevelLayoutConfig levelConfig)
+        private Room GetStartRoom(DungeonRoomLevelLayoutConfigSO levelConfig)
         {
             var randService = RandomSingleton.Instance;
             var randRoomTemplate = levelConfig.RoomTemplates[randService.NextInt(levelConfig.RoomTemplates.Count())];
@@ -97,7 +97,7 @@ namespace DungeonGeneration.Map.Gen.Impl
             Room existingRoom,
             Door potentialDoor,
             RoomTemplate candidateTemplate,
-            DungeonRoomLevelLayoutConfig levelTemplate,
+            DungeonRoomLevelLayoutConfigSO levelTemplate,
             DungeonRoomLevel level)
         {
             var randService = RandomSingleton.Instance;
@@ -135,7 +135,7 @@ namespace DungeonGeneration.Map.Gen.Impl
 
         private bool IsRoomCandidateValid(
             RectInt roomCandRect,
-            DungeonRoomLevelLayoutConfig levelTemplate,
+            DungeonRoomLevelLayoutConfigSO levelTemplate,
             DungeonRoomLevel level)
         {
             RectInt levelRect = new RectInt(1, 1, levelTemplate.Width - 2, levelTemplate.Height - 2);
@@ -165,7 +165,7 @@ namespace DungeonGeneration.Map.Gen.Impl
             return overlapsRoom || overlapsHallway;
         }
 
-        private DungeonRoomLevel GenerateLevel(DungeonRoomLevelLayoutConfig levelLayout)
+        private DungeonRoomLevel GenerateLevel(DungeonRoomLevelLayoutConfigSO levelLayout)
         {
             var randService = RandomSingleton.Instance;
             Dictionary<RoomTemplate, int> roomTemplatesToCount = levelLayout.GetAvailableRooms();
@@ -198,6 +198,8 @@ namespace DungeonGeneration.Map.Gen.Impl
 
                 level.AddRoom(newRoom);
             }
+
+            level.InitMapData();
 
             return level;
 

@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class DebugConsoleOutput : ScriptableObject, IOutputGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Output/Debug Console")]
+    public class DebugConsoleOutput : OutputGenerator
     {
 
-        public void OutputMap(ICapabilityProvider level)
+        public override void OutputMap(ICapabilityProvider level)
         {
             throw new System.NotImplementedException();
         }

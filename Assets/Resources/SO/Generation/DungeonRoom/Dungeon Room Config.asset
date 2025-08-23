@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8779e5a7c3743244a130aa8c0da6e23, type: 3}
+  m_Name: Dungeon Room Config
+  m_EditorClassIdentifier: 
+  width: 64
+  height: 64
+  doorDistanceFromEdge: 1
+  minHallwayLength: 2
+  maxHallwayLength: 5
+  maxRoomCount: 10
+  minRoomDistance: 1
+  roomTemplates:
+  - name: Custom Long
+    numberOfRooms: 3
+    roomWidthMin: 0
+    roomWidthMax: 0
+    roomHeightMin: 0
+    roomHeightMax: 0
+    layoutTexture: {fileID: 2800000, guid: 80f59f22e0826c34380487a581b75b19, type: 3}
+  - name: Custom Diamond
+    numberOfRooms: 3
+    roomWidthMin: 0
+    roomWidthMax: 0
+    roomHeightMin: 0
+    roomHeightMax: 0
+    layoutTexture: {fileID: 2800000, guid: f9344a1325d2d454eaa62cec2ba2211b, type: 3}
+  - name: Small
+    numberOfRooms: 3
+    roomWidthMin: 3
+    roomWidthMax: 5
+    roomHeightMin: 3
+    roomHeightMax: 5
+    layoutTexture: {fileID: 0}
+  - name: Large
+    numberOfRooms: 3
+    roomWidthMin: 10
+    roomWidthMax: 15
+    roomHeightMin: 10
+    roomHeightMax: 15
+    layoutTexture: {fileID: 0}
+  _roomTile: {fileID: 11400000, guid: f58a8209d21b8324f879d281f04989b4, type: 2}
+  _hallwayTile: {fileID: 11400000, guid: e90d004fcf5ab6647993923a9eca4c88, type: 2}
+  _doorTile: {fileID: 11400000, guid: f129a6fa85dd3bb489563981d9b7196d, type: 2}
+  _unminedTile: {fileID: 11400000, guid: 5b242d26a9a2fdd41a72437caad87751, type: 2}

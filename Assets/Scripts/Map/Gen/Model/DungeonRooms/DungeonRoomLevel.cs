@@ -55,7 +55,7 @@ namespace DungeonGeneration.Map.Model.Rooms
             return hallways.ToList();
         }
 
-        private void InitMapData()
+        public void InitMapData()
         {
             _blockedMap = new bool[_height, _width];
             _tileTypeMap = new TileTypeSO[_height, _width];
@@ -97,9 +97,9 @@ namespace DungeonGeneration.Map.Model.Rooms
 
             });
 
-            _capabilities.Add(typeof(IBlockMask), _blockedMap);
-            _capabilities.Add(typeof(ITileLayer), _tileTypeMap);
-            _capabilities.Add(typeof(IDimensions), new Vector2Int(_width, _height));
+            _capabilities.Add(typeof(BlockMask), new BlockMask() { Mask = _blockedMap });
+            _capabilities.Add(typeof(TileLayer), new TileLayer() { Tiles = _tileTypeMap });
+            _capabilities.Add(typeof(Dimensions), new Dimensions(){ MapDimensions = new Vector2Int(_width, _height) });
         }
 
         public bool TryGet<T>(out T capability) where T : ICapability

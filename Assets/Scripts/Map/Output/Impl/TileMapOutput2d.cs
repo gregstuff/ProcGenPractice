@@ -2,9 +2,10 @@ using UnityEngine;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class TileMapOutput2d : ScriptableObject, IOutputGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Output/Tile Map 2D")]
+    public class TileMapOutput2d : OutputGenerator
     {
-        public void OutputMap(ICapabilityProvider level)
+        public override void OutputMap(ICapabilityProvider level)
         {
             throw new System.NotImplementedException();
         }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
 public interface ICapability { }
-public interface IBlockMask : ICapability { bool[,] Mask { get; } }
-public interface ITileLayer : ICapability { TileTypeSO?[,] Tiles { get; } }
-public interface IIntLayer : ICapability { string Name { get; } int[,] Data { get; } }
-public interface IFloatLayer : ICapability { string Name { get; } float[,] Data { get; } }
-public interface IBoolLayer : ICapability { string Name { get; } bool[,] Data { get; } }
-public interface IDimensions : ICapability { Vector2Int MapDimensions { get; } }
+public class BlockMask : ICapability { public bool[,] Mask { get; set; } }
+public class TileLayer : ICapability { public TileTypeSO?[,] Tiles { get; set; } }
+public class IntLayer : ICapability { public string Name { get; set; } public int[,] Data { get; set; } }
+public class FloatLayer : ICapability { public string Name { get; set; } public float[,] Data { get; set; } }
+public class BoolLayer : ICapability { public string Name { get; set; } public bool[,] Data { get; set; } }
+public class Dimensions : ICapability { public Vector2Int MapDimensions { get; set; } }

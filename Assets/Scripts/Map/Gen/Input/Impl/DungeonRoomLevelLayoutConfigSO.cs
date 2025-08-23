@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Generated level layout", menuName = "Custom/Procedural Generation/Layout Config/Dungeon Room Level Layout Config")]
-public class DungeonRoomLevelLayoutConfig : ScriptableObject
+[CreateAssetMenu(menuName = "ProcGen/Level Generators/Config/Dungeon Room Level")]
+public class DungeonRoomLevelLayoutConfigSO : ScriptableObject
 {
     [SerializeField] private int width = 64;
     [SerializeField] private int height = 64;

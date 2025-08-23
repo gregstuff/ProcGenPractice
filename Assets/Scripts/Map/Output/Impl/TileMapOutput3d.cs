@@ -6,14 +6,15 @@ using System;
 
 namespace DungeonGeneration.Map.Output.Impl
 {
-    public class TileMapOutput3d : ScriptableObject, IOutputGenerator
+    [CreateAssetMenu(menuName = "ProcGen/Output/Tile Map 3D")]
+    public class TileMapOutput3d : OutputGenerator
     {
         private static readonly string DUNGEON_PARENT_TAG = "DungeonParent";
 
         [SerializeField] private GameObject _dungeonRoot;
         [SerializeField] private TilesetConfigSO _tileset;
 
-        public void OutputMap(ICapabilityProvider level)
+        public override void OutputMap(ICapabilityProvider level)
         {
             var marchingSquaresGrid = GenerateMarchingSquaresGrid(level);
             var parent = GetDungeonParentCleanChildren();
@@ -23,7 +24,7 @@ namespace DungeonGeneration.Map.Output.Impl
 
         private int[,] GenerateMarchingSquaresGrid(ICapabilityProvider level)
         {
-            if (!level.TryGet<IBlockMask>(out var blockingMask))
+            if (!level.TryGet<BlockMask>(out var blockingMask))
             {
                 throw new ArgumentException("");
             }

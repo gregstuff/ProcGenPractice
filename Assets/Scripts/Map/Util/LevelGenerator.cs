@@ -5,8 +5,8 @@ namespace DungeonGeneration.Map.Util
 {
     public class LevelGenerator : MonoBehaviour
     {
-        [SerializeField] private ILevelGenerator levelGenerator;
-        [SerializeField] private IOutputGenerator outputGenerator;
+        [SerializeField] private LevelGeneratorSO levelGenerator;
+        [SerializeField] private OutputGenerator outputGenerator;
         [SerializeField] private IDecorator decorator;
 
         [ContextMenu("Generate Level Layout")]
@@ -14,7 +14,7 @@ namespace DungeonGeneration.Map.Util
         {
             var level = levelGenerator.GenerateLevel();
             outputGenerator.OutputMap(level);
-            decorator.ApplyDecorations(level);
+            //decorator.ApplyDecorations(level);
         }
     }
 }
