@@ -24,7 +24,6 @@ public class TilePaletteUIModel
 
     private static readonly Color[] _tileColors =
     { 
-        Color.black,
         Color.red,
         Color.green,
         Color.blue,
@@ -74,6 +73,7 @@ public class TilePaletteUIModel
 
     public Color? GetColorForTileType(TileMatchingRuleSO tileType)
     {
+        if (tileType == null) return Color.black;
         return _tileTypeToColor.TryGetValue(tileType, out var color) ? color : null;
     }
 

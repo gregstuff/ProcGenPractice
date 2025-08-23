@@ -11,6 +11,7 @@ public class DecorationRuleUIModel
     private TileMatchingRuleSO[,] _matchingPattern;
     private bool[,] _spawningLocationGrid;
     private bool[,] _blockingLocationGrid;
+    private TileMatchingRuleSO[,] _initializationSO;
 
     public Vector2 SpawnCell { get; set; }
     public Vector2[] PostSpawnBlockedCells { get; set; }
@@ -65,7 +66,7 @@ public class DecorationRuleUIModel
     {
         var matchingPattern = rule.MatchingPattern2D;
 
-        var uiModel =  new DecorationRuleUIModel()
+        var uiModel = new DecorationRuleUIModel()
         {
             _height = matchingPattern.GetLength(0),
             _width = matchingPattern.GetLength(1),

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DungeonGeneration.Map.Output.SO
 {
 
-    [CreateAssetMenu(fileName = "DungeonOutputConfig", menuName = "Dungeon/OutputConfig")]
+    [CreateAssetMenu(menuName = "ProcGen/Output/Config")]
     public class DungeonOutputConfigSO : ScriptableObject
     {
         [SerializeField] private Renderer _levelLayoutDisplay;

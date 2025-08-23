@@ -1,7 +1,7 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "ProcGen/Tile/Matcher/Tile Matcher Rule Set")]
 [Serializable]
 public class TileMatchingRuleSetSO : ScriptableObject
 {

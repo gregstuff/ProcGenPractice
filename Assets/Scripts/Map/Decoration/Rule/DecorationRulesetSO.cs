@@ -5,7 +5,7 @@ using System.Linq;
 public class DecorationRulesetSO : ScriptableObject
 {
     public DecorationRule[] DecorationRules;
-    public TileMatchingRuleSetSO TileMatchingRules;
+    public TileMatchingRuleSetSO TileMatchingRuleSet;
 
     public static void Construct(
         string path,
@@ -19,7 +19,7 @@ public class DecorationRulesetSO : ScriptableObject
             select new DecorationRule(model);
         
         SOInstance.DecorationRules = decorationModels.ToArray();
-        SOInstance.TileMatchingRules = TileMatchingRules;
+        SOInstance.TileMatchingRuleSet = TileMatchingRules;
 
         AssetDatabase.CreateAsset(SOInstance, path);
         AssetDatabase.SaveAssets();

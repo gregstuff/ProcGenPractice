@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ProcGen/Tile Type")]
+[CreateAssetMenu(menuName = "ProcGen/Tile/Type/Tile Type")]
 public class TileTypeSO : ScriptableObject
 {
     public string displayName;

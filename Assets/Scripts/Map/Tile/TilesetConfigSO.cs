@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DungeonGeneration.Map.SO
 {
-    [CreateAssetMenu(fileName = "TilesetConfig", menuName = "Dungeon/TilesetConfig", order = 1)]
+    [CreateAssetMenu(menuName = "ProcGen/Tile/TilePrefab/Tile Set")]
     public class TilesetConfigSO : ScriptableObject
     {
         [Tooltip("Array of 16 prefabs, one for each marching squares configuration (0-15). Use null for empty spaces.")]

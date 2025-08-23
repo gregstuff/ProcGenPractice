@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838e79a7b34633946ad9b484b4d9b6d0, type: 3}
   m_Name: Hallway
   m_EditorClassIdentifier: 
-  displayName: 
-  tags: []
-  material: {fileID: 0}
-  physics: {fileID: 0}
+  displayName: Hallway
+  tags: 02000000
+  blocking: 0

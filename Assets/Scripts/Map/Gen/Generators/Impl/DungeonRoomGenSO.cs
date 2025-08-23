@@ -8,7 +8,7 @@ using DungeonGeneration.Service.Util;
 
 namespace DungeonGeneration.Map.Gen.Impl
 {
-    [CreateAssetMenu(fileName = "Generated level layout", menuName = "Custom/Procedural Generation/Generators/Dungeon Room Level Generator")]
+    [CreateAssetMenu(menuName = "ProcGen/Level Generators/Config/Dungeon Room Level")]
     public class DungeonRoomGenSO : ScriptableObject, ILevelGenerator
     {
         [SerializeField] DungeonRoomLevelLayoutConfig cfg;

@@ -27,7 +27,8 @@ public class RuleCardUI
     private enum GridTab { Matching, Spawning, Blocking }
     private static GridTab currentTab = GridTab.Matching;
     private static bool _isBlockPaintActive = false;
-    private static bool _blockPaintTargetValue = false; // true = paint blocked, false = erase
+    private static bool _blockPaintTargetValue = false;
+
 
     public static void Construct(
         DecorationRuleUIModel gridRule,
@@ -38,6 +39,7 @@ public class RuleCardUI
         Action<bool> onToggleCollapse)
     {
         var (_, gridWidth, gridHeight, gridPattern, spawnGrid, blockGrid) = gridRule;
+
         GUILayout.BeginVertical(CARD_STYLE,
             GUILayout.Width(gridWidth * ProcGenRulesWindowConstants.CELL_LENGTH
             + ProcGenRulesWindowConstants.CELL_PADDING));
@@ -151,13 +153,6 @@ public class RuleCardUI
                 Rect cellRect = GUILayoutUtility.GetLastRect();
                 if (cellRect.Contains(Event.current.mousePosition))
                 {
-                    if (selectingMatchingTile != null)
-                    {
-                        CURSOR_STYLE.normal.background = Texture2D.whiteTexture;
-                        GUI.backgroundColor = tilePalette.GetColorForTileType(selectingMatchingTile) ?? Color.white;
-                        GUI.Box(cellRect, "", CURSOR_STYLE);
-                        GUI.backgroundColor = Color.white;
-                    }
                     if (selectingMatchingTile != null && Event.current.isMouse &&
                         (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) &&
                         Event.current.button == 0)
@@ -315,4 +310,5 @@ public class RuleCardUI
         }
         GUILayout.EndHorizontal();
     }
+
 }
