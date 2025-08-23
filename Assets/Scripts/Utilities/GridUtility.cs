@@ -19,6 +19,7 @@ namespace DungeonGeneration.Utilities
             while (p0 != p1)
             {
                 grid[p0.y, p0.x] = val;
+                points.Add(new Vector2Int(p0.x, p0.y));
 
                 int e2 = 2 * err;
 

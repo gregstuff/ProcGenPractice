@@ -1,4 +1,3 @@
-using DungeonGeneration.Map.Output.SO;
 using DungeonGeneration.Service.Util;
 using System;
 using UnityEngine;
@@ -21,7 +20,7 @@ namespace DungeonGeneration.Map.Output.Impl
 
             var width = dimensions.MapDimensions.x;
             var height = dimensions.MapDimensions.y;
-            var renderer = ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutRenderer);
+            var renderer = GetOrCreateRenderer();
             var tileTypes = tileLayer.Tiles;
             
             var layoutTexture = (Texture2D)renderer.sharedMaterial.mainTexture;
@@ -49,6 +48,16 @@ namespace DungeonGeneration.Map.Output.Impl
             else if(tileType.HasTag(TileTag.Hallway)) return Color.blue;
             else if(tileType.HasTag(TileTag.Door)) return Color.red;
             else return Color.black;
+        }
+
+        private Renderer GetOrCreateRenderer()
+        {
+            var existing = GameObject.FindGameObjectWithTag("DungeonTexture");
+
+            if (existing != null && existing.TryGetComponent<Renderer>(out var existingRenderer))
+                return existingRenderer;
+
+            return ObjectSpawnerSingleton.Instance.Spawn(_levelLayoutRenderer);
         }
 
     }

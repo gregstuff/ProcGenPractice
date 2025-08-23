@@ -36,7 +36,11 @@ namespace DungeonGeneration.Map.Output.Impl
         private GameObject GetDungeonParentCleanChildren()
         {
             var existing = GameObject.FindGameObjectWithTag(DUNGEON_PARENT_TAG);
-            if(existing!=null)Destroy(existing);
+            if (existing != null) Destroy(existing);
+
+#if UNITY_EDITOR
+            UnityEngine.Object.DestroyImmediate(existing);
+#endif
             return ObjectSpawnerSingleton.Instance.Spawn(_dungeonRoot);
         }
 

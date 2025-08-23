@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1faf2247a7032b0439ab68be9b4c9427, type: 3}
-  m_Name: DungeonOutputConfig
+  m_Script: {fileID: 11500000, guid: 0415ff956b36e8647bb56f53d9481a68, type: 3}
+  m_Name: Tile Map Output 3d
   m_EditorClassIdentifier: 
-  _levelLayoutDisplay: {fileID: 2616429101891682428, guid: 9111ef441edaa7f4db9e7bb8df0eaeae,
+  _dungeonRoot: {fileID: 1397622864612100953, guid: b583cfba0479f934dbcfd521de31f15a,
     type: 3}
   _tileset: {fileID: 11400000, guid: 773ec2ed6a1af4549bfd2a3399668f02, type: 2}
