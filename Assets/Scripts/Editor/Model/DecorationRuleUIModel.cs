@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,12 +12,11 @@ public class DecorationRuleUIModel
     private TileMatchingRuleSO[,] _matchingPattern;
     private bool[,] _spawningLocationGrid;
     private bool[,] _blockingLocationGrid;
-    private TileMatchingRuleSO[,] _initializationSO;
 
-    public Vector2 SpawnCell { get; set; }
-    public Vector2[] PostSpawnBlockedCells { get; set; }
+    public Vector2Int SpawnCell => GetSpawnCell();
+    public Vector2Int[] PostSpawnBlockedCells => GetPostSpawnBlockedCells();
     [SerializeField] public GameObject Prefab { get; set; }
-    public Vector3 SpawnScale { get; set; }
+    public Vector3 SpawnScale { get; set; } = Vector3.one;
     public Vector3 SpawnRotation { get; set; }
     public Vector3 SpawnPositionOffset { get; set; }
     public int MaxApplications { get; set; } 
@@ -71,34 +71,62 @@ public class DecorationRuleUIModel
             _height = matchingPattern.GetLength(0),
             _width = matchingPattern.GetLength(1),
             _matchingPattern = matchingPattern,
-            SpawnCell = rule.SpawnCell,
             SpawnScale = rule.SpawnScale,
             SpawnRotation = rule.SpawnRotation,
             SpawnPositionOffset = rule.SpawnPositionOffset,
             MaxApplications = rule.MaxApplications,
-            PostSpawnBlockedCells = rule.PostSpawnBlockedCells,
             Prefab = rule.Prefab,
         };
 
-        uiModel.InitBackingGrids();
+        uiModel._spawningLocationGrid = new bool[uiModel._height, uiModel._width];
+        uiModel._blockingLocationGrid = new bool[uiModel._height, uiModel._width];
+        uiModel.SetSpawnCell(rule.SpawnCell.y,rule.SpawnCell.x);
+        new List<Vector2Int>(rule.PostSpawnBlockedCells).ForEach(cell => uiModel.SetBlockedCell(cell.x, cell.y, true));
 
         return uiModel;
     }
 
-    private void InitBackingGrids()
+    public void SetSpawnCell(int posY, int posX)
     {
-        _spawningLocationGrid = new bool[_height, _width];
-        _blockingLocationGrid = new bool[_height, _width];
-
-        for (int y = 0; y < _height; ++y)
+        for (int y=0;y<_spawningLocationGrid.GetLength(0);++y)
         {
-            for (int x = 0; x < _width; ++x)
+            for (int x=0;x<_spawningLocationGrid.GetLength(1);++x)
             {
-                var pos = new Vector2(y, x);
-                if (pos == SpawnCell) _spawningLocationGrid[y,x] = true;
-                if (PostSpawnBlockedCells.Contains(pos)) _blockingLocationGrid[y, x] = true;
+                _spawningLocationGrid[y, x] = false;
             }
         }
+        _spawningLocationGrid[posY, posX] = true;
+        SetBlockedCell(posY, posX, true);
+    }
+
+    public void SetBlockedCell(int y, int x, bool val)
+    {
+        _blockingLocationGrid[y, x] = val;
+    }
+
+    public Vector2Int[] GetPostSpawnBlockedCells()
+    {
+        var positions = new List<Vector2Int>();
+        for (int y=0;y<_blockingLocationGrid.GetLength(0);++y)
+        {
+            for (int x=0;x<_blockingLocationGrid.GetLength(1);++x)
+            {
+
+            }
+        }
+        return positions.ToArray();
+    }
+
+    public Vector2Int GetSpawnCell()
+    {
+        for (int y=0;y<_spawningLocationGrid.GetLength(0);++y)
+        {
+            for (int x=0;x<_spawningLocationGrid.GetLength(1);++x)
+            {
+                if (_spawningLocationGrid[y, x]) return new Vector2Int(x, y);
+            }
+        }
+        return Vector2Int.zero;
     }
 
 }

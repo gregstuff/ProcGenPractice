@@ -192,9 +192,7 @@ public class RuleCardUI
                     for (int i = 0; i < gridHeight; i++)
                         for (int j = 0; j < gridWidth; j++)
                             spawnGrid[i, j] = false;
-                    spawnGrid[y, x] = true;
-                    blockingGrid[y, x] = true; //if we're spawning here then it's blocked here
-                    gridRule.SpawnCell = new Vector2(x, y);
+                    gridRule.SetSpawnCell(y,x);
                     Event.current.Use();
                     EditorWindow.GetWindow<ProcGenRulesWindowUI>().Repaint();
                 }
@@ -209,12 +207,14 @@ public class RuleCardUI
 
         if (_isBlockPaintActive && Event.current.type == EventType.MouseUp && Event.current.button == 0)
         {
-            var blockedCells = new System.Collections.Generic.List<Vector2>();
-            for (int iy = 0; iy < gridHeight; iy++)
-                for (int jx = 0; jx < gridWidth; jx++)
-                    if (blockGrid[iy, jx])
-                        blockedCells.Add(new Vector2(jx, iy));
-            gridRule.PostSpawnBlockedCells = blockedCells.ToArray();
+            for (int y = 0; y < gridHeight; y++)
+            {
+                for (int x = 0; x < gridWidth; x++)
+                {
+                    var blocked = blockGrid[y, x];
+                    gridRule.SetBlockedCell(y, x, blocked);
+                }
+            }
 
             _isBlockPaintActive = false;
         }

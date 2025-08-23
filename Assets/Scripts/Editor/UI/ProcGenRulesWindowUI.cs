@@ -250,7 +250,7 @@ public class ProcGenRulesWindowUI : EditorWindow
 
         if (InvalidSave(out var validationMessage))
         {
-            Debug.LogWarning(validationMessage);
+            Debug.LogError(validationMessage);
             return;
         }
 
@@ -327,8 +327,10 @@ public class ProcGenRulesWindowUI : EditorWindow
         }
 
         var invalidRules = rules.Where(rule =>
-            rule.Prefab == null || !AssetDatabase.Contains(rule.Prefab) ||
-            rule.MatchingPattern == null);
+            rule.Prefab == null 
+            || !AssetDatabase.Contains(rule.Prefab) 
+            || rule.MatchingPattern == null 
+            || rule.PostSpawnBlockedCells == null).ToList();
 
         if (invalidRules.Any())
         {

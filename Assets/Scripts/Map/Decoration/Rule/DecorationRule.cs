@@ -6,8 +6,8 @@ public class DecorationRule
 {
     public string Name;
     public TileMatchingRuleSO[] MatchingPattern1D;
-    public Vector2 SpawnCell;
-    public Vector2[] PostSpawnBlockedCells;
+    public Vector2Int SpawnCell;
+    public Vector2Int[] PostSpawnBlockedCells;
     public GameObject Prefab;
     public Vector3 SpawnScale;
     public Vector3 SpawnRotation;
@@ -35,8 +35,8 @@ public class DecorationRule
     public void Deconstruct(
         out string name,
         out TileMatchingRuleSO[,] matchingPattern,
-        out Vector2 spawnCell,
-        out Vector2[] postSpawnBlockedCells,
+        out Vector2Int spawnCell,
+        out Vector2Int[] postSpawnBlockedCells,
         out GameObject prefab,
         out Vector3 spawnScale,
         out Vector3 spawnRotation,
