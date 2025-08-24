@@ -2,7 +2,9 @@ using DungeonGeneration.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DungeonGeneration.Map.Model.Rooms
 {
@@ -12,6 +14,7 @@ namespace DungeonGeneration.Map.Model.Rooms
         private List<Room> _rooms;
         private int _width;
         private int _height;
+        private float _scale;
         public List<Room> Rooms { get { return new List<Room>(_rooms); } }
         public List<Hallway> Hallways => GetHallways();
         public List<Door> AvailableDoors { get { return _rooms.SelectMany(room => room.PossibleDoors).ToList(); } }
@@ -26,11 +29,12 @@ namespace DungeonGeneration.Map.Model.Rooms
 
         public DungeonRoomLevel(DungeonRoomProps props)
         {
-            var (width, height, roomType, hallwayType, doorType, unminedTile) = props;
+            var (width, height, mapScale, roomType, hallwayType, doorType, unminedTile) = props;
 
             _rooms = new List<Room>();
             _width = width;
             _height = height;
+            _scale = mapScale;
             _roomType = roomType;
             _hallwayType = hallwayType;
             _doorType = doorType;
@@ -100,6 +104,7 @@ namespace DungeonGeneration.Map.Model.Rooms
             _capabilities.Add(typeof(BlockMask), new BlockMask() { Mask = _blockedMap });
             _capabilities.Add(typeof(TileLayer), new TileLayer() { Tiles = _tileTypeMap });
             _capabilities.Add(typeof(Dimensions), new Dimensions(){ MapDimensions = new Vector2Int(_width, _height) });
+            _capabilities.Add(typeof(Scale), new Scale() { MapScale = _scale });
         }
 
         public bool TryGet<T>(out T capability) where T : ICapability

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DungeonParent
   - DungeonTexture
+  - DecorationTexture
   layers:
   - Default
   - TransparentFX

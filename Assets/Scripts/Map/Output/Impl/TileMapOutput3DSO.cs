@@ -14,6 +14,8 @@ namespace DungeonGeneration.Map.Output.Impl
         [SerializeField] private GameObject _dungeonRoot;
         [SerializeField] private TilesetConfigSO _tileset;
 
+        private float _mapScale;
+
         public override void OutputMap(ICapabilityProvider level)
         {
             var marchingSquaresGrid = GenerateMarchingSquaresGrid(level);
@@ -24,12 +26,14 @@ namespace DungeonGeneration.Map.Output.Impl
 
         private int[,] GenerateMarchingSquaresGrid(ICapabilityProvider level)
         {
-            if (!level.TryGet<BlockMask>(out var blockingMask))
+            if (!level.TryGet<BlockMask>(out var blockingMask)
+                ||!level.TryGet<Scale>(out var mapScale))
             {
-                throw new ArgumentException("");
+                throw new ArgumentException("Level Generation Selected did not have required data for Tile Map 3d Output");
             }
 
             var grid = blockingMask.Mask;
+            _mapScale = mapScale.MapScale;
             return MarchingSquaresUtility.ToMarchingSquaresInts(grid);
         }
 
@@ -50,7 +54,7 @@ namespace DungeonGeneration.Map.Output.Impl
 
         private void SpawnTiles(int[,] marchingSquaresGrid, Transform parent)
         {
-            Vector3 tileScale = _tileset.tileScale;
+            Vector3 tileScale = new Vector3(_mapScale, 1, _mapScale);
             for (int y = 0; y < marchingSquaresGrid.GetLength(0); y++)
             {
                 for (int x = 0; x < marchingSquaresGrid.GetLength(1); x++)

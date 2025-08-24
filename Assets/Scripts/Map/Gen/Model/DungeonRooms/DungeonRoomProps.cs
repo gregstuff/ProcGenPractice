@@ -4,6 +4,7 @@ public class DungeonRoomProps
 {
     public int Width;
     public int Height;
+    public float MapScale;
     public TileTypeSO RoomTile;
     public TileTypeSO HallwayTile;
     public TileTypeSO DoorTile;
@@ -12,6 +13,7 @@ public class DungeonRoomProps
     public void Deconstruct(
         out int width,
         out int height,
+        out float mapScale,
         out TileTypeSO roomTile,
         out TileTypeSO hallwayTile,
         out TileTypeSO doorTile,
@@ -19,6 +21,7 @@ public class DungeonRoomProps
     {
         width = Width;
         height = Height;
+        mapScale = MapScale;
         roomTile = RoomTile;
         hallwayTile = HallwayTile;
         doorTile = DoorTile;

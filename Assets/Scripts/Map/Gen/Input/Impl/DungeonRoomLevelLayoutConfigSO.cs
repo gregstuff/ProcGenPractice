@@ -8,6 +8,7 @@ public class DungeonRoomLevelLayoutConfigSO : ScriptableObject
 {
     [SerializeField] private int width = 64;
     [SerializeField] private int height = 64;
+    [SerializeField] private float scale = 2;
     [SerializeField] private int doorDistanceFromEdge = 1;
     [SerializeField] private int minHallwayLength = 2;
     [SerializeField] private int maxHallwayLength = 5;
@@ -44,6 +45,7 @@ public class DungeonRoomLevelLayoutConfigSO : ScriptableObject
         {
             Width = width,
             Height = height,
+            MapScale = scale,
             RoomTile = _roomTile,
             HallwayTile = _hallwayTile,
             DoorTile = _doorTile,

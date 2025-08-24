@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b02767b5945f2942bd65c9e0d41ad90, type: 3}
+  m_Name: Grid Decoration Matcher SO
+  m_EditorClassIdentifier: 
+  _decorationRuleset: {fileID: 11400000, guid: 139c50007e47053439c1bdaab912179b, type: 2}
