@@ -10,6 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1b404f020f1b9044bd4cbbd89eba5cb, type: 3}
-  m_Name: Door Matcher
+  m_Name: Not Null Matcher
   m_EditorClassIdentifier: 
-  MatchingTags: 03000000
+  MatchingTags: 
+  Blocked: 0
+  kind: 0
+  _choice:
+    rid: 3885069904424206353
+  references:
+    version: 2
+    RefIds:
+    - rid: 3885069904424206353
+      type: {class: NullMatchingRule, ns: , asm: DungeonGeneration}
+      data:
+        MatchNull: 0

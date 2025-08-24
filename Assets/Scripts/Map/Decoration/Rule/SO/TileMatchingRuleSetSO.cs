@@ -6,4 +6,5 @@ using UnityEngine;
 public class TileMatchingRuleSetSO : ScriptableObject
 {
     [SerializeField] public TileMatchingRuleSO[] TileMatchingRules;
+    [SerializeField] public TileMatchingRuleSO DefaultMatchingRule;
 }

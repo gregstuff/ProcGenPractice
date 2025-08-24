@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DungeonGeneration.Map.Output.Impl
 {
     [CreateAssetMenu(menuName = "ProcGen/Output/Debug Texture")]
-    public class DebugTextureOutput : OutputGenerator
+    public class DebugTextureOutputSO : OutputGeneratorSO
     {
         [SerializeField] private Renderer _levelLayoutRenderer;
 
@@ -15,7 +15,7 @@ namespace DungeonGeneration.Map.Output.Impl
             if (!level.TryGet<Dimensions>(out var dimensions)
                 ||!level.TryGet<TileLayer>(out var tileLayer))
             {
-                throw new ArgumentException($"Level generation is missing required data for ${typeof(DebugTextureOutput)}");
+                throw new ArgumentException($"Level generation is missing required data for ${typeof(DebugTextureOutputSO)}");
             }
 
             var width = dimensions.MapDimensions.x;

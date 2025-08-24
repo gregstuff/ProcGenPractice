@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78cc18f82e75cab4fa8d7138fcc57c8f, type: 3}
+  m_Name: blockedRuleSetOne
+  m_EditorClassIdentifier: 
+  DecorationRules:
+  - Name: Rule_94d3
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    SpawnCell: {x: 1, y: 1}
+    PostSpawnBlockedCells: []
+    Prefab: {fileID: 2660337167943546739, guid: 89041a4e615f6c64ea4acbb8f05c5e6a,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    MaxApplications: 0
+    PatternHeight: 3
+    PatternWidth: 3
+  TileMatchingRuleSet: {fileID: 11400000, guid: a996b0223fabd5646abef31f9614e3ef,
+    type: 2}

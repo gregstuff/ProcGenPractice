@@ -220,7 +220,7 @@ public class ProcGenRulesWindowUI : EditorWindow
     // ---------------------------
     private void HandleAddButtonClicked()
     {
-        rules.Add(new DecorationRuleUIModel());
+        rules.Add(new DecorationRuleUIModel(_selectedTileMatchingRuleSet));
         isRuleCollapsed.Add(false);
     }
 
@@ -258,7 +258,6 @@ public class ProcGenRulesWindowUI : EditorWindow
         DecorationRulesetSO.Construct(path, rules.ToArray(), _selectedTileMatchingRuleSet);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log($"Saved DecorationRulesetSO: {path}");
     }
 
     private void HandleLoadButtonClicked()
@@ -303,11 +302,9 @@ public class ProcGenRulesWindowUI : EditorWindow
             TrySetRuleSet(loaded.TileMatchingRuleSet);
         }
 
-        var uiRules = loaded.DecorationRules.Select(DecorationRuleUIModel.FromModel).ToList();
+        var uiRules = loaded.DecorationRules.Select(rule=>DecorationRuleUIModel.FromModel(rule, _selectedTileMatchingRuleSet)).ToList();
         InitRules(uiRules);
         Repaint();
-
-        Debug.Log($"Loaded DecorationRulesetSO: {assetPath}");
     }
 
     private bool InvalidSave(out string message)

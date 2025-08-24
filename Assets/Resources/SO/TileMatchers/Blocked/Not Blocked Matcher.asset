@@ -10,7 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1b404f020f1b9044bd4cbbd89eba5cb, type: 3}
-  m_Name: Room Matcher
+  m_Name: Not Blocked Matcher
   m_EditorClassIdentifier: 
-  Name: 
   MatchingTags: 
+  Blocked: 0
+  kind: 1
+  _choice:
+    rid: 3885069904424206359
+  references:
+    version: 2
+    RefIds:
+    - rid: 3885069904424206359
+      type: {class: BlockedMatchingRule, ns: , asm: DungeonGeneration}
+      data:
+        MatchBlocked: 0

@@ -5,7 +5,7 @@ using DungeonGeneration.Service.Util;
 namespace DungeonGeneration.Map.Output.Impl
 {
     [CreateAssetMenu(menuName = "ProcGen/Output/Black White Texture")]
-    public class BlackWhiteTextureOutput : OutputGenerator
+    public class BlackWhiteTextureOutputSO : OutputGeneratorSO
     {
         [SerializeField] private Renderer _levelLayoutRenderer;
 
@@ -14,7 +14,7 @@ namespace DungeonGeneration.Map.Output.Impl
             if(!level.TryGet<BlockMask>(out var blockedMap)
                 ||!level.TryGet<Dimensions>(out var dimensions))
             {
-                throw new Exception($"Selected level generation missing required inputs for ${typeof(BlackWhiteTextureOutput)}");
+                throw new Exception($"Selected level generation missing required inputs for ${typeof(BlackWhiteTextureOutputSO)}");
             }
 
             DrawLayout(blockedMap.Mask, dimensions.MapDimensions);

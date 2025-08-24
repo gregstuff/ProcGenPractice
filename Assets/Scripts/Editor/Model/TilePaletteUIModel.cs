@@ -24,6 +24,7 @@ public class TilePaletteUIModel
 
     private static readonly Color[] _tileColors =
     { 
+        Color.black,
         Color.red,
         Color.green,
         Color.blue,

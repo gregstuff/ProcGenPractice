@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -21,12 +19,15 @@ public class DecorationRuleUIModel
     public Vector3 SpawnPositionOffset { get; set; }
     public int MaxApplications { get; set; } 
     public TileMatchingRuleSO[,] MatchingPattern => _matchingPattern;
+    private TileMatchingRuleSO _defaultMatchingRule;
 
-    public DecorationRuleUIModel()
+    public DecorationRuleUIModel (TileMatchingRuleSetSO tileMatchingRuleSet)
     {
-        _matchingPattern = new TileMatchingRuleSO[_height, _width];
         _spawningLocationGrid = new bool[_height, _width];
         _blockingLocationGrid = new bool[_height, _width];
+        _defaultMatchingRule = tileMatchingRuleSet.DefaultMatchingRule;
+
+        InitMatchingGrid();
     }
 
     public void ResizeGrid(int newHeight, int newWidth)
@@ -40,7 +41,7 @@ public class DecorationRuleUIModel
             ProcGenRulesWindowConstants.MINIMUM_GRID_LENGTH,
             ProcGenRulesWindowConstants.MAXIMUM_GRID_LENGTH);
 
-        _matchingPattern = new TileMatchingRuleSO[newHeight, newWidth];
+        InitMatchingGrid();
         _spawningLocationGrid = new bool[newHeight, newWidth];
         _blockingLocationGrid = new bool[newHeight, newWidth];
     }
@@ -62,11 +63,11 @@ public class DecorationRuleUIModel
         blockLocationGrid = _blockingLocationGrid;
     }
 
-    public static DecorationRuleUIModel FromModel(DecorationRule rule)
+    public static DecorationRuleUIModel FromModel(DecorationRule rule, TileMatchingRuleSetSO tileMatchingRuleSet)
     {
         var matchingPattern = rule.MatchingPattern2D;
 
-        var uiModel = new DecorationRuleUIModel()
+        var uiModel = new DecorationRuleUIModel(tileMatchingRuleSet)
         {
             _height = matchingPattern.GetLength(0),
             _width = matchingPattern.GetLength(1),
@@ -127,6 +128,18 @@ public class DecorationRuleUIModel
             }
         }
         return Vector2Int.zero;
+    }
+
+    private void InitMatchingGrid()
+    {
+        _matchingPattern = new TileMatchingRuleSO[_height, _width];
+        for (int y = 0; y < _height; ++y)
+        {
+            for (int x = 0; x < _width; ++x)
+            {
+                _matchingPattern[y, x] = _defaultMatchingRule;
+            }
+        }
     }
 
 }

@@ -7,7 +7,7 @@ using System;
 namespace DungeonGeneration.Map.Output.Impl
 {
     [CreateAssetMenu(menuName = "ProcGen/Output/Tile Map 3D")]
-    public class TileMapOutput3d : OutputGenerator
+    public class TileMapOutput3DSO : OutputGeneratorSO
     {
         private static readonly string DUNGEON_PARENT_TAG = "DungeonParent";
 
@@ -36,11 +36,15 @@ namespace DungeonGeneration.Map.Output.Impl
         private GameObject GetDungeonParentCleanChildren()
         {
             var existing = GameObject.FindGameObjectWithTag(DUNGEON_PARENT_TAG);
-            if (existing != null) Destroy(existing);
+            if (existing != null)
+            {
 
 #if UNITY_EDITOR
             UnityEngine.Object.DestroyImmediate(existing);
+#else
+            Destroy(existing);
 #endif
+            }
             return ObjectSpawnerSingleton.Instance.Spawn(_dungeonRoot);
         }
 
@@ -66,7 +70,6 @@ namespace DungeonGeneration.Map.Output.Impl
                     }
                 }
             }
-            Debug.Log($"3D dungeon generated with tileset: {_tileset.name}, scale: {tileScale}");
         }
 
         private Vector3 CalculateTilePosition(int x, int y, Vector3 tileScale)
