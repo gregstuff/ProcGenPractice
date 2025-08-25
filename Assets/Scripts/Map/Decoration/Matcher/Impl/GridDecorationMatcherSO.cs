@@ -6,14 +6,22 @@ public class GridDecorationMatcherSO : DecorationMatcherSO
 {
     [SerializeField] private DecorationRulesetSO _decorationRuleset;
 
-    private Dictionary<Vector2Int, List<DecorationRule>> _dimensionsToDecorationRules = new Dictionary<Vector2Int, List<DecorationRule>>();
+    private Dictionary<Vector2Int, List<DecorationRule>> _dimensionsToDecorationRules;
 
     private int _maxWidth;
     private int _maxHeight;
 
+    private void Init()
+    {
+        _dimensionsToDecorationRules = new Dictionary<Vector2Int, List<DecorationRule>>();
+        _maxWidth = 0;
+        _maxHeight = 0;
+    }
+
     public override IEnumerable<IDecorationMatch> GetDecorationMatches(ICapabilityProvider level)
     {
-        
+        Init();
+
         List<IDecorationMatch> decorationMatches = new List<IDecorationMatch>(); 
 
         if(!level.TryGet<TileLayer>(out var tileLayer))
@@ -50,16 +58,19 @@ public class GridDecorationMatcherSO : DecorationMatcherSO
     {
         var matchedRules = new List<DecorationRule>();
 
-        for (int rectY = y; rectY < y + _maxHeight; ++y)
+        //rectX and rectY define the boundaries of the rect we're checking for rules
+        for (int rectY = y; rectY <= y + _maxHeight; ++rectY)
         {
-            for (int rectX = x; rectX < x + _maxWidth; ++x)
+            for (int rectX = x; rectX <= x + _maxWidth; ++rectX)
             {
-                if(rectY >= tileRules.GetLength(0) || rectX >= tileRules.GetLength(1))
-                    continue; //we have gone out of bounds. No match here, friends
-
                 var width = rectX - x;
                 var height = rectY - y;
 
+                if (rectY + height >= tileRules.GetLength(0) 
+                    || rectX + width >= tileRules.GetLength(1))
+                    continue; //we have gone out of bounds. No match here, friends
+
+                //get index for current rect and see if there's any rules associated with it
                 Vector2Int dimensions = new Vector2Int(width, height);
                 if (!_dimensionsToDecorationRules.TryGetValue(dimensions, out var rules))
                 {
@@ -70,11 +81,11 @@ public class GridDecorationMatcherSO : DecorationMatcherSO
                 foreach (var rule in rules)
                 {
                     bool failed = false;
-                    for (int ruleY = y; ruleY <= rectY; ++ruleY)
+                    for (int ruleY = 0; ruleY < dimensions.y; ++ruleY)
                     {
-                        for (int ruleX = x; ruleX <= rectX; ++rectX)
+                        for (int ruleX = 0; ruleX < dimensions.x; ++ruleX)
                         {
-                            if(!rule.Matches(ruleY, ruleX, tileRules[y, x]))
+                            if (!rule.Matches(ruleY, ruleX, tileRules[ruleY + y, ruleX + x]))
                             {
                                 //if any position failed to match, the rule did not match
                                 failed = true;
@@ -83,7 +94,7 @@ public class GridDecorationMatcherSO : DecorationMatcherSO
                         }
                         if (failed) break;
                     }
-                    matchedRules.Add(rule);
+                    if(!failed) matchedRules.Add(rule);
                 }
             }
         }

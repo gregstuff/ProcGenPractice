@@ -1,5 +1,5 @@
 using DungeonGeneration.Service.Util;
-using log4net.Core;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -22,14 +22,13 @@ public class DebugTextureDecoratorSO : DecoratorSO
     {
         GetOrCreateRenderer();
         InitValues(level);
-        DrawLayout();
-        Decorate(level);
+        var matches = GetDecorationMatches(level);
+        DrawLayout(matches);
     }
 
-    private void Decorate(ICapabilityProvider level)
+    private IEnumerable<IDecorationMatch> GetDecorationMatches(ICapabilityProvider level)
     {
-        var matches = _decorationMatcher.GetDecorationMatches(level);
-        Debug.Log($"There are {matches.Count()} matches");
+        return _decorationMatcher.GetDecorationMatches(level);
     }
 
     private void InitValues(ICapabilityProvider level)
@@ -63,8 +62,10 @@ public class DebugTextureDecoratorSO : DecoratorSO
         _renderer = ObjectSpawnerSingleton.Instance.Spawn(_decorationRenderer);
     }
 
-    void DrawLayout()
+    void DrawLayout(IEnumerable<IDecorationMatch> decorationMatches)
     {
+        var positions = decorationMatches.Select(match => match.SpawnPosition).ToHashSet();
+
         //initialize using cell width / cell height and stretch after initialization and pixel assignment
         _renderer.transform.localScale = new Vector3(_cellHeight, _cellWidth, 1);
         var layoutTexture = (Texture2D)_renderer.sharedMaterial.mainTexture;
@@ -75,7 +76,14 @@ public class DebugTextureDecoratorSO : DecoratorSO
         {
             for (int x = 0; x < _cellWidth; ++x)
             {
-                layoutTexture.SetPixel(x, y, _blockedGrid[y, x] ? Color.black : Color.white);
+                if (positions.Contains(new Vector2Int(x,y)))
+                {
+                    layoutTexture.SetPixel(x, y, Color.red);
+                }
+                else
+                {
+                    layoutTexture.SetPixel(x, y, _blockedGrid[y, x] ? Color.black : Color.white);
+                }
             }
         }
 

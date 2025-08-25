@@ -67,7 +67,7 @@ namespace DungeonGeneration.Map.Model.Rooms
                 for (int x = 0; x < _width; ++x)
                 {
                     _blockedMap[y, x] = true;
-                    _tileTypeMap[y, x] = null;
+                    _tileTypeMap[y, x] = _unminedTile;
                 }
             }
 
