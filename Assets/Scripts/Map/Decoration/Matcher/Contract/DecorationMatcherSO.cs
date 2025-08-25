@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class DecorationMatcherSO : ScriptableObject
 {
-    public abstract IDecorationMatch[] GetDecorationMatchers(ICapabilityProvider level);
+    public abstract IEnumerable<IDecorationMatch> GetDecorationMatches(ICapabilityProvider level);
 }

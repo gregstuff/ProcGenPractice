@@ -1,5 +1,6 @@
 using DungeonGeneration.Service.Util;
 using log4net.Core;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ProcGen/Decorators/Debug Texture Decorator")]
@@ -22,6 +23,13 @@ public class DebugTextureDecoratorSO : DecoratorSO
         GetOrCreateRenderer();
         InitValues(level);
         DrawLayout();
+        Decorate(level);
+    }
+
+    private void Decorate(ICapabilityProvider level)
+    {
+        var matches = _decorationMatcher.GetDecorationMatches(level);
+        Debug.Log($"There are {matches.Count()} matches");
     }
 
     private void InitValues(ICapabilityProvider level)

@@ -18,6 +18,8 @@ public class DecorationRule
 
     public TileMatchingRuleSO[,] MatchingPattern2D => From1DTo2DArray();
 
+    private TileMatchingRuleSO[,] _matchingPattern2D;
+
     public DecorationRule(DecorationRuleUIModel model)
     {
         Name = model.Name;
@@ -54,6 +56,8 @@ public class DecorationRule
 
     public TileMatchingRuleSO[,] From1DTo2DArray()
     {
+        if(_matchingPattern2D != null) return _matchingPattern2D;
+
         var result = new TileMatchingRuleSO[PatternHeight, PatternWidth];
         for (int i = 0; i < PatternHeight; i++)
         {
@@ -62,6 +66,7 @@ public class DecorationRule
                 result[i, j] = MatchingPattern1D[i * PatternWidth + j];
             }
         }
+        _matchingPattern2D = result;
         return result;
     }
 
@@ -78,6 +83,17 @@ public class DecorationRule
                 MatchingPattern1D[i * PatternWidth + j] = pattern[i, j];
             }
         }
+    }
+
+    public bool Matches(int y, int x, TileTypeSO tileType)
+    {
+        if (y < 0
+            || x < 0
+            || y >= _matchingPattern2D.GetLength(0)
+            || x >= _matchingPattern2D.GetLength(1))
+            throw new Exception($"Attempted to check out of range for decoration rule {Name} y: {y} x: {x}");
+
+        return _matchingPattern2D[y, x].MatchesTile(tileType);
     }
 
 }
