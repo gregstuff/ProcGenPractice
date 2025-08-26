@@ -93,7 +93,6 @@ public class DebugTextureDecoratorSO : DecoratorSO
         _renderer.transform.localScale = new Vector3(_resolvedWidth, _resolvedHeight, 1);
         _renderer.transform.position = new Vector3((_resolvedWidth / 2) - _mapScale, 1, (_resolvedHeight / 2) - _mapScale);
         _renderer.transform.localRotation = Quaternion.Euler(90, 0, 0);
-
     }
 
 }
