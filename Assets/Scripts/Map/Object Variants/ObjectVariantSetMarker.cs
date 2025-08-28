@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SetMarker : MonoBehaviour
+public class ObjectVariantSetMarker : MonoBehaviour
 {
     [SerializeField] public string Set;
 }

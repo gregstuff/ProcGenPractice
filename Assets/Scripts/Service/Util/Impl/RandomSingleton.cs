@@ -29,6 +29,11 @@ namespace DungeonGeneration.Service.Util
             SetRandom();
         }
 
+        public int GetSeed()
+        {
+            return _seed;
+        }
+
         public void SetSeed(int seed)
         {
             _seed = seed;
@@ -53,6 +58,11 @@ namespace DungeonGeneration.Service.Util
         public int Next()
         {
             return _random.Next();
+        }
+
+        public float NextFloat()
+        {
+            return (float) _random.NextDouble();
         }
 
 

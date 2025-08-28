@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: blockedRuleSetOne
   m_EditorClassIdentifier: 
   DecorationRules:
-  - Name: Top Left
+  - Name: Bottom Right
     MatchingPattern1D:
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
@@ -25,36 +25,58 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
     - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
     SpawnCell: {x: 1, y: 1}
-    PostSpawnBlockedCells: []
+    PostSpawnBlockedCells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
     Prefab: {fileID: 919132149155446097, guid: 80e2e2533351c5547b9ea9a5c51922a9, type: 3}
     SpawnScale: {x: 1, y: 1, z: 1}
     SpawnRotation: {x: 0, y: 0, z: 0}
     SpawnPositionOffset: {x: 0, y: 0, z: 0}
-    MaxApplications: 0
-    PatternHeight: 3
-    PatternWidth: 3
-  - Name: Top RIght
-    MatchingPattern1D:
-    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
-    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
-    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
-    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
-    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
-    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
-    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
-    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
-    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
-    SpawnCell: {x: 1, y: 1}
-    PostSpawnBlockedCells: []
-    Prefab: {fileID: 919132149155446097, guid: 80e2e2533351c5547b9ea9a5c51922a9, type: 3}
-    SpawnScale: {x: 1, y: 1, z: 1}
-    SpawnRotation: {x: 0, y: 0, z: 0}
-    SpawnPositionOffset: {x: 0, y: 0, z: 0}
-    MaxApplications: 0
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
     PatternHeight: 3
     PatternWidth: 3
   - Name: Bottom Left
     MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 1, y: 1}
+    PostSpawnBlockedCells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    Prefab: {fileID: 919132149155446097, guid: 80e2e2533351c5547b9ea9a5c51922a9, type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 3
+    PatternWidth: 3
+  - Name: Top Left
+    MatchingPattern1D:
     - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
     - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
@@ -65,15 +87,26 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     SpawnCell: {x: 1, y: 1}
-    PostSpawnBlockedCells: []
+    PostSpawnBlockedCells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
     Prefab: {fileID: 919132149155446097, guid: 80e2e2533351c5547b9ea9a5c51922a9, type: 3}
     SpawnScale: {x: 1, y: 1, z: 1}
     SpawnRotation: {x: 0, y: 0, z: 0}
     SpawnPositionOffset: {x: 0, y: 0, z: 0}
-    MaxApplications: 0
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
     PatternHeight: 3
     PatternWidth: 3
-  - Name: Bottom Right
+  - Name: Top Right
     MatchingPattern1D:
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
@@ -85,13 +118,394 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
     SpawnCell: {x: 1, y: 1}
-    PostSpawnBlockedCells: []
+    PostSpawnBlockedCells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
     Prefab: {fileID: 919132149155446097, guid: 80e2e2533351c5547b9ea9a5c51922a9, type: 3}
     SpawnScale: {x: 1, y: 1, z: 1}
     SpawnRotation: {x: 0, y: 0, z: 0}
     SpawnPositionOffset: {x: 0, y: 0, z: 0}
-    MaxApplications: 0
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
     PatternHeight: 3
+    PatternWidth: 3
+  - Name: Table And Chairs
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    SpawnCell: {x: 3, y: 3}
+    PostSpawnBlockedCells:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 6, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 3, y: 1}
+    - {x: 4, y: 1}
+    - {x: 5, y: 1}
+    - {x: 6, y: 1}
+    - {x: 0, y: 2}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    - {x: 3, y: 2}
+    - {x: 4, y: 2}
+    - {x: 5, y: 2}
+    - {x: 6, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: 2, y: 3}
+    - {x: 3, y: 3}
+    - {x: 4, y: 3}
+    - {x: 5, y: 3}
+    - {x: 6, y: 3}
+    - {x: 0, y: 4}
+    - {x: 1, y: 4}
+    - {x: 2, y: 4}
+    - {x: 3, y: 4}
+    - {x: 4, y: 4}
+    - {x: 5, y: 4}
+    - {x: 6, y: 4}
+    - {x: 0, y: 5}
+    - {x: 1, y: 5}
+    - {x: 2, y: 5}
+    - {x: 3, y: 5}
+    - {x: 4, y: 5}
+    - {x: 5, y: 5}
+    - {x: 6, y: 5}
+    - {x: 0, y: 6}
+    - {x: 1, y: 6}
+    - {x: 2, y: 6}
+    - {x: 3, y: 6}
+    - {x: 4, y: 6}
+    - {x: 5, y: 6}
+    - {x: 6, y: 6}
+    Prefab: {fileID: 2201334292613131516, guid: 78d30426f630a094391e0d5d712e342a,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 2
+    ChanceToPlace: 0.8
+    PatternHeight: 7
+    PatternWidth: 7
+  - Name: Small Room Wall Chain Top
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 2}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 2}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 3
+    PatternWidth: 5
+  - Name: Small Room Wall Chain Bottom
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 0}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 0}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 3
+    PatternWidth: 5
+  - Name: Small Room Wall Chain Left
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 2}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 2}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 5
+    PatternWidth: 3
+  - Name: Small Room Wall Chain Right
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 0, y: 2}
+    PostSpawnBlockedCells:
+    - {x: 0, y: 2}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 5
+    PatternWidth: 3
+  - Name: Medium Room Chain Bottom
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 0}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 0}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 4
+    PatternWidth: 6
+  - Name: Medium Room Chain Top
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 2}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 2}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 3
+    PatternWidth: 6
+  - Name: Medium Room Chain Left
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 2}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 2}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 6
+    PatternWidth: 3
+  - Name: Medium Room Chain Right
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 0, y: 3}
+    PostSpawnBlockedCells:
+    - {x: 0, y: 3}
+    Prefab: {fileID: 9002870929908470129, guid: 5e1f62cb7b2d13d4283d64ad459607d6,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    PatternHeight: 6
     PatternWidth: 3
   TileMatchingRuleSet: {fileID: 11400000, guid: a996b0223fabd5646abef31f9614e3ef,
     type: 2}

@@ -29,6 +29,8 @@ public class RuleCardUI
     private static bool _isBlockPaintActive = false;
     private static bool _blockPaintTargetValue = false;
 
+    // For ExtraBlockOffsets adder
+    private static Vector2Int _newFootprintOffset = Vector2Int.zero;
 
     public static void Construct(
         DecorationRuleUIModel gridRule,
@@ -54,6 +56,7 @@ public class RuleCardUI
         if (!newCollapsed)
         {
             gridRule.Name = EditorGUILayout.TextField("ID", gridRule.Name);
+
             currentTab = (GridTab)GUILayout.Toolbar((int)currentTab, new[] { "Matching Grid", "Spawning Grid", "Blocking Grid" });
             if (currentTab == GridTab.Matching)
             {
@@ -71,10 +74,33 @@ public class RuleCardUI
                 HandleBlockingGridLabel();
                 HandleBlockingGrid(gridRule);
             }
+
             HandleSpawnedPrefabField(gridRule);
+
+            // Budgets & chance
+            HandleChancesPerSpaceField(gridRule);
+            HandleChancesPerMapField(gridRule);
+            HandleChanceToPlaceField(gridRule);
+
+            // Priority & spacing / footprint
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Priority & Category", boldStyle);
+            HandlePriorityField(gridRule);
+            HandleCategoryIdField(gridRule);
+
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Spacing / Anti-Clumping", boldStyle);
+            HandleSpacingFields(gridRule);
+
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Irregular Footprint", boldStyle);
+            HandleExtraFootprintOffsetsField(gridRule);
+
+            // Transform
             HandleSpawnScaleField(gridRule);
             HandleSpawnRotationField(gridRule);
             HandleSpawnOffsetField(gridRule);
+
             HandleDeleteButton(onDeleteClicked);
         }
         GUILayout.EndVertical();
@@ -171,8 +197,7 @@ public class RuleCardUI
         GUILayout.EndHorizontal();
     }
 
-    private static void HandleSpawningGrid(
-        DecorationRuleUIModel gridRule)
+    private static void HandleSpawningGrid(DecorationRuleUIModel gridRule)
     {
         var (_, gridWidth, gridHeight, _, spawnGrid, blockingGrid) = gridRule;
         for (int y = 0; y < gridHeight; y++)
@@ -185,14 +210,14 @@ public class RuleCardUI
                     GUILayout.Height(ProcGenRulesWindowConstants.CELL_LENGTH));
                 GUI.backgroundColor = Color.white;
                 Rect cellRect = GUILayoutUtility.GetLastRect();
-                if (cellRect.Contains(Event.current.mousePosition) 
-                    && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) 
+                if (cellRect.Contains(Event.current.mousePosition)
+                    && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag)
                     && Event.current.button == 0)
                 {
                     for (int i = 0; i < gridHeight; i++)
                         for (int j = 0; j < gridWidth; j++)
                             spawnGrid[i, j] = false;
-                    gridRule.SetSpawnCell(y,x);
+                    gridRule.SetSpawnCell(y, x);
                     Event.current.Use();
                     EditorWindow.GetWindow<ProcGenRulesWindowUI>().Repaint();
                 }
@@ -215,7 +240,6 @@ public class RuleCardUI
                     gridRule.SetBlockedCell(y, x, blocked);
                 }
             }
-
             _isBlockPaintActive = false;
         }
 
@@ -256,7 +280,6 @@ public class RuleCardUI
             GUILayout.EndHorizontal();
         }
     }
-
 
     private static void HandleSpawnedPrefabField(DecorationRuleUIModel gridRule)
     {
@@ -311,4 +334,121 @@ public class RuleCardUI
         GUILayout.EndHorizontal();
     }
 
+    private static void HandleChancesPerSpaceField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+        gridRule.ChancesPerSpace =
+            EditorGUILayout.IntField(
+                "Chances Per Space",
+                gridRule.ChancesPerSpace);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleChancesPerMapField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+        gridRule.ChancesPerMap =
+            EditorGUILayout.IntField(
+                "Chances Per Map",
+                gridRule.ChancesPerMap);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleChanceToPlaceField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+        gridRule.ChanceToPlace =
+            EditorGUILayout.Slider(
+                "Chance To Place",
+                gridRule.ChanceToPlace,
+                0f,
+                1f);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandlePriorityField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+        gridRule.Priority = EditorGUILayout.IntField("Priority", gridRule.Priority);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleCategoryIdField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginHorizontal();
+        gridRule.CategoryId = EditorGUILayout.TextField("Category Id", gridRule.CategoryId ?? string.Empty);
+        GUILayout.EndHorizontal();
+    }
+
+    private static void HandleSpacingFields(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginVertical("box");
+        int sameCat = EditorGUILayout.IntField("Same Category Radius", gridRule.SameCategoryMinChebyshev);
+        int samePf = EditorGUILayout.IntField("Same Prefab Radius", gridRule.SamePrefabMinChebyshev);
+        int personal = EditorGUILayout.IntField("Personal Space Radius", gridRule.BlockRadiusChebyshev);
+
+        gridRule.SameCategoryMinChebyshev = Mathf.Max(0, sameCat);
+        gridRule.SamePrefabMinChebyshev = Mathf.Max(0, samePf);
+        gridRule.BlockRadiusChebyshev = Mathf.Max(0, personal);
+        GUILayout.EndVertical();
+    }
+
+    private static void HandleExtraFootprintOffsetsField(DecorationRuleUIModel gridRule)
+    {
+        GUILayout.BeginVertical("box");
+        EditorGUILayout.HelpBox(
+            "Offsets are grid cells relative to the anchor (spawn cell). (0,0) is the anchor and is always reserved.",
+            MessageType.None);
+
+        var list = new System.Collections.Generic.List<Vector2Int>(gridRule.ExtraBlockOffsets ?? Array.Empty<Vector2Int>());
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            GUILayout.BeginHorizontal();
+            var v = list[i];
+            v = Vector2IntRow($"[{i}]  (x,y)", v);
+            if (GUILayout.Button("✕", GUILayout.Width(24)))
+            {
+                list.RemoveAt(i);
+                i--;
+            }
+            else
+            {
+                list[i] = v;
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        GUILayout.Space(4);
+        GUILayout.BeginHorizontal();
+        _newFootprintOffset = Vector2IntRow("Add Offset (x,y)", _newFootprintOffset);
+
+        bool canAdd = _newFootprintOffset != Vector2Int.zero && !list.Contains(_newFootprintOffset);
+        using (new EditorGUI.DisabledScope(!canAdd))
+        {
+            if (GUILayout.Button("Add", GUILayout.Width(60)))
+            {
+                list.Add(_newFootprintOffset);
+                _newFootprintOffset = Vector2Int.zero;
+            }
+        }
+        if (GUILayout.Button("Clear All", GUILayout.Width(80)))
+        {
+            list.Clear();
+        }
+        GUILayout.EndHorizontal();
+
+        gridRule.ExtraBlockOffsets = list.ToArray();
+        GUILayout.EndVertical();
+    }
+
+    private static Vector2Int Vector2IntRow(string label, Vector2Int value)
+    {
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(label, GUILayout.Width(140));
+        int x = EditorGUILayout.IntField(value.x, GUILayout.Width(60));
+        int y = EditorGUILayout.IntField(value.y, GUILayout.Width(60));
+        GUILayout.EndHorizontal();
+        return new Vector2Int(x, y);
+    }
 }

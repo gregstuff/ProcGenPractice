@@ -17,7 +17,16 @@ public class DecorationRuleUIModel
     public Vector3 SpawnScale { get; set; } = Vector3.one;
     public Vector3 SpawnRotation { get; set; }
     public Vector3 SpawnPositionOffset { get; set; }
-    public int MaxApplications { get; set; } 
+    public int ChancesPerSpace { get; set; }
+    public int ChancesPerMap { get; set; }
+    public float ChanceToPlace { get; set; }
+    public int Priority { get; set; }
+    public string CategoryId { get; set; }
+    public int SameCategoryMinChebyshev { get; set; }
+    public int SamePrefabMinChebyshev { get; set; }
+    public int BlockRadiusChebyshev { get; set; }
+    public Vector2Int[] ExtraBlockOffsets { get; set; }
+
     public TileMatchingRuleSO[,] MatchingPattern => _matchingPattern;
     private TileMatchingRuleSO _defaultMatchingRule;
 
@@ -69,13 +78,16 @@ public class DecorationRuleUIModel
 
         var uiModel = new DecorationRuleUIModel(tileMatchingRuleSet)
         {
+            Name = rule.Name,
             _height = matchingPattern.GetLength(0),
             _width = matchingPattern.GetLength(1),
             _matchingPattern = matchingPattern,
             SpawnScale = rule.SpawnScale,
             SpawnRotation = rule.SpawnRotation,
             SpawnPositionOffset = rule.SpawnPositionOffset,
-            MaxApplications = rule.MaxApplications,
+            ChancesPerSpace = rule.ChancesPerSpace,
+            ChancesPerMap = rule.ChancesPerMap,
+            ChanceToPlace = rule.ChanceToPlace,
             Prefab = rule.Prefab,
         };
 
@@ -112,7 +124,7 @@ public class DecorationRuleUIModel
         {
             for (int x=0;x<_blockingLocationGrid.GetLength(1);++x)
             {
-
+                if (_blockingLocationGrid[y,x]) positions.Add(new Vector2Int(x,y));
             }
         }
         return positions.ToArray();

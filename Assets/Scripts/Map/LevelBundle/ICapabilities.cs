@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface ICapability { }
@@ -8,3 +9,4 @@ public class FloatLayer : ICapability { public string Name { get; set; } public 
 public class BoolLayer : ICapability { public string Name { get; set; } public bool[,] Data { get; set; } }
 public class Dimensions : ICapability { public Vector2Int MapDimensions { get; set; } }
 public class Scale : ICapability { public float MapScale { get; set; } }
+public class SpaceMap : ICapability { public Dictionary<Vector2Int, string> Map { get; set; } }

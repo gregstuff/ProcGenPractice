@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 [Serializable]
@@ -12,13 +12,30 @@ public class DecorationRule
     public Vector3 SpawnScale;
     public Vector3 SpawnRotation;
     public Vector3 SpawnPositionOffset;
-    public int MaxApplications;
+
+    public int ChancesPerSpace;
+    public int ChancesPerMap;
+    public float ChanceToPlace;
+
+    public int Priority = 0;
+
+    public string CategoryId;
+
+    public int SameCategoryMinChebyshev = 0;
+
+    public int SamePrefabMinChebyshev = 0;
+
+    public int BlockRadiusChebyshev = 0;
+
+    public Vector2Int[] ExtraBlockOffsets;
+
     public int PatternHeight;
     public int PatternWidth;
 
+    private TileMatchingRuleSO[,] _matchingPattern2D;
     public TileMatchingRuleSO[,] MatchingPattern2D => From1DTo2DArray();
 
-    private TileMatchingRuleSO[,] _matchingPattern2D;
+    public DecorationRule() { }
 
     public DecorationRule(DecorationRuleUIModel model)
     {
@@ -29,9 +46,24 @@ public class DecorationRule
         SpawnScale = model.SpawnScale;
         SpawnRotation = model.SpawnRotation;
         SpawnPositionOffset = model.SpawnPositionOffset;
-        MaxApplications = model.MaxApplications;
+
+        ChancesPerSpace = model.ChancesPerSpace;
+        ChancesPerMap = model.ChancesPerMap;
+        ChanceToPlace = model.ChanceToPlace;
+
+        Priority = model.Priority;
+        CategoryId = model.CategoryId;
+        SameCategoryMinChebyshev = model.SameCategoryMinChebyshev;
+        SamePrefabMinChebyshev = model.SamePrefabMinChebyshev;
+        BlockRadiusChebyshev = model.BlockRadiusChebyshev;
+        ExtraBlockOffsets = model.ExtraBlockOffsets;
 
         SetMatchingPattern(model.MatchingPattern);
+    }
+
+    public void Init()
+    {
+        _matchingPattern2D = null; // cache rebuild per run
     }
 
     public void Deconstruct(
@@ -56,44 +88,35 @@ public class DecorationRule
 
     public TileMatchingRuleSO[,] From1DTo2DArray()
     {
-        if(_matchingPattern2D != null) return _matchingPattern2D;
+        if (_matchingPattern2D != null) return _matchingPattern2D;
 
         var result = new TileMatchingRuleSO[PatternHeight, PatternWidth];
-        for (int i = 0; i < PatternHeight; i++)
-        {
-            for (int j = 0; j < PatternWidth; j++)
-            {
-                result[i, j] = MatchingPattern1D[i * PatternWidth + j];
-            }
-        }
+        for (int y = 0; y < PatternHeight; y++)
+            for (int x = 0; x < PatternWidth; x++)
+                result[y, x] = MatchingPattern1D[y * PatternWidth + x];
+
         _matchingPattern2D = result;
         return result;
     }
 
     public void SetMatchingPattern(TileMatchingRuleSO[,] pattern)
     {
-
         PatternHeight = pattern.GetLength(0);
         PatternWidth = pattern.GetLength(1);
+
         MatchingPattern1D = new TileMatchingRuleSO[PatternHeight * PatternWidth];
-        for (int i = 0; i < PatternHeight; i++)
-        {
-            for (int j = 0; j < PatternWidth; j++)
-            {
-                MatchingPattern1D[i * PatternWidth + j] = pattern[i, j];
-            }
-        }
+        for (int y = 0; y < PatternHeight; y++)
+            for (int x = 0; x < PatternWidth; x++)
+                MatchingPattern1D[y * PatternWidth + x] = pattern[y, x];
+
+        _matchingPattern2D = null;
     }
 
     public bool Matches(int y, int x, TileTypeSO tileType)
     {
-        if (y < 0
-            || x < 0
-            || y >= _matchingPattern2D.GetLength(0)
-            || x >= _matchingPattern2D.GetLength(1))
-            throw new Exception($"Attempted to check out of range for decoration rule {Name} y: {y} x: {x}");
-
-        return _matchingPattern2D[y, x].MatchesTile(tileType);
+        var pattern = MatchingPattern2D;
+        if (y < 0 || x < 0 || y >= pattern.GetLength(0) || x >= pattern.GetLength(1))
+            throw new Exception($"Out of range for rule {Name} y:{y} x:{x}");
+        return pattern[y, x].MatchesTile(tileType);
     }
-
 }
