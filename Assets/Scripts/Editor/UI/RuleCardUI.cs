@@ -1,4 +1,5 @@
 ﻿using ProcGenSys.Editor.Model;
+using ProcGenSys.Pipeline.LevelDecoration.Matcher.Rule;
 using System;
 using UnityEditor;
 using UnityEngine;

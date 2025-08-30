@@ -1,8 +1,5 @@
 using UnityEngine;
-using NUnit.Framework;
-using DungeonGeneration.Map.Enum;
-using DungeonGeneration.Map.Model.Rooms;
-using DungeonGeneration.Utilities;
+
 
 namespace DungeonGeneration.Tests
 {

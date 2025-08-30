@@ -1,5 +1,6 @@
-using DungeonGeneration.Service.Util;
 using ProcGenSys.Common.LevelBundle;
+using ProcGenSys.Service.Util;
+using ProcGenSys.Utilities.Extension;
 using System;
 using UnityEngine;
 

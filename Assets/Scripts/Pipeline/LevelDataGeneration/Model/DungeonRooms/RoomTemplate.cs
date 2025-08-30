@@ -1,4 +1,4 @@
-using DungeonGeneration.Service.Util;
+using ProcGenSys.Service.Util;
 using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelDataGeneration.Model
@@ -25,7 +25,7 @@ namespace ProcGenSys.Pipeline.LevelDataGeneration.Model
 
         public RectInt GenerateRoomCandidateRect()
         {
-            var randomService = RandomSingleton.Instance; // Ensure RandomSingleton is accessible
+            var randomService = RandomSingleton.Instance;
             if (layoutTexture == null)
             {
                 return new RectInt

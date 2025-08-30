@@ -1,7 +1,8 @@
-using DungeonGeneration.Service.Util;
 using ProcGenSys.Common.LevelBundle;
 using ProcGenSys.Pipeline.LevelDataGeneration.Input;
 using ProcGenSys.Pipeline.LevelDataGeneration.Model;
+using ProcGenSys.Service.Util;
+using ProcGenSys.Utilities.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;

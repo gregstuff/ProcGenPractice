@@ -1,6 +1,7 @@
 using DungeonGeneration.Utilities;
 using ProcGenSys.Common.LevelBundle;
 using ProcGenSys.Common.Tile;
+using ProcGenSys.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

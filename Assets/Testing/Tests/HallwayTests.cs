@@ -1,10 +1,7 @@
 using UnityEngine;
 using NUnit.Framework;
-using DungeonGeneration.Map.Enum;
-using DungeonGeneration.Map.Model.Rooms;
-using DungeonGeneration.Service.Util;
-using System.Collections.Generic;
 using System.Linq;
+using ProcGenSys.Pipeline.LevelDataGeneration.Model;
 
 namespace DungeonGeneration.Tests
 {

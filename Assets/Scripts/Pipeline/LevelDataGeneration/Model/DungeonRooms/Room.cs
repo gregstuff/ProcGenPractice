@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ProcGenSys.Utilities.Extension;
 
 namespace ProcGenSys.Pipeline.LevelDataGeneration.Model
 {

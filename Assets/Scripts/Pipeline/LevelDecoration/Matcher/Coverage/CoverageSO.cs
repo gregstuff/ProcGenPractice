@@ -1,3 +1,4 @@
+using ProcGenSys.Pipeline.LevelDecoration.Matcher.Rule;
 using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelDecoration.Matcher.Coverage

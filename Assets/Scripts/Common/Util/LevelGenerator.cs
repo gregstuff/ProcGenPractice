@@ -1,4 +1,6 @@
-using DungeonGeneration.Map.Output;
+using ProcGenSys.Pipeline.LevelDataGeneration.Generators;
+using ProcGenSys.Pipeline.LevelDecoration;
+using ProcGenSys.Pipeline.LevelGeometryGeneration;
 using UnityEngine;
 
 namespace ProcGenSys.Common.Util
