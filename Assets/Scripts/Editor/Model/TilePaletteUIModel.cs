@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TilePaletteUIModel
+namespace ProcGenSys.Editor.Model
 {
-
-    public TileMatchingRuleSetSO TileMatchingRuleSet;
-
-    private static readonly KeyCode[] _tilePaletteKeyCodes =
+    public class TilePaletteUIModel
     {
+
+        public TileMatchingRuleSetSO TileMatchingRuleSet;
+
+        private static readonly KeyCode[] _tilePaletteKeyCodes =
+        {
         KeyCode.Alpha1,
         KeyCode.Alpha2,
         KeyCode.Alpha3,
@@ -22,8 +24,8 @@ public class TilePaletteUIModel
         KeyCode.Alpha0
     };
 
-    private static readonly Color[] _tileColors =
-    { 
+        private static readonly Color[] _tileColors =
+        {
         Color.black,
         Color.red,
         Color.green,
@@ -36,51 +38,52 @@ public class TilePaletteUIModel
         new Color(255,99,71) //pinkish
     };
 
-    private static Dictionary<KeyCode, TileMatchingRuleSO> _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
-    private static Dictionary<TileMatchingRuleSO, Color> _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
-    private static Dictionary<TileMatchingRuleSO, KeyCode> _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
+        private static Dictionary<KeyCode, TileMatchingRuleSO> _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
+        private static Dictionary<TileMatchingRuleSO, Color> _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
+        private static Dictionary<TileMatchingRuleSO, KeyCode> _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
 
-    public TilePaletteUIModel(TileMatchingRuleSetSO tileMatchingRuleSet)
-    {
-        TileMatchingRuleSet = tileMatchingRuleSet;
-        Init();
-    }
-
-    private void Init()
-    {
-        _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
-        _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
-        _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
-
-        var tileMatchingRules = TileMatchingRuleSet.TileMatchingRules;
-
-        if (tileMatchingRules.Length > 10) throw new Exception("Too many tile types!!! Please refactor the keycode / color handling");
-
-        foreach (var tileType in tileMatchingRules)
+        public TilePaletteUIModel(TileMatchingRuleSetSO tileMatchingRuleSet)
         {
-            int index = Array.IndexOf(tileMatchingRules, tileType);
-            _keyToTileType.Add(_tilePaletteKeyCodes[index], tileType);
-            _tileTypeToColor.Add(tileType, _tileColors[index]);
+            TileMatchingRuleSet = tileMatchingRuleSet;
+            Init();
         }
 
-        _tileTypeToKeyCode = _keyToTileType.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+        private void Init()
+        {
+            _keyToTileType = new Dictionary<KeyCode, TileMatchingRuleSO>();
+            _tileTypeToColor = new Dictionary<TileMatchingRuleSO, Color>();
+            _tileTypeToKeyCode = new Dictionary<TileMatchingRuleSO, KeyCode>();
+
+            var tileMatchingRules = TileMatchingRuleSet.TileMatchingRules;
+
+            if (tileMatchingRules.Length > 10) throw new Exception("Too many tile types!!! Please refactor the keycode / color handling");
+
+            foreach (var tileType in tileMatchingRules)
+            {
+                int index = Array.IndexOf(tileMatchingRules, tileType);
+                _keyToTileType.Add(_tilePaletteKeyCodes[index], tileType);
+                _tileTypeToColor.Add(tileType, _tileColors[index]);
+            }
+
+            _tileTypeToKeyCode = _keyToTileType.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+        }
+
+        public TileMatchingRuleSO? GetTileTypeForKeyCode(KeyCode candidate)
+        {
+            return _keyToTileType.TryGetValue(candidate, out var tileType) ? tileType : null;
+        }
+
+        public Color? GetColorForTileType(TileMatchingRuleSO tileType)
+        {
+            if (tileType == null) return Color.black;
+            return _tileTypeToColor.TryGetValue(tileType, out var color) ? color : null;
+        }
+
+        public KeyCode? GetKeyCodeForTileType(TileMatchingRuleSO tileType)
+        {
+            return _tileTypeToKeyCode.TryGetValue(tileType, out var keyCode) ? keyCode : null;
+        }
 
     }
-
-    public TileMatchingRuleSO? GetTileTypeForKeyCode(KeyCode candidate)
-    {
-        return _keyToTileType.TryGetValue(candidate, out var tileType) ? tileType : null;
-    }
-
-    public Color? GetColorForTileType(TileMatchingRuleSO tileType)
-    {
-        if (tileType == null) return Color.black;
-        return _tileTypeToColor.TryGetValue(tileType, out var color) ? color : null;
-    }
-
-    public KeyCode? GetKeyCodeForTileType(TileMatchingRuleSO tileType)
-    {
-        return _tileTypeToKeyCode.TryGetValue(tileType, out var keyCode) ? keyCode : null;
-    }
-
 }

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace DungeonGeneration.Utilities
+namespace ProcGenSys.Utilities
 {
     public class UVChecker : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace DungeonGeneration.Service.Util
+namespace ProcGenSys.Service.Util
 {
     public class RandomSingleton : IRandomService
     {
@@ -62,7 +62,7 @@ namespace DungeonGeneration.Service.Util
 
         public float NextFloat()
         {
-            return (float) _random.NextDouble();
+            return (float)_random.NextDouble();
         }
 
 

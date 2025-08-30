@@ -1,56 +1,60 @@
+using ProcGenSys.Editor.Model;
 using UnityEngine;
 
-public class RuleResizeHandlerUI
+namespace ProcGenSys.Editor.UI
 {
-    private int clickedRuleIndex = -1;
-    private Vector2 dragStartPos;
-    private int startWidth;
-    private int startHeight;
-    private DecorationRuleUIModel curr;
-
-    public RuleResizeHandlerUI()
+    public class RuleResizeHandlerUI
     {
+        private int clickedRuleIndex = -1;
+        private Vector2 dragStartPos;
+        private int startWidth;
+        private int startHeight;
+        private DecorationRuleUIModel curr;
 
-    }
-
-    public void StartResize(int index, Vector2 mousePosition, int width, int height, DecorationRuleUIModel model)
-    {
-        clickedRuleIndex = index;
-        dragStartPos = mousePosition;
-        startWidth = width;
-        startHeight = height;
-        curr = model;
-    }
-
-    public void HandleResizeEvents(DecorationRuleUIModel gridRule, System.Action repaintCallback)
-    {
-        if (clickedRuleIndex == -1 || GUIUtility.hotControl == 0)
-            return;
-
-        var (name, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
-
-        if (!name.Equals(curr.Name)) return;
-
-        if (Event.current.type == EventType.MouseDrag)
+        public RuleResizeHandlerUI()
         {
-            Vector2 delta = Event.current.mousePosition - dragStartPos;
-            int addCols = (int)(delta.x / ProcGenRulesWindowConstants.CELL_LENGTH);
-            int addRows = (int)(delta.y / ProcGenRulesWindowConstants.CELL_LENGTH);
-            int newWidth = Mathf.Max(3, startWidth + addCols);
-            int newHeight = Mathf.Max(3, startHeight + addRows);
 
-            if (newWidth != gridWidth || newHeight != gridHeight)
-            {
-                gridRule.ResizeGrid(newHeight, newWidth);
-                repaintCallback?.Invoke();
-            }
-            Event.current.Use();
         }
-        else if (Event.current.type == EventType.MouseUp)
+
+        public void StartResize(int index, Vector2 mousePosition, int width, int height, DecorationRuleUIModel model)
         {
-            GUIUtility.hotControl = 0;
-            clickedRuleIndex = -1;
-            Event.current.Use();
+            clickedRuleIndex = index;
+            dragStartPos = mousePosition;
+            startWidth = width;
+            startHeight = height;
+            curr = model;
+        }
+
+        public void HandleResizeEvents(DecorationRuleUIModel gridRule, System.Action repaintCallback)
+        {
+            if (clickedRuleIndex == -1 || GUIUtility.hotControl == 0)
+                return;
+
+            var (name, gridWidth, gridHeight, gridPattern, _, _) = gridRule;
+
+            if (!name.Equals(curr.Name)) return;
+
+            if (Event.current.type == EventType.MouseDrag)
+            {
+                Vector2 delta = Event.current.mousePosition - dragStartPos;
+                int addCols = (int)(delta.x / ProcGenRulesWindowConstants.CELL_LENGTH);
+                int addRows = (int)(delta.y / ProcGenRulesWindowConstants.CELL_LENGTH);
+                int newWidth = Mathf.Max(3, startWidth + addCols);
+                int newHeight = Mathf.Max(3, startHeight + addRows);
+
+                if (newWidth != gridWidth || newHeight != gridHeight)
+                {
+                    gridRule.ResizeGrid(newHeight, newWidth);
+                    repaintCallback?.Invoke();
+                }
+                Event.current.Use();
+            }
+            else if (Event.current.type == EventType.MouseUp)
+            {
+                GUIUtility.hotControl = 0;
+                clickedRuleIndex = -1;
+                Event.current.Use();
+            }
         }
     }
 }

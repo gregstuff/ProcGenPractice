@@ -1,35 +1,37 @@
-using System;
+namespace DungeonGeneration.Utilities
+{
 
-namespace DungeonGeneration.Utilities { 
-
-    public static class MarchingSquaresUtility
+    namespace ProcGenSys.Utilities
     {
-        public static int[,] ToMarchingSquaresInts(this bool[,] grid)
+        public static class MarchingSquaresUtility
         {
-            int height = grid.GetLength(0);
-            int width = grid.GetLength(1);
-
-            int[,] result = new int[height - 1, width - 1];
-
-            for (int y = 0; y < height - 1; y++)
+            public static int[,] ToMarchingSquaresInts(this bool[,] grid)
             {
-                for (int x = 0; x < width - 1; x++)
+                int height = grid.GetLength(0);
+                int width = grid.GetLength(1);
+
+                int[,] result = new int[height - 1, width - 1];
+
+                for (int y = 0; y < height - 1; y++)
                 {
-                    int caseValue = 0;
+                    for (int x = 0; x < width - 1; x++)
+                    {
+                        int caseValue = 0;
 
-                    if (grid[y + 1, x]) caseValue |= 1;
+                        if (grid[y + 1, x]) caseValue |= 1;
 
-                    if (grid[y + 1, x + 1]) caseValue |= 2;
+                        if (grid[y + 1, x + 1]) caseValue |= 2;
 
-                    if (grid[y, x]) caseValue |= 4;
+                        if (grid[y, x]) caseValue |= 4;
 
-                    if (grid[y, x + 1]) caseValue |= 8;
+                        if (grid[y, x + 1]) caseValue |= 8;
 
-                    result[y, x] = caseValue;
+                        result[y, x] = caseValue;
+                    }
                 }
-            }
 
-            return result;
+                return result;
+            }
         }
     }
 }

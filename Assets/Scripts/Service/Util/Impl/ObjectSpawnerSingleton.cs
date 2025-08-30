@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace DungeonGeneration.Service.Util
+namespace ProcGenSys.Service.Util
 {
-    public class ObjectSpawnerSingleton : MonoBehaviour, IObjectSpawner 
+    public class ObjectSpawnerSingleton : MonoBehaviour, IObjectSpawner
     {
         private static IObjectSpawner _instance;
         public static IObjectSpawner Instance

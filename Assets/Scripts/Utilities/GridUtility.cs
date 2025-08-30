@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DungeonGeneration.Utilities
+namespace ProcGenSys.Utilities
 {
     public class GridUtility
     {
@@ -76,8 +76,8 @@ namespace DungeonGeneration.Utilities
 
                     if (sourceColor == Color.white)
                     {
-                        grid[y, x] = val; 
-                        points.Add(new Vector2Int(x,y));
+                        grid[y, x] = val;
+                        points.Add(new Vector2Int(x, y));
                     }
                 }
             }
