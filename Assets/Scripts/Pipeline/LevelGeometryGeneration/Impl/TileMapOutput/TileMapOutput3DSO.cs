@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelGeometryGeneration
 {
-    [CreateAssetMenu(menuName = "ProcGen/Output/Tile Map 3D")]
+    [CreateAssetMenu(menuName = "ProcGen/Output/Tile/3D/Tile Map 3D")]
     public class TileMapOutput3DSO : OutputGeneratorSO
     {
-        private static readonly string DUNGEON_PARENT_TAG = "DungeonParent";
+        protected static readonly string DUNGEON_PARENT_TAG = "DungeonParent";
 
         [SerializeField] private GameObject _dungeonRoot;
         [SerializeField] private TilesetConfigSO _tileset;

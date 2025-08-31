@@ -15,8 +15,11 @@ namespace ProcGenSys.Common.Util
         public void GenerateLevel()
         {
             var level = levelGenerator.GenerateLevel();
+
             outputGenerator.OutputMap(level);
-            decorator.ApplyDecorations(level);
+
+            // decorator can be omitted
+            if (decorator != null) decorator.ApplyDecorations(level);
         }
     }
 }

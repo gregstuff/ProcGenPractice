@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelGeometryGeneration
 {
-    [CreateAssetMenu(menuName = "ProcGen/Output/Debug Texture")]
+    [CreateAssetMenu(menuName = "ProcGen/Output/Debug/Debug Texture")]
     public class DebugTextureOutputSO : OutputGeneratorSO
     {
         [SerializeField] private Renderer _levelLayoutRenderer;

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78cc18f82e75cab4fa8d7138fcc57c8f, type: 3}
+  m_Name: blockingRulesOne
+  m_EditorClassIdentifier: 
+  DecorationRules:
+  - Name: Rule_8eea
+    MatchingPattern1D:
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: 49ada71c85c49e049b2fe35ceec0f552, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    - {fileID: 11400000, guid: f902c2bbca60c8743b365eb77a726222, type: 2}
+    SpawnCell: {x: 2, y: 0}
+    PostSpawnBlockedCells:
+    - {x: 2, y: 0}
+    Prefab: {fileID: 4094617159629382436, guid: 386b2a6d45f6d0040b08ab4e937ed244,
+      type: 3}
+    SpawnScale: {x: 1, y: 1, z: 1}
+    SpawnRotation: {x: 0, y: 0, z: 0}
+    SpawnPositionOffset: {x: 0, y: 0, z: 0}
+    ChancesPerSpace: 1
+    ChancesPerMap: 99
+    ChanceToPlace: 1
+    Priority: 99
+    CategoryId: 
+    SameCategoryMinDistance: 0
+    SamePrefabMinDistance: 0
+    BlockRadiusDistance: 0
+    ExtraBlockOffsets: []
+    PatternHeight: 3
+    PatternWidth: 6
+  TileMatchingRuleSet: {fileID: 11400000, guid: a996b0223fabd5646abef31f9614e3ef,
+    type: 2}

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelGeometryGeneration
 {
-    [CreateAssetMenu(menuName = "ProcGen/Output/Black White Texture")]
+    [CreateAssetMenu(menuName = "ProcGen/Output/Debug/Black White Texture")]
     public class BlackWhiteTextureOutputSO : OutputGeneratorSO
     {
         [SerializeField] private Renderer _levelLayoutRenderer;

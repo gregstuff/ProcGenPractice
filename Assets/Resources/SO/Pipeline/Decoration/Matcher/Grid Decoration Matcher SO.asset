@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b02767b5945f2942bd65c9e0d41ad90, type: 3}
   m_Name: Grid Decoration Matcher SO
   m_EditorClassIdentifier: 
-  _decorationRuleset: {fileID: 11400000, guid: 139c50007e47053439c1bdaab912179b, type: 2}
+  _decorationRuleset: {fileID: 11400000, guid: adefce8b4c6e79d4a8780facf8cd7375, type: 2}
+  _coverage: {fileID: 0}
