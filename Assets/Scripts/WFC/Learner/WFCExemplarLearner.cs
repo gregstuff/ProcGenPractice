@@ -12,155 +12,160 @@ namespace ProcGenSys.WFC.Learner
         [MenuItem("ProcGen/WFC/Learn From Selected Exemplars")]
         public static void LearnFromSelection()
         {
-            int processed = 0;
             var learner = new Accumulator();
             List<GameObject> roots = new List<GameObject>();
-
-            foreach (var assetGO in Selection.GetFiltered<GameObject>(SelectionMode.Assets))
+            try
             {
-                var assetPath = AssetDatabase.GetAssetPath(assetGO);
-                if (string.IsNullOrEmpty(assetPath)) continue;
+                int processed = 0;
 
-                var tempRoot = PrefabUtility.LoadPrefabContents(assetPath);
-                try
+                foreach (var assetGO in Selection.GetFiltered<GameObject>(SelectionMode.Assets))
                 {
+                    var assetPath = AssetDatabase.GetAssetPath(assetGO);
+                    if (string.IsNullOrEmpty(assetPath)) continue;
+
+                    var tempRoot = PrefabUtility.LoadPrefabContents(assetPath);
+
                     processed += ProcessOne(tempRoot, learner);
                     roots.Add(tempRoot);
+
                 }
-                finally
+
+                if (processed == 0)
                 {
-                    PrefabUtility.UnloadPrefabContents(tempRoot);
+                    EditorUtility.DisplayDialog("WFC Learner", "No valid exemplars selected (scene or prefab).", "OK");
+                    return;
                 }
-            }
 
-            if (processed == 0)
-            {
-                EditorUtility.DisplayDialog("WFC Learner", "No valid exemplars selected (scene or prefab).", "OK");
-                return;
-            }
+                if (roots == null || roots.Count == 0) { Debug.LogError("Select 1+ exemplar roots."); return; }
 
-            if (roots == null || roots.Count == 0) { Debug.LogError("Select 1+ exemplar roots."); return; }
-
-            foreach (var root in roots)
-            {
-                var prov = root.GetComponent<WFCLevelExemplar>();
-                if (prov == null || !prov.TryGetGrid(out var tiles, out var rows, out var cols, out var cellSize))
+                foreach (var root in roots)
                 {
-                    Debug.LogWarning($"Skip '{root.name}' (no grid).");
-                    continue;
-                }
-
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < cols; c++)
+                    var prov = root.GetComponent<WFCLevelExemplar>();
+                    if (prov == null || !prov.TryGetGrid(out var tiles, out var rows, out var cols, out var cellSize))
                     {
-                        var t = tiles[r, c]; string id = t ? t.name : "None";
-                        learner.TouchTile(id);
+                        Debug.LogWarning($"Skip '{root.name}' (no grid).");
+                        continue;
                     }
 
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < cols; c++)
-                    {
-                        string a = tiles[r, c] ? tiles[r, c].name : "None";
-                        learner.CountAdj(a, Direction.North, r > 0 ? (tiles[r - 1, c] ? tiles[r - 1, c].name : "None") : null);
-                        learner.CountAdj(a, Direction.East, c < cols - 1 ? (tiles[r, c + 1] ? tiles[r, c + 1].name : "None") : null);
-                        learner.CountAdj(a, Direction.South, r < rows - 1 ? (tiles[r + 1, c] ? tiles[r + 1, c].name : "None") : null);
-                        learner.CountAdj(a, Direction.West, c > 0 ? (tiles[r, c - 1] ? tiles[r, c - 1].name : "None") : null);
-                    }
-
-                var markers = root.GetComponentsInChildren<WFCPrefabExemplar>(true);
-
-                var perPrefabPositions = new Dictionary<string, List<Vector3>>();
-
-                foreach (var m in markers)
-                {
-                    string pid = string.IsNullOrWhiteSpace(m.PrefabId) ? Clean(m.gameObject.name) : m.PrefabId;
-
-                    var (atype, i, j, uv) = Classify(m.transform.position, root.transform.position, cellSize);
-                    i = Mathf.Clamp(i, 0, cols - 1);
-                    j = Mathf.Clamp(j, 0, rows - 1);
-
-                    string center = tiles[j, i] ? tiles[j, i].name : "None";
-
-                    // Context counts
-                    switch (atype)
-                    {
-                        case AnchorType.Cell:
-                            learner.CountPrefabCell(pid, center);
-                            learner.AddCellOffset(pid, uv);
-                            break;
-
-                        case AnchorType.EdgeH:
-                            {
-                                string a = j > 0 ? (tiles[j - 1, i] ? tiles[j - 1, i].name : "None") : "None";
-                                string b = tiles[j, i] ? tiles[j, i].name : "None";
-                                learner.CountPrefabEdge(pid, true, a, b);
-                                learner.AddEdgeT(pid, true, uv.x);
-                                break;
-                            }
-                        case AnchorType.EdgeV:
-                            {
-                                string a = i > 0 ? (tiles[j, i - 1] ? tiles[j, i - 1].name : "None") : "None";
-                                string b = tiles[j, i] ? tiles[j, i].name : "None";
-                                learner.CountPrefabEdge(pid, false, a, b);
-                                learner.AddEdgeT(pid, false, uv.x);
-                                break;
-                            }
-                        case AnchorType.Corner:
-                            learner.CountPrefabCorner(pid);
-                            break;
-                        default:
-                            learner.CountPrefabSurface(pid);
-                            break;
-                    }
-
-                    int bins = Mathf.Max(4, m.RotationBins);
-                    float yaw = Mathf.Repeat(m.transform.eulerAngles.y - root.transform.eulerAngles.y, 360f);
-                    int bin = Mathf.Clamp(Mathf.FloorToInt(yaw / (360f / bins)), 0, bins - 1);
-                    learner.AddRotationSample(pid, bins, bin);
-
-                    Vector3 s = m.transform.lossyScale;
-                    learner.AddScaleSample(pid, m.UniformScale, s);
-
-                    var footprint = (m.FootprintMode == FootprintSource.ManualCells && m.ManualFootprintCells != null && m.ManualFootprintCells.Length > 0)
-                        ? new HashSet<Vector2Int>(m.ManualFootprintCells)
-                        : ComputeFootprintCells(m.transform, root.transform.position, cellSize, rows, cols, i, j);
-                    learner.AddFootprintSample(pid, atype, footprint);
-
-                    if (!perPrefabPositions.TryGetValue(pid, out var list))
-                        perPrefabPositions[pid] = list = new List<Vector3>();
-                    list.Add(m.transform.position);
-                }
-
-                foreach (var kv in perPrefabPositions)
-                {
-                    var pid = kv.Key;
-                    var pts = kv.Value;
-                    if (pts.Count < 2) continue;
-                    for (int a = 0; a < pts.Count; a++)
-                    {
-                        float best = float.PositiveInfinity;
-                        for (int b = 0; b < pts.Count; b++)
+                    for (int r = 0; r < rows; r++)
+                        for (int c = 0; c < cols; c++)
                         {
-                            if (a == b) continue;
-                            float d = Vector3.Distance(pts[a], pts[b]) / cellSize;
-                            if (d < best) best = d;
+                            var t = tiles[r, c]; string id = t ? t.name : "None";
+                            learner.TouchTile(id);
                         }
-                        if (best < float.PositiveInfinity)
-                            learner.AddSpacingSample(pid, best);
+
+                    for (int r = 0; r < rows; r++)
+                        for (int c = 0; c < cols; c++)
+                        {
+                            string a = tiles[r, c] ? tiles[r, c].name : "None";
+                            learner.CountAdj(a, Direction.North, r > 0 ? (tiles[r - 1, c] ? tiles[r - 1, c].name : "None") : null);
+                            learner.CountAdj(a, Direction.East, c < cols - 1 ? (tiles[r, c + 1] ? tiles[r, c + 1].name : "None") : null);
+                            learner.CountAdj(a, Direction.South, r < rows - 1 ? (tiles[r + 1, c] ? tiles[r + 1, c].name : "None") : null);
+                            learner.CountAdj(a, Direction.West, c > 0 ? (tiles[r, c - 1] ? tiles[r, c - 1].name : "None") : null);
+                        }
+
+                    var markers = root.GetComponentsInChildren<WFCPrefabExemplar>(true);
+
+                    var perPrefabPositions = new Dictionary<string, List<Vector3>>();
+
+                    foreach (var m in markers)
+                    {
+                        string pid = string.IsNullOrWhiteSpace(m.PrefabId) ? Clean(m.gameObject.name) : m.PrefabId;
+
+                        var (atype, i, j, uv) = Classify(m.transform.position, root.transform.position, cellSize);
+                        i = Mathf.Clamp(i, 0, cols - 1);
+                        j = Mathf.Clamp(j, 0, rows - 1);
+
+                        string center = tiles[j, i] ? tiles[j, i].name : "None";
+
+                        // Context counts
+                        switch (atype)
+                        {
+                            case AnchorType.Cell:
+                                learner.CountPrefabCell(pid, center);
+                                learner.AddCellOffset(pid, uv);
+                                break;
+
+                            case AnchorType.EdgeH:
+                                {
+                                    string a = j > 0 ? (tiles[j - 1, i] ? tiles[j - 1, i].name : "None") : "None";
+                                    string b = tiles[j, i] ? tiles[j, i].name : "None";
+                                    learner.CountPrefabEdge(pid, true, a, b);
+                                    learner.AddEdgeT(pid, true, uv.x);
+                                    break;
+                                }
+                            case AnchorType.EdgeV:
+                                {
+                                    string a = i > 0 ? (tiles[j, i - 1] ? tiles[j, i - 1].name : "None") : "None";
+                                    string b = tiles[j, i] ? tiles[j, i].name : "None";
+                                    learner.CountPrefabEdge(pid, false, a, b);
+                                    learner.AddEdgeT(pid, false, uv.x);
+                                    break;
+                                }
+                            case AnchorType.Corner:
+                                learner.CountPrefabCorner(pid);
+                                break;
+                            default:
+                                learner.CountPrefabSurface(pid);
+                                break;
+                        }
+
+                        int bins = Mathf.Max(4, m.RotationBins);
+                        float yaw = Mathf.Repeat(m.transform.eulerAngles.y - root.transform.eulerAngles.y, 360f);
+                        int bin = Mathf.Clamp(Mathf.FloorToInt(yaw / (360f / bins)), 0, bins - 1);
+                        learner.AddRotationSample(pid, bins, bin);
+
+                        Vector3 s = m.transform.lossyScale;
+                        learner.AddScaleSample(pid, m.UniformScale, s);
+
+                        var footprint = (m.FootprintMode == FootprintSource.ManualCells && m.ManualFootprintCells != null && m.ManualFootprintCells.Length > 0)
+                            ? new HashSet<Vector2Int>(m.ManualFootprintCells)
+                            : ComputeFootprintCells(m.transform, root.transform.position, cellSize, rows, cols, i, j);
+                        learner.AddFootprintSample(pid, atype, footprint);
+
+                        if (!perPrefabPositions.TryGetValue(pid, out var list))
+                            perPrefabPositions[pid] = list = new List<Vector3>();
+                        list.Add(m.transform.position);
+                    }
+
+                    foreach (var kv in perPrefabPositions)
+                    {
+                        var pid = kv.Key;
+                        var pts = kv.Value;
+                        if (pts.Count < 2) continue;
+                        for (int a = 0; a < pts.Count; a++)
+                        {
+                            float best = float.PositiveInfinity;
+                            for (int b = 0; b < pts.Count; b++)
+                            {
+                                if (a == b) continue;
+                                float d = Vector3.Distance(pts[a], pts[b]) / cellSize;
+                                if (d < best) best = d;
+                            }
+                            if (best < float.PositiveInfinity)
+                                learner.AddSpacingSample(pid, best);
+                        }
                     }
                 }
+
+                var asset = ScriptableObject.CreateInstance<WFCModelBundle>();
+                learner.FillAsset(asset);
+
+                var path = EditorUtility.SaveFilePanelInProject("Save WFC Model Bundle", "WFCModelBundle", "asset", "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    AssetDatabase.CreateAsset(asset, path);
+                    AssetDatabase.SaveAssets();
+                    EditorGUIUtility.PingObject(asset);
+                    Debug.Log($"Saved: {path}");
+                }
             }
-
-            var asset = ScriptableObject.CreateInstance<WFCModelBundle>();
-            learner.FillAsset(asset);
-
-            var path = EditorUtility.SaveFilePanelInProject("Save WFC Model Bundle", "WFCModelBundle", "asset", "");
-            if (!string.IsNullOrEmpty(path))
+            finally
             {
-                AssetDatabase.CreateAsset(asset, path);
-                AssetDatabase.SaveAssets();
-                EditorGUIUtility.PingObject(asset);
-                Debug.Log($"Saved: {path}");
+                foreach (var root in roots)
+                {
+                    PrefabUtility.UnloadPrefabContents(root);
+                }
             }
         }
 

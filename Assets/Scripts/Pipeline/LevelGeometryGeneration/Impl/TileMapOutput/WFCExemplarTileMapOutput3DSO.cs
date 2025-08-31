@@ -16,7 +16,16 @@ namespace ProcGenSys.Pipeline.LevelGeometryGeneration
 
             if (dungeonParent == null) throw new System.Exception($"Dungeon Parent was null in {typeof(WFCExemplarTileMapOutput3DSO)}");
 
-            dungeonParent.AddComponent<WFCLevelExemplar>().Level = level;
+            if (!level.TryGet<Dimensions>(out var mapDimensions)
+                || !level.TryGet<Scale>(out var mapScale)
+                || !level.TryGet<TileLayer>(out var tiles))
+            {
+                throw new System.Exception($"Map Data does not meet requirements for {typeof(WFCExemplarTileMapOutput3DSO)}");
+            }
+
+            var exemplar = dungeonParent.AddComponent<WFCLevelExemplar>();
+
+            exemplar.SetGrid(mapDimensions.MapDimensions, mapScale.MapScale, tiles.Tiles);
         }
     }
 }

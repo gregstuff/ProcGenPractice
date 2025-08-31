@@ -3,6 +3,7 @@ using ProcGenSys.Common.LevelBundle;
 using ProcGenSys.Common.Tile;
 using ProcGenSys.Service.Util;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ProcGenSys.Pipeline.LevelGeometryGeneration
@@ -11,6 +12,7 @@ namespace ProcGenSys.Pipeline.LevelGeometryGeneration
     public class TileMapOutput3DSO : OutputGeneratorSO
     {
         protected static readonly string DUNGEON_PARENT_TAG = "DungeonParent";
+        protected static readonly string TILE_CHILD_TAG = "TILES";
 
         [SerializeField] private GameObject _dungeonRoot;
         [SerializeField] private TilesetConfigSO _tileset;
@@ -50,7 +52,14 @@ namespace ProcGenSys.Pipeline.LevelGeometryGeneration
             Destroy(existing);
 #endif
             }
-            return ObjectSpawnerSingleton.Instance.Spawn(_dungeonRoot);
+
+            var spawned = ObjectSpawnerSingleton.Instance.Spawn(_dungeonRoot);
+
+            var tileRoot = spawned.transform.Cast<Transform>()
+                             .Select(t => t.gameObject)
+                             .FirstOrDefault(go => go.CompareTag(TILE_CHILD_TAG));
+
+            return tileRoot;
         }
 
         private void SpawnTiles(int[,] marchingSquaresGrid, Transform parent)

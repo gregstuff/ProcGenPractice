@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ProcGenSys.Common.Tile
 {
+    [Serializable]
     [CreateAssetMenu(menuName = "ProcGen/Tile/Type/Tile Type")]
     public class TileTypeSO : ScriptableObject
     {
