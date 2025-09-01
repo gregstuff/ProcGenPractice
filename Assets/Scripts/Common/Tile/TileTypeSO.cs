@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ProcGenSys.Common.Tile
@@ -13,6 +14,8 @@ namespace ProcGenSys.Common.Tile
 
         public bool HasTag(TileTag tag) =>
             tags != null && Array.IndexOf(tags, tag) >= 0;
+
+        public string Key => tags != null ? string.Join("|", tags) : string.Empty;
     }
 }
 

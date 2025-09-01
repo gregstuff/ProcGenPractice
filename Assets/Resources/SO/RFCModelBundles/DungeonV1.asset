@@ -94,4 +94,65 @@ MonoBehaviour:
     - 0.2826087
     - 0.5
     TileCount: 4
-  Prefabs: []
+  Prefabs:
+  - PrefabId: Table And Chairs
+    CellCount: 3
+    EdgeHCount: 1
+    EdgeVCount: 0
+    CornerCount: 0
+    SurfaceCount: 0
+    CellOnTile:
+    - Key: Room
+      Count: 3
+    EdgeH_AB:
+    - Pair: Room|Room
+      Count: 1
+    EdgeV_AB: []
+    AvgCellUV: {x: 0.55020523, y: 0.55799294}
+    AvgEdgeH_T: 0.49499893
+    AvgEdgeV_T: 0.5
+    RotationBins: 16
+    RotationHist: 04000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    UniformScale: 1
+    ScaleMean: {x: 1, y: 0, z: 0}
+    ScaleStdDev: {x: 0, y: 0, z: 0}
+    Footprints:
+    - Anchor: 0
+      Cells:
+      - {x: -1, y: 0}
+      - {x: -1, y: 1}
+      - {x: 0, y: 0}
+      - {x: 0, y: 1}
+      - {x: 1, y: 0}
+      - {x: 1, y: 1}
+      Count: 1
+    - Anchor: 0
+      Cells:
+      - {x: -1, y: -1}
+      - {x: -1, y: 0}
+      - {x: 0, y: -1}
+      - {x: 0, y: 0}
+      - {x: 0, y: 1}
+      - {x: 1, y: -1}
+      - {x: 1, y: 0}
+      - {x: 1, y: 1}
+      Count: 1
+    - Anchor: 1
+      Cells:
+      - {x: -1, y: -1}
+      - {x: -1, y: 0}
+      - {x: 0, y: -1}
+      - {x: 0, y: 0}
+      - {x: 1, y: -1}
+      - {x: 1, y: 0}
+      Count: 1
+    - Anchor: 0
+      Cells:
+      - {x: -1, y: 0}
+      - {x: -1, y: 1}
+      - {x: 0, y: -1}
+      - {x: 0, y: 0}
+      - {x: 0, y: 1}
+      Count: 1
+    SpacingMedian: 25.54382
+    SpacingP10: 25.387438

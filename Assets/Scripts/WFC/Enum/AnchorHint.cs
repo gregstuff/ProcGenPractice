@@ -1,0 +1,1 @@
+public enum AnchorHint { Auto, Cell, EdgeH, EdgeV, Corner, Surface }

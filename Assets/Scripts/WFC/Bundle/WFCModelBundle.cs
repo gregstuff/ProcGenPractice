@@ -1,3 +1,4 @@
+using ProcGenSys.Common.Enum;
 using System;
 using UnityEngine;
 

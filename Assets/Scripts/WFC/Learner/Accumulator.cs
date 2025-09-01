@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using ProcGenSys.Common.Tile;
+using ProcGenSys.Common.Enum;
+using System.Text;
 
 namespace ProcGenSys.WFC.Learner
 {
     public class Accumulator
     {
         private readonly Dictionary<string, int> tileIndex = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> patterns2x2 = new();
         private readonly List<string> tiles = new List<string>();
 
         private readonly Dictionary<Direction, Dictionary<(int A, int B), int>> adj = new Dictionary<Direction, Dictionary<(int A, int B), int>>()
@@ -42,23 +46,50 @@ namespace ProcGenSys.WFC.Learner
 
         private readonly Dictionary<string, P> prefabs = new Dictionary<string, P>();
 
-        public void TouchTile(string id)
+        public void TouchTile(string name)
         {
-            if (!tileIndex.ContainsKey(id))
+            if (!tileIndex.ContainsKey(name))
             {
-                tileIndex[id] = tiles.Count;
-                tiles.Add(id);
+                tileIndex[name] = tiles.Count;
+                tiles.Add(name);
             }
         }
 
-        public void CountAdj(string a, Direction d, string bOrNull)
+        public void CountAdj(TileTypeSO[,] tiles, int row, int col)
         {
-            if (bOrNull == null) return;
-            TouchTile(a); TouchTile(bOrNull);
-            int A = tileIndex[a], B = tileIndex[bOrNull];
-            var map = adj[d];
-            map[(A, B)] = map.TryGetValue((A, B), out var v) ? v + 1 : 1;
+            var tileA = tiles[row, col];
+
+            TouchTile(tileA.Key);
+
+            foreach (var (dir, tileB) in tiles.GetAdjacentNeighborsWithDiagonals(row, col))
+            {
+                if (tileB == null) continue;
+
+                TouchTile(tileB.Key);
+
+                int A = tileIndex[tileA.Key];
+                int B = tileIndex[tileB.Key];
+
+                var map = adj[dir];
+                map[(A, B)] = map.TryGetValue((A, B), out var v) ? v + 1 : 1;
+            }
         }
+
+        public void Count2x2(TileTypeSO[,] tiles, int row, int col)
+        {
+
+            var keyBuilder = new StringBuilder();
+
+            foreach (var (dir, tileB) in tiles.Get2x2(row, col))
+            {
+                keyBuilder.Append(tileB != null ? tileB.Key : "None").Append("_");
+            }
+
+            var key = keyBuilder.ToString();
+
+            patterns2x2[key] = patterns2x2.TryGetValue(key, out var v) ? v + 1 : 1;
+        }
+
 
         private P GetP(string pid) => prefabs.TryGetValue(pid, out var p) ? p : (prefabs[pid] = new P());
 
@@ -162,9 +193,9 @@ namespace ProcGenSys.WFC.Learner
                         weights[A * N + B] = denom > 0 ? num / denom : 1f / N;
                     }
                 }
-                asset.Adjacency[(int)ToPublic(dir)] = new WFCModelBundle.AdjacencyPerDir
+                asset.Adjacency[(int)dir] = new WFCModelBundle.AdjacencyPerDir
                 {
-                    Dir = ToPublic(dir),
+                    Dir = dir,
                     TileCount = N,
                     Weights = weights
                 };
@@ -228,14 +259,6 @@ namespace ProcGenSys.WFC.Learner
         }
 
         private static int ClampI(int v, int lo, int hi) => (v < lo) ? lo : (v > hi) ? hi : v;
-
-        private static WFC.Direction ToPublic(Direction d) => d switch
-        {
-            Direction.North => WFC.Direction.North,
-            Direction.East => WFC.Direction.East,
-            Direction.South => WFC.Direction.South,
-            _ => WFC.Direction.West
-        };
 
         private static Vector2Int[] ParseCells(string key)
         {

@@ -1,0 +1,1 @@
+public enum FootprintSource { AutoBounds, ManualCells }

@@ -18,7 +18,7 @@ namespace ProcGenSys.WFC.Marker
             if (tiles2D == null || tiles2D.GetLength(0) != dims.y || tiles2D.GetLength(1) != dims.x)
                 throw new System.ArgumentException("tiles2D shape does not match dims");
 
-            mapDimensions = dims; // cols,rows
+            mapDimensions = dims;
             cellSize = size;
 
             tilesFlat = new TileTypeSO[dims.x * dims.y];

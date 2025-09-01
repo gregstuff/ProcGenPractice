@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace ProcGenSys.WFC.Marker
 {
-    public enum AnchorHint { Auto, Cell, EdgeH, EdgeV, Corner, Surface }
-    public enum FootprintSource { AutoBounds, ManualCells }
+
+
 
     public class WFCPrefabExemplar : MonoBehaviour
     {
@@ -19,5 +19,9 @@ namespace ProcGenSys.WFC.Marker
         public int RotationBins = 16;
 
         public bool UniformScale = true;
+
+        public string Name => string.IsNullOrWhiteSpace(PrefabId) ? Clean(gameObject.name) : PrefabId;
+
+        private static string Clean(string n) => n.Replace("(Clone)", "").Trim();
     }
 }
