@@ -54,33 +54,32 @@ namespace ProcGenSys.WFC.Learner
                     {
                         string pid = marker.Name;
 
-                        var (atype, i, j, uv) = Classify(marker.transform.position, root.transform.position, cellSize);
-                        i = Mathf.Clamp(i, 0, cols - 1);
-                        j = Mathf.Clamp(j, 0, rows - 1);
+                        var (atype, x, y, uv) = ResolveCellPositionAnchor(marker.transform.position, root.transform.position, cellSize);
 
-                        string center = tiles[j, i] ? tiles[j, i].name : "None";
+                        // ensures resolved prefab cells are not off grid
+                        x = Mathf.Clamp(x, 0, cols - 1);
+                        y = Mathf.Clamp(y, 0, rows - 1);
 
-                        // Context counts
+                        string centerKey = tiles[y, x].Key;
+
                         switch (atype)
                         {
                             case AnchorType.Cell:
-                                learner.CountPrefabCell(pid, center);
+                                learner.CountPrefabCell(pid, centerKey);
                                 learner.AddCellOffset(pid, uv);
                                 break;
 
                             case AnchorType.EdgeH:
                                 {
-                                    string a = j > 0 ? (tiles[j - 1, i] ? tiles[j - 1, i].name : "None") : "None";
-                                    string b = tiles[j, i] ? tiles[j, i].name : "None";
-                                    learner.CountPrefabEdge(pid, true, a, b);
+                                    string northCellKey = y > 0 ? tiles[y - 1, x].Key : "None";
+                                    learner.CountPrefabEdge(pid, true, northCellKey, centerKey);
                                     learner.AddEdgeT(pid, true, uv.x);
                                     break;
                                 }
                             case AnchorType.EdgeV:
                                 {
-                                    string a = i > 0 ? (tiles[j, i - 1] ? tiles[j, i - 1].name : "None") : "None";
-                                    string b = tiles[j, i] ? tiles[j, i].name : "None";
-                                    learner.CountPrefabEdge(pid, false, a, b);
+                                    string westCellKey = x > 0 ? tiles[y, x - 1].Key : "None";
+                                    learner.CountPrefabEdge(pid, false, westCellKey, centerKey);
                                     learner.AddEdgeT(pid, false, uv.x);
                                     break;
                                 }
@@ -92,24 +91,29 @@ namespace ProcGenSys.WFC.Learner
                                 break;
                         }
 
+                        // get rotation bins and calculate correct bin for prefab
                         int bins = Mathf.Max(4, marker.RotationBins);
                         float yaw = Mathf.Repeat(marker.transform.eulerAngles.y - root.transform.eulerAngles.y, 360f);
                         int bin = Mathf.Clamp(Mathf.FloorToInt(yaw / (360f / bins)), 0, bins - 1);
                         learner.AddRotationSample(pid, bins, bin);
 
+
                         Vector3 s = marker.transform.lossyScale;
                         learner.AddScaleSample(pid, marker.UniformScale, s);
 
+                        // if foot print is manual, use that else calculate it
                         var footprint = (marker.FootprintMode == FootprintSource.ManualCells && marker.ManualFootprintCells != null && marker.ManualFootprintCells.Length > 0)
                             ? new HashSet<Vector2Int>(marker.ManualFootprintCells)
-                            : ComputeFootprintCells(marker.transform, root.transform.position, cellSize, rows, cols, i, j);
+                            : ComputeFootprintCells(marker.transform, root.transform.position, cellSize, rows, cols, x, y);
                         learner.AddFootprintSample(pid, atype, footprint);
+
 
                         if (!perPrefabPositions.TryGetValue(pid, out var list))
                             perPrefabPositions[pid] = list = new List<Vector3>();
                         list.Add(marker.transform.position);
                     }
 
+                    // work out spacing between prefabs
                     foreach (var kv in perPrefabPositions)
                     {
                         var pid = kv.Key;
@@ -151,11 +155,8 @@ namespace ProcGenSys.WFC.Learner
             }
         }
 
-        private enum Dir { N = 0, E = 1, S = 2, W = 3 }
-
         private static (AnchorType type, int i, int j, Vector2 uv)
-
-        Classify(Vector3 worldPos, Vector3 gridOrigin, float cellSize)
+            ResolveCellPositionAnchor(Vector3 worldPos, Vector3 gridOrigin, float cellSize)
         {
             // Step 1: Convert world position into local grid space
             Vector3 localPos3D = worldPos - gridOrigin;
@@ -165,17 +166,16 @@ namespace ProcGenSys.WFC.Learner
             int cellZ = Mathf.FloorToInt(localPos3D.z / cellSize);
 
             // Step 3: Find fractional position within the cell (0..1 range)
-            float u = (localPos3D.x / cellSize) - cellX; // horizontal offset inside cell
-            float v = (localPos3D.z / cellSize) - cellZ; // vertical offset inside cell
+            float u = (localPos3D.x / cellSize) - cellX;
+            float v = (localPos3D.z / cellSize) - cellZ;
 
             // Step 4: Define "bands" near edges and corners
             const float edgeThreshold = 0.18f;
-            const float cornerThreshold = 0.12f; // currently unused, but could refine corners
 
-            bool nearLeft = (u < edgeThreshold);
-            bool nearRight = ((1f - u) < edgeThreshold);
-            bool nearBottom = (v < edgeThreshold);
-            bool nearTop = ((1f - v) < edgeThreshold);
+            bool nearLeft = u < edgeThreshold;
+            bool nearRight = (1f - u) < edgeThreshold;
+            bool nearBottom = v < edgeThreshold;
+            bool nearTop = (1f - v) < edgeThreshold;
 
             // Step 5: Classify based on which edges we're near
 
@@ -203,25 +203,28 @@ namespace ProcGenSys.WFC.Learner
             return (AnchorType.Cell, cellX, cellZ, new Vector2(u, v));
         }
 
-
-        private static HashSet<Vector2Int> ComputeFootprintCells(Transform t, Vector3 origin, float cell, int rows, int cols, int baseI, int baseJ)
+        /*
+         * Based on the render bounds for this prefab, what cells does it cover?
+         * Returns relative, not absolute cell positions
+         */
+        private static HashSet<Vector2Int> ComputeFootprintCells(Transform t, Vector3 origin, float cellSize, int rows, int cols, int baseX, int baseY)
         {
             var covered = new HashSet<Vector2Int>();
             var rends = t.GetComponentsInChildren<Renderer>(true);
             foreach (var r in rends)
             {
                 var b = r.bounds;
-                int i0 = Mathf.Clamp(Mathf.FloorToInt((b.min.x - origin.x) / cell), 0, cols - 1);
-                int i1 = Mathf.Clamp(Mathf.FloorToInt((b.max.x - origin.x) / cell), 0, cols - 1);
-                int j0 = Mathf.Clamp(Mathf.FloorToInt((b.min.z - origin.z) / cell), 0, rows - 1);
-                int j1 = Mathf.Clamp(Mathf.FloorToInt((b.max.z - origin.z) / cell), 0, rows - 1);
+                int i0 = Mathf.Clamp(Mathf.FloorToInt((b.min.x - origin.x) / cellSize), 0, cols - 1);
+                int i1 = Mathf.Clamp(Mathf.FloorToInt((b.max.x - origin.x) / cellSize), 0, cols - 1);
+                int j0 = Mathf.Clamp(Mathf.FloorToInt((b.min.z - origin.z) / cellSize), 0, rows - 1);
+                int j1 = Mathf.Clamp(Mathf.FloorToInt((b.max.z - origin.z) / cellSize), 0, rows - 1);
                 for (int i = i0; i <= i1; i++)
                     for (int j = j0; j <= j1; j++)
                         covered.Add(new Vector2Int(i, j));
             }
             // Convert to relative offsets w.r.t base cell
             var rel = new HashSet<Vector2Int>();
-            foreach (var p in covered) rel.Add(new Vector2Int(p.x - baseI, p.y - baseJ));
+            foreach (var p in covered) rel.Add(new Vector2Int(p.x - baseX, p.y - baseY));
             if (rel.Count == 0) rel.Add(Vector2Int.zero);
             return rel;
         }

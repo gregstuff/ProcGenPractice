@@ -17,7 +17,16 @@ namespace ProcGenSys.WFC.Learner
         private readonly List<string> tiles = new List<string>();
 
         private readonly Dictionary<Direction, Dictionary<(int A, int B), int>> adj = new Dictionary<Direction, Dictionary<(int A, int B), int>>()
-        { {Direction.North,new()}, {Direction.East,new()}, {Direction.South,new()}, {Direction.West,new Dictionary<(int A, int B), int>()} };
+        {
+            {Direction.North,new()},
+            {Direction.East,new()},
+            {Direction.South,new()},
+            {Direction.West,new()},
+            {Direction.NorthEast,new()},
+            {Direction.NorthWest, new()},
+            {Direction.SouthEast, new()},
+            {Direction.SouthWest,new()},
+        };
 
         private class P
         {
@@ -55,6 +64,10 @@ namespace ProcGenSys.WFC.Learner
             }
         }
 
+        /*
+         * for a given cell, store the cell and adjacent cells including diagonals
+         * remember the relationships between the cells also
+         */
         public void CountAdj(TileTypeSO[,] tiles, int row, int col)
         {
             var tileA = tiles[row, col];
@@ -75,6 +88,9 @@ namespace ProcGenSys.WFC.Learner
             }
         }
 
+        /*
+         * Relative to cell, store the 2x2
+         */
         public void Count2x2(TileTypeSO[,] tiles, int row, int col)
         {
 
@@ -98,6 +114,7 @@ namespace ProcGenSys.WFC.Learner
             var p = GetP(pid); p.cellCount++;
             p.cellOnTile[centerTile] = p.cellOnTile.TryGetValue(centerTile, out var v) ? v + 1 : 1;
         }
+
         public void CountPrefabEdge(string pid, bool horizontal, string a, string b)
         {
             var p = GetP(pid);
@@ -105,10 +122,13 @@ namespace ProcGenSys.WFC.Learner
             if (horizontal) { p.edgeHCount++; p.edgeH[key] = p.edgeH.TryGetValue(key, out var v) ? v + 1 : 1; }
             else { p.edgeVCount++; p.edgeV[key] = p.edgeV.TryGetValue(key, out var v) ? v + 1 : 1; }
         }
+
         public void CountPrefabCorner(string pid) { GetP(pid).cornerCount++; }
+
         public void CountPrefabSurface(string pid) { GetP(pid).surfaceCount++; }
 
         public void AddCellOffset(string pid, Vector2 uv) { var p = GetP(pid); p.cellUVSum += uv; p.cellUVN++; }
+
         public void AddEdgeT(string pid, bool horizontal, float t)
         {
             var p = GetP(pid);
@@ -257,8 +277,6 @@ namespace ProcGenSys.WFC.Learner
                 };
             }).ToArray();
         }
-
-        private static int ClampI(int v, int lo, int hi) => (v < lo) ? lo : (v > hi) ? hi : v;
 
         private static Vector2Int[] ParseCells(string key)
         {
